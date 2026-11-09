@@ -1,0 +1,122 @@
+<h2 mat-dialog-title>Reported Issues</h2>
+
+<div>
+    <table mat-table matSort [dataSource]="reps">
+        <ng-container
+          matColumnDef="{{ column.id }}"
+          *ngFor="let column of itemColumns"
+        >
+          <mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ column.value }}</mat-header-cell
+          >
+          <mat-cell *matCellDef="let element" [ngClass]="'textBound'">
+            {{ element[column.id] }}
+          </mat-cell>     
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="reportColumns"></mat-header-row>
+        <mat-row
+          *matRowDef="let row; let even = even; columns: reportColumns;" [ngClass]="{gray: even}"></mat-row>
+      </table>
+</div>
+
+<br/>
+<br/>
+
+<h2 mat-dialog-title>Report New Issue</h2>
+<mat-dialog-content *ngIf="form" class="mat-typography" [formGroup]="form">
+
+    <mat-form-field appearance="fill">
+        <mat-label>Report Type</mat-label>
+        <mat-select formControlName="report_type" id="report_type" name="report_type">
+            <mat-option value="Faulty" selected>Faulty</mat-option>
+            <mat-option value="Shortage">Shortage</mat-option>
+            <mat-option value="Complete">Completion</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <br/>
+    <button class="button-add-row" mat-button (click)="addRow(i)">Add Row</button>
+
+    <!-- <div formArrayName="faultyList" *ngFor="let faulty of form.get('faultyList').controls; let i = index;">
+        <div [formGroupName]="i">
+            <mat-form-field appearance="legacy" class="item_field">
+                <mat-label>Faulty Item</mat-label>
+                <mat-select formControlName="item_no" id="item_no-{{i}}" name="item_no-{{i}}" (selectionChange)="showDescription($event, i, source)">
+                    <input matInput (keyup)="onKey($event.target.value)" placeholder="Search" style="margin: 0.5em;">
+                    <mat-option value="null" disabled>Select Item</mat-option>
+                    <mat-option *ngFor="let it of filteredItems; let j = index;" value="{{j}}">
+                      <ng-container *ngIf="source === 'production'">
+                        {{it.items.item_no}} | {{it.items.description}}
+                      </ng-container>
+                      <ng-container *ngIf="source === 'receiving'">
+                        {{it.item_no}} | {{it.description}} 
+                      </ng-container>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            &nbsp;
+            
+            <mat-form-field appearance="legacy" class="qty_field">
+                <input matInput formControlName="qty_issue" id="qtyissue-{{i}}" name="qtyissue-{{i}}" autocomplete="off">
+            </mat-form-field>
+
+            &nbsp;
+
+            <mat-form-field appearance="legacy" class="note_field">
+              <mat-label>Extra Notes</mat-label>
+              <textarea formControlName="note" matInput id="note-{{i}}" name="note-{{i}}" placeholder="Tell us what's wrong..."></textarea>
+            </mat-form-field>
+
+            <fa-icon [icon]="['fas', 'times']" (click)="removeRow(i)"></fa-icon>
+        </div>
+    </div> -->
+
+    <div formArrayName="faultyList" *ngFor="let faulty of form.get('faultyList').controls; let i = index;">
+      <div [formGroupName]="i">
+          <mat-form-field appearance="legacy" class="item_field">
+              <mat-label>Faulty Item</mat-label>
+              <mat-select formControlName="item_no" id="item_no-{{i}}" name="item_no-{{i}}" (selectionChange)="showDescription($event, i, source, it)" (openedChange)="openedChange($event, i)">
+                
+                  <input matInput (keyup)="onKey($event.target.value, source, i)" placeholder="Search" style="margin: 0.5em;">
+                  <mat-option value="null" disabled>Select Item</mat-option>
+                  <mat-option *ngFor="let it of items; let j = index;" value="{{j}}" [ngStyle]="{display : checkFiltered(it,i) ? 'block' : 'none'}">
+                    <ng-container *ngIf="source === 'production'">
+                      <ng-container *ngIf="checkFiltered(it, i) === true">
+                        {{it.items.item_no}} | {{it.items.description}}
+                      </ng-container> 
+                      <!-- <ng-container *ngIf="checkFiltered(it, i) === false"  [ngStyle]="{'display': 'none'}">
+                      </ng-container>                  -->
+                    </ng-container>
+                    <ng-container *ngIf="source === 'receiving'">
+                      <ng-container *ngIf="checkFiltered(it, i) === true">
+                        {{it.item_no}} | {{it.description}} 
+                      </ng-container>
+                    </ng-container>
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+
+          &nbsp;
+          
+          <mat-form-field appearance="legacy" class="qty_field">
+              <input matInput formControlName="qty_issue" id="qtyissue-{{i}}" name="qtyissue-{{i}}" autocomplete="off">
+          </mat-form-field>
+
+          &nbsp;
+
+          <mat-form-field appearance="legacy" class="note_field">
+            <mat-label>Extra Notes</mat-label>
+            <textarea formControlName="note" matInput id="note-{{i}}" name="note-{{i}}" placeholder="Tell us what's wrong..."></textarea>
+          </mat-form-field>
+
+          <fa-icon [icon]="['fas', 'times']" (click)="removeRow(i)"></fa-icon>
+      </div>
+  </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="form.invalid">Send</button>
+</mat-dialog-actions>

@@ -1,0 +1,176 @@
+/* The sign-in card: a white card on the page background, in the same style as the rest of the app. */
+.auth {
+    display: flex;
+    justify-content: center;
+    padding: 3.5em 1em 3em;
+}
+
+.auth-card {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 440px;
+    padding: 2em 2em 1.75em;
+    background: #FFFFFF;
+    border-top: 4px solid #005EB8;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D, 0px 12px 32px #0000000F;
+}
+
+.auth-card h1 {
+    margin: 0 0 0.2em;
+    font: normal normal 600 30px/1.2 'Source Sans Pro', sans-serif;
+    color: #1F2A37;
+}
+
+.lead {
+    margin: 0 0 1.6em;
+    font-size: 15px;
+    color: #5F6368;
+}
+
+.field {
+    margin-bottom: 1.1em;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 6px;
+    font: normal normal 600 14px/18px 'Source Sans Pro', sans-serif;
+    color: #1F2A37;
+}
+
+.field-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    background: #FFFFFF;
+    font: normal normal normal 16px/20px 'Source Sans Pro', sans-serif;
+    color: #1F2A37;
+}
+
+.field-input:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.field-input.invalid {
+    border-color: #C62828;
+}
+
+.field-error {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #C62828;
+}
+
+.password-wrap {
+    position: relative;
+}
+
+.password-wrap .field-input {
+    padding-right: 64px;
+}
+
+/* "Show" / "Hide" inside the password box. */
+.toggle {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    height: 36px;
+    margin: 0;
+    padding: 0 12px;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 'Source Sans Pro', sans-serif;
+    cursor: pointer;
+}
+
+.toggle:hover {
+    background: #F0F6FD;
+}
+
+.toggle:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 0;
+}
+
+.submit {
+    width: 100%;
+    margin-top: 0.4em;
+}
+
+/* Clear space between Login and the reset link, which is a quiet link rather than a second button. */
+.reset-row {
+    margin: 1.5em 0 0;
+    text-align: center;
+}
+
+.reset-link {
+    font: normal normal 600 14px/20px 'Source Sans Pro', sans-serif;
+    color: #005EB8;
+    text-decoration: underline;
+}
+
+.reset-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.demo {
+    margin-top: 1.75em;
+    padding: 14px 16px;
+    border-radius: 6px;
+    background: #F4F6F9;
+    font-size: 13px;
+    color: #4A4A4F;
+}
+
+.demo-title {
+    margin: 0 0 6px;
+    font: normal normal 700 11px/1 'Source Sans Pro', sans-serif;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #5F6368;
+}
+
+.demo ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.demo li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 30px;
+}
+
+.demo-fill {
+    margin: 0;
+    padding: 4px 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 'Source Sans Pro', sans-serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.demo-fill:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.demo-hint {
+    margin: 6px 0 0;
+    color: #5F6368;
+}

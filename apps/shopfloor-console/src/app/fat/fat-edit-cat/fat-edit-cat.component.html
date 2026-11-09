@@ -1,0 +1,24 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="header">
+        <button class="fat" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead"> Edit Checklist Categories</h1>
+    </div>
+
+    <div class="master">
+        <ng-container *ngFor="let cat of categories">
+            <div class="component">
+                <a  [routerLink]="['/FAT-edit-checklist', cat]" class="categories">{{cat}}</a>
+                <!-- <a class="categories" disabled="true" [routerLink]="['/FAT-unit-checklist', getProject(), getPhase(), getUnit(), cat.name]">{{cat.name}} &nbsp;&nbsp; - &nbsp;&nbsp; Progress: {{cat.progress}}%
+                    <span style="float: right; margin-left:-1em;" *ngIf="getEditable() === true">
+                        <button (click)="toggleEditable()">Delete</button>
+                    </span>
+                </a>     -->
+            </div>
+            <br/>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+    <fat-restricted-access></fat-restricted-access>
+  </ng-container>

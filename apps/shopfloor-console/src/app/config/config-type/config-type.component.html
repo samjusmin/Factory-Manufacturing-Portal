@@ -1,0 +1,32 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Config | {{ category }}</h1>
+</div>
+
+<div class="config-page" *ngIf="ConfigService.locationsLoaded || ConfigService.loadError">
+    <p class="subtitle intro">Choose a hardware type to see its units at {{ location }}.</p>
+
+    <div class="toolbar" *ngIf="types.length > 6">
+        <mat-form-field class="search">
+            <input matInput aria-label="Search types" placeholder="Search types" [value]="term" (input)="setTerm($event.target.value)">
+        </mat-form-field>
+    </div>
+
+    <div class="list-empty" *ngIf="ConfigService.loadError">
+        The hardware types could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!ConfigService.loadError && !types.length">No hardware types are set up in this category yet.</p>
+    <p class="list-empty" *ngIf="types.length && !tiles.length">No types match the search.</p>
+
+    <div class="config-tiles" *ngIf="tiles.length">
+        <a class="config-tile" *ngFor="let type of tiles; trackBy: trackByName" [routerLink]="['/config-unit', location, category, type]">
+            <span class="tile-icon" aria-hidden="true"><fa-icon [icon]="['fas', icon()]"></fa-icon></span>
+            <span class="tile-body">
+                <span class="tile-title">{{ type }}</span>
+                <span class="tile-meta">View units</span>
+            </span>
+            <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+        </a>
+    </div>
+</div>

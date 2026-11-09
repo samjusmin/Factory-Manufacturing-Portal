@@ -1,0 +1,103 @@
+.edit-form {
+    max-width: 1100px;
+}
+
+.row-count {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.action-status .ok {
+    color: #0A6B2E;
+    font-weight: 600;
+}
+
+.edit-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.edit-row {
+    display: grid;
+    grid-template-columns: 2em minmax(0, 2fr) minmax(0, 1.5fr) auto;
+    align-items: center;
+    gap: 0 0.75em;
+    margin: 0 0 0.5em;
+    padding: 0.5em 0.75em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+/* An edited or new row is marked on its left edge until it has been saved. */
+.edit-row.row-changed {
+    box-shadow: inset 3px 0 0 #E0A100, 0px 3px 6px #0000000D;
+}
+
+.row-no {
+    font-size: 13px;
+    color: #5F6368;
+    text-align: right;
+}
+
+.field-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    font: normal normal normal 15px/20px Source Sans Pro;
+}
+
+.field-input::placeholder {
+    color: #6B7280;
+}
+
+.field-input:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.field-input.field-blank {
+    border-color: #C62828;
+}
+
+.icon-btn {
+    margin: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #C9C9CE;
+    border-radius: 4px;
+    background: #FFFFFF;
+    color: #4A4A4F;
+    cursor: pointer;
+}
+
+.icon-btn:hover {
+    background: #F4F4F6;
+    color: #C62828;
+}
+
+.icon-btn:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+/* Narrow screens: the two fields stack and the remove button sits beside them. */
+@media (max-width: 700px) {
+    .edit-row {
+        grid-template-columns: 2em minmax(0, 1fr) auto;
+        gap: 0.5em 0.75em;
+    }
+
+    .edit-row .row-no { grid-row: 1 / span 2; }
+    .edit-row .icon-btn { grid-row: 1 / span 2; grid-column: 3; }
+}

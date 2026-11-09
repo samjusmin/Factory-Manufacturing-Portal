@@ -1,0 +1,32 @@
+<button #trigger type="button" class="picker-trigger" [class.has-value]="selected.length" [class.open]="open"
+    (click)="toggleOpen()" [attr.aria-expanded]="open" aria-haspopup="listbox" [attr.aria-label]="label + ': ' + summary">
+    <span class="picker-label">{{ label }}</span>
+    <span class="picker-value">{{ summary }}</span>
+    <fa-icon class="picker-caret" [icon]="['fas', open ? 'chevron-up' : 'chevron-down']"></fa-icon>
+</button>
+
+<div class="picker-panel" *ngIf="open" role="dialog" [attr.aria-label]="'Choose ' + label">
+    <input #search type="text" class="picker-search" autocomplete="off" [value]="term"
+        [attr.aria-label]="'Search ' + label" [placeholder]="'Search ' + label.toLowerCase()"
+        (input)="onTerm($any($event.target).value)" (keydown.enter)="onEnter($event)">
+
+    <div class="picker-actions">
+        <span class="picker-count" role="status" aria-live="polite">
+            {{ selected.length }} selected<ng-container *ngIf="term"> &middot; {{ shown.length }} shown</ng-container>
+        </span>
+        <button type="button" class="picker-link" *ngIf="term && shown.length && shownSelectedCount < shown.length" (click)="selectShown()">Select shown</button>
+        <button type="button" class="picker-link" *ngIf="selected.length" (click)="clear()">Clear</button>
+    </div>
+
+    <cdk-virtual-scroll-viewport *ngIf="shown.length" [itemSize]="rowHeight" [style.height.px]="listHeight" class="picker-list" role="listbox" aria-multiselectable="true">
+        <label class="picker-option" *cdkVirtualFor="let option of shown; trackBy: trackOption" [class.on]="isChosen(option.value)">
+            <input type="checkbox" [checked]="isChosen(option.value)" (change)="toggle(option.value)">
+            <span class="option-text">{{ option.label }}</span>
+            <span class="option-hint" *ngIf="option.hint">{{ option.hint }}</span>
+        </label>
+    </cdk-virtual-scroll-viewport>
+
+    <p class="picker-empty" *ngIf="!shown.length">
+        {{ options.length ? 'Nothing matches "' + term + '".' : 'There are no choices yet.' }}
+    </p>
+</div>

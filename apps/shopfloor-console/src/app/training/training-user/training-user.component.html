@@ -1,0 +1,145 @@
+<div class="page-header">
+    <button class="fat" type="button" [attr.aria-label]="'Back to ' + location" title="Back" (click)="goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Training | {{ detail ? detail.name : username }}</h1>
+</div>
+
+<div class="training-user" *ngIf="loaded">
+    <div class="list-empty" *ngIf="failed">
+        This person's training could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+    <div class="list-empty" *ngIf="notFound">
+        There is no user called {{ username }}.
+        <button type="button" class="btn-secondary retry" (click)="goBack()">Back</button>
+    </div>
+
+    <ng-container *ngIf="detail">
+        <!-- Who this is, their roles, and where they stand overall. -->
+        <section class="form-card person-card" aria-label="Person">
+            <div class="person-main">
+                <span class="avatar" aria-hidden="true">{{ detail.name.charAt(0) }}</span>
+                <div class="who">
+                    <h2>{{ detail.name }}</h2>
+                    <p class="where">{{ roleLabel(detail.roles) }} · {{ detail.locations.join(', ') || 'No location' }}</p>
+                </div>
+                <span class="po-chip overall" [ngClass]="'tr-' + detail.summary.state">{{ overallLabels[detail.summary.state] }}</span>
+            </div>
+
+            <div class="roles-row">
+                <span class="roles-label">Roles</span>
+                <ng-container *ngIf="!editingAreas">
+                    <span class="role-chip" *ngFor="let area of detail.areas">{{ areaLabels[area] }}</span>
+                    <span class="no-role" *ngIf="!detail.areas.length">No role yet</span>
+                    <button type="button" class="btn-secondary small" (click)="startEditingAreas()">
+                        <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>Edit roles
+                    </button>
+                </ng-container>
+            </div>
+
+            <fieldset class="roles-edit" *ngIf="editingAreas" [disabled]="saving">
+                <legend class="visually-hidden">Roles</legend>
+                <p class="form-hint">
+                    A role lets this person open that part of the app and requires that role's training.
+                    A person can hold several roles. The change to what they can open takes effect when they next sign in.
+                </p>
+                <label class="role-option" *ngFor="let area of allAreas">
+                    <input type="checkbox" [checked]="editingAreas.includes(area)" (change)="toggleArea(area, $event.target.checked)">
+                    <span>{{ areaLabels[area] }}</span>
+                </label>
+                <div class="roles-actions">
+                    <button type="button" class="btn-secondary" (click)="cancelEditingAreas()">Cancel</button>
+                    <button type="button" class="btn-primary" [disabled]="!areasChanged || saving" (click)="saveAreas()">Save roles</button>
+                </div>
+            </fieldset>
+
+            <div class="tiles" *ngIf="detail.summary.counts.required" role="list" aria-label="Training summary">
+                <div class="mini good" role="listitem"><b>{{ detail.summary.counts.valid }}</b> in date</div>
+                <div class="mini soon" role="listitem"><b>{{ detail.summary.counts.dueSoon }}</b> due soon</div>
+                <div class="mini bad" [class.zero]="!detail.summary.counts.expired" role="listitem"><b>{{ detail.summary.counts.expired }}</b> expired</div>
+                <div class="mini bad" [class.zero]="!detail.summary.counts.missing" role="listitem"><b>{{ detail.summary.counts.missing }}</b> not done</div>
+                <span class="po-progress overall-bar">
+                    <span class="po-bar" role="img" [attr.aria-label]="detail.summary.percentCurrent + ' percent of required modules in date'">
+                        <span class="po-fill" [class.fill-soon]="detail.summary.state === 'due-soon'" [class.fill-red]="detail.summary.state === 'attention'" [style.width.%]="detail.summary.percentCurrent"></span>
+                    </span>
+                    <span class="po-pct">{{ detail.summary.percentCurrent }}%</span>
+                </span>
+            </div>
+        </section>
+
+        <p class="list-empty" *ngIf="!detail.areas.length && !detail.summary.other.length">
+            {{ detail.name }} holds no role, so no training is required yet. Use Edit roles to give them one.
+        </p>
+
+        <!-- One card per role, with the modules it requires. -->
+        <section class="form-card area-card" *ngFor="let area of detail.summary.areas; trackBy: trackByArea" [attr.aria-label]="areaLabels[area.area] + ' training'">
+            <h2>
+                {{ areaLabels[area.area] }}
+                <span class="area-count">{{ area.counts.valid + area.counts.dueSoon }} of {{ area.counts.required }} in date</span>
+                <span class="po-chip tr-attention" *ngIf="redCount(area.counts)">{{ redCount(area.counts) }} need attention</span>
+            </h2>
+            <ng-container *ngTemplateOutlet="modulesTpl; context: { $implicit: area.modules }"></ng-container>
+        </section>
+
+        <section class="form-card area-card" *ngIf="detail.summary.other.length" aria-label="Other training">
+            <h2>Other training <span class="area-count">not required by any of their roles</span></h2>
+            <ng-container *ngTemplateOutlet="modulesTpl; context: { $implicit: detail.summary.other }"></ng-container>
+        </section>
+    </ng-container>
+</div>
+
+<!-- The modules of one role as a table. A row is red when the module is expired or was never done, amber when it renews soon. -->
+<ng-template #modulesTpl let-rows>
+    <div class="module-scroll">
+        <table class="module-table">
+            <thead>
+                <tr>
+                    <th scope="col">Module</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Renews</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"><span class="visually-hidden">Actions</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of rows; trackBy: trackByModule" class="module-row" [ngClass]="'row-' + row.status.state">
+                    <td data-label="Module">
+                        <span class="module-name">{{ row.module }}</span>
+                        <span class="module-cat">{{ row.category }}</span>
+                    </td>
+                    <ng-container *ngIf="recording !== row.module">
+                        <td data-label="Completed">{{ formatDate(row.status.completedOn) }}</td>
+                        <td data-label="Renews">
+                            {{ formatDate(row.status.renewsOn) }}
+                            <span class="module-cat">{{ timeLeftText(row.status) }}</span>
+                        </td>
+                    </ng-container>
+                    <td colspan="2" *ngIf="recording === row.module" class="record-cell">
+                        <label class="record-label" [attr.for]="'date-' + row.module">Completed on</label>
+                        <input class="date-input" type="date" [id]="'date-' + row.module" [(ngModel)]="recordDate" [max]="today"
+                            (keydown.enter)="saveRecording()" (keydown.escape)="cancelRecording()">
+                        <span class="module-cat">Renews {{ validityYears }} years later.</span>
+                    </td>
+                    <td data-label="Status">
+                        <span class="po-chip" [ngClass]="'tr-' + row.status.state">{{ stateLabels[row.status.state] }}</span>
+                    </td>
+                    <td class="actions-cell">
+                        <ng-container *ngIf="recording !== row.module">
+                            <button type="button" class="btn-secondary small" [disabled]="saving" (click)="startRecording(row)">
+                                {{ row.status.completedOn ? 'Update' : 'Record' }}
+                            </button>
+                            <button type="button" class="tr-icon-btn" *ngIf="row.status.completedOn" [disabled]="saving"
+                                [attr.aria-label]="'Clear ' + row.module" title="Clear" (click)="clear(row)">
+                                <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+                            </button>
+                            <span class="tr-icon-spacer" *ngIf="!row.status.completedOn" aria-hidden="true"></span>
+                        </ng-container>
+                        <ng-container *ngIf="recording === row.module">
+                            <button type="button" class="btn-primary small" [disabled]="!recordDateValid || saving" (click)="saveRecording()">Save</button>
+                            <button type="button" class="btn-secondary small" [disabled]="saving" (click)="cancelRecording()">Cancel</button>
+                        </ng-container>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>

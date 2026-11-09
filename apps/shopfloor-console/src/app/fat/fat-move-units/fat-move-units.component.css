@@ -1,0 +1,32 @@
+.select-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #E0E0E4;
+}
+
+.select-count {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.unit-picks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.25em 1em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.unit-no,
+.unit-progress {
+    color: #5F6368;
+}
+
+.unit-progress {
+    margin-left: 0.75em;
+    font-size: 13px;
+}

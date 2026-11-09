@@ -1,0 +1,66 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Config | {{ type }}</h1>
+</div>
+
+<div class="config-page" *ngIf="ConfigService.unitsLoaded || ConfigService.loadError">
+    <p class="subtitle intro">{{ category }} units at {{ location }}. The serial no. identifies each unit.</p>
+
+    <div class="toolbar">
+        <mat-form-field class="search">
+            <input matInput aria-label="Search units" placeholder="Search units" [value]="term" (input)="setTerm($event.target.value)">
+        </mat-form-field>
+
+        <div class="filter-bar" role="group" aria-label="Filter by progress">
+            <button type="button" class="filter-chip" *ngFor="let f of progressFilters"
+                [class.on]="progressFilter === f" [attr.aria-pressed]="progressFilter === f" (click)="setProgress(f)">
+                {{ f }} <span class="count">{{ counts[f] }}</span>
+            </button>
+        </div>
+
+        <div class="toolbar-actions">
+            <a class="btn-primary" [routerLink]="['/config-hardware-checklist', location, category, type, 'add-unit']">Add Unit</a>
+        </div>
+    </div>
+
+    <div class="toolbar project-bar" *ngIf="projectChoices.length > 2" role="group" aria-label="Filter by project">
+        <span class="filter-label">Project</span>
+        <div class="filter-bar">
+            <button type="button" class="filter-chip" *ngFor="let p of projectChoices"
+                [class.on]="projectFilter === p" [attr.aria-pressed]="projectFilter === p" (click)="setProject(p)">
+                {{ p }} <span class="count">{{ projectCount(p) }}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="list-empty" *ngIf="ConfigService.loadError">
+        The units could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!ConfigService.loadError && !source.data.length">
+        There are no {{ type }} units at {{ location }} yet. Use Add Unit to create the first one.
+    </p>
+    <p class="list-empty" *ngIf="source.data.length && !source.filteredData.length">No units match the current filters.</p>
+
+    <div class="table-list" [hidden]="!source.filteredData.length">
+        <table mat-table [trackBy]="trackById" matSort class="mat-elevation-z8 config-table" [dataSource]="source">
+            <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.label }}</th>
+                <td mat-cell *matCellDef="let element" [ngSwitch]="column.name">
+                    <a *ngSwitchCase="'serial_no'" class="cell-link" [routerLink]="['/config-hardware-checklist', location, category, type, element._id]">{{ element.serial_no }}</a>
+                    <span *ngSwitchCase="'project'" class="po-chip" [ngClass]="element.project === stock ? 'state-open' : 'state-on-order'">{{ element.project }}</span>
+                    <span *ngSwitchCase="'parts'" class="cell-muted" [title]="partsTitle(element)">{{ (element.parts || []).length }} parts</span>
+                    <span *ngSwitchCase="'progress'" class="po-progress" role="img" [attr.aria-label]="(element.progress || 0) + ' percent complete'">
+                        <span class="po-bar"><span class="po-fill" [style.width.%]="element.progress || 0"></span></span>
+                        <span class="po-pct">{{ element.progress || 0 }}%</span>
+                    </span>
+                    <span *ngSwitchCase="'state'" class="po-chip" [ngClass]="progressState(element.progress).cls">{{ progressState(element.progress).label }}</span>
+                    <ng-container *ngSwitchDefault>{{ element[column.name] || '–' }}</ng-container>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+        </table>
+    </div>
+</div>

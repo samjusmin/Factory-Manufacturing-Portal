@@ -1,0 +1,49 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">FAT | {{ getProject() }} - {{ FATProjectService.phaseName }} Comments</h1>
+    </div>
+
+    <p class="form-hint" *ngIf="!FATProjectService.isLoaded">Loading comments...</p>
+
+    <div class="fat-list" *ngIf="FATProjectService.isLoaded">
+        <div class="list-empty" *ngIf="FATProjectService.loadError">
+            The comments could not be loaded.
+            <button type="button" class="btn-secondary retry" (click)="reload()">Try again</button>
+        </div>
+
+        <ng-container *ngIf="!FATProjectService.loadError">
+            <div class="toolbar" *ngIf="withNotes.length">
+                <mat-form-field class="search">
+                    <input matInput aria-label="Search comments" placeholder="Search" [(ngModel)]="search">
+                </mat-form-field>
+                <span class="result-count" role="status" aria-live="polite">
+                    {{ shown.length }} of {{ withNotes.length }} {{ withNotes.length === 1 ? 'unit' : 'units' }} with comments
+                    <ng-container *ngIf="totalUnits > withNotes.length"> ({{ totalUnits }} in this phase)</ng-container>
+                </span>
+            </div>
+
+            <p class="list-empty" *ngIf="!withNotes.length">
+                No unit comments have been added to this phase yet.
+                <span class="empty-hint">Notes are written on each unit's page.</span>
+            </p>
+            <p class="list-empty" *ngIf="withNotes.length && !shown.length">No comments match "{{ search }}".</p>
+
+            <ul class="comment-list" *ngIf="shown.length">
+                <li class="comment-card" *ngFor="let unit of shown; trackBy: trackUnit">
+                    <div class="comment-head">
+                        <a class="comment-unit" [routerLink]="['/FAT-unit-cat', getProject(), getPhase(), unit.doc_no]">{{ unit.doc_no }}</a>
+                        <span class="comment-serial" *ngIf="unit.unit_no">{{ unit.unit_no }}</span>
+                        <a class="comment-open" [routerLink]="['/FAT-unit-cat', getProject(), getPhase(), unit.doc_no]"
+                            [attr.aria-label]="'Open ' + unit.doc_no">Open unit</a>
+                    </div>
+                    <p class="comment-body">{{ unit.comment }}</p>
+                </li>
+            </ul>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

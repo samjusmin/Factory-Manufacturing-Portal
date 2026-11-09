@@ -1,0 +1,87 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">FAT | {{ report?.title }} Report</h1>
+    <div class="page-action export-actions">
+      <button type="button" class="btn-secondary" [disabled]="!report || !!exporting" (click)="exportCsv()">
+        {{ exporting === 'csv' ? 'Preparing...' : 'Export CSV' }}
+      </button>
+      <button type="button" class="btn-primary" [disabled]="!report || !!exporting" (click)="exportPdf()">
+        {{ exporting === 'pdf' ? 'Preparing...' : 'Export PDF' }}
+      </button>
+    </div>
+  </div>
+
+  <p class="form-error" role="alert" *ngIf="exportError">{{ exportError }}</p>
+  <p class="form-hint" *ngIf="!report">Preparing the report...</p>
+
+  <ng-container *ngIf="report">
+    <p class="form-hint">
+      The PDF opens with this cover page, then has a section for each unit with every check, and ends with a
+      sign-off block. The CSV has one row per check, for spreadsheets.
+    </p>
+
+    <section class="paper cover" aria-label="Report cover">
+      <p class="eyebrow">Factory acceptance test report</p>
+      <h2 class="report-title">{{ report.title }}</h2>
+      <p class="meta">{{ report.units.length }} {{ report.units.length === 1 ? 'unit' : 'units' }}</p>
+
+      <div class="stats">
+        <div class="stat"><strong>{{ report.totals.units }}</strong><span>{{ report.totals.unitsComplete }} complete</span></div>
+        <div class="stat"><strong>{{ report.totals.percentDone }}%</strong><span>{{ report.totals.done }} of {{ report.totals.checks }} checks done</span></div>
+        <div class="stat" [class.bad]="report.totals.failed"><strong>{{ report.totals.failed }}</strong><span>{{ report.totals.failed === 1 ? 'check failed' : 'checks failed' }}</span></div>
+        <div class="stat" [class.warn]="report.totals.unanswered"><strong>{{ report.totals.unanswered }}</strong><span>{{ report.totals.unanswered === 1 ? 'check not answered' : 'checks not answered' }}</span></div>
+      </div>
+
+      <h3>Units in this report</h3>
+      <table class="plain">
+        <thead><tr><th>Unit</th><th>Serial No.</th><th>Type</th><th>Location</th><th>Status</th><th class="num">Progress</th><th class="num">Failed</th><th class="num">To do</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let unit of report.units">
+            <td><strong>{{ unit.doc_no }}</strong></td>
+            <td>{{ unit.unit_no || '-' }}</td>
+            <td>{{ unit.unit_type }}</td>
+            <td>{{ unit.location }}</td>
+            <td>{{ unit.state }}</td>
+            <td class="num">{{ unit.progress }}%</td>
+            <td class="num" [class.failed-text]="unit.summary.failed">{{ unit.summary.failed || '-' }}</td>
+            <td class="num">{{ unit.summary.unanswered || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="paper unit-block" *ngFor="let unit of report.units" [attr.aria-label]="'Unit ' + unit.doc_no">
+      <h2>{{ unit.doc_no }}<span *ngIf="unit.unit_no"> | {{ unit.unit_no }}</span></h2>
+      <p class="meta">
+        {{ unit.unit_type }} | {{ unit.location }} | {{ unit.progress }}% complete |
+        <span [class.failed-text]="unit.summary.failed">{{ unit.summary.failed ? unit.summary.failed + ' failed' : 'no failed checks' }}</span> |
+        {{ unit.summary.unanswered }} not answered
+      </p>
+
+      <div class="category" *ngFor="let category of unit.categories">
+        <h3 class="category-head"><span>{{ category.name }}</span><span class="category-progress">{{ category.progress }}% complete</span></h3>
+        <p class="meta" *ngIf="!category.rows.length">This category has no checks.</p>
+        <table class="plain" *ngIf="category.rows.length">
+          <thead><tr><th>Check</th><th>Reference</th><th>Status</th><th>Comment</th><th>Main checker</th><th>Second checker</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let row of category.rows">
+              <td><span class="section" *ngIf="row.section">{{ row.section }}: </span>{{ row.description }}</td>
+              <td>{{ row.reference }}</td>
+              <td><span class="status" [ngClass]="{ done: row.status === 'Complete', failed: row.status === 'Incomplete', na: row.status === 'N/A', open: row.status === 'Not answered' }">{{ row.status }}</span></td>
+              <td>{{ row.comment }}</td>
+              <td>{{ row.checked_by }}</td>
+              <td>{{ row.second_checker }}</td>
+              <td>{{ row.date_checked }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </ng-container>
+
+</ng-container>
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

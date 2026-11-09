@@ -1,0 +1,65 @@
+<ng-container *ngIf="ConfigService.isAdmin">
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Edit Checklist | {{ getType() }}</h1>
+  </div>
+
+  <div class="config-page" *ngIf="loaded">
+    <div class="list-empty" *ngIf="loadMessage">
+      {{ loadMessage }}
+      <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+
+    <ng-container *ngIf="!loadMessage">
+      <p class="subtitle intro">New {{ getType() }} units ({{ category }}) start from this checklist. Changes do not affect units that already exist.</p>
+
+      <div class="toolbar">
+        <div class="toolbar-actions">
+          <button type="button" class="btn-secondary" (click)="addChecklist()"><fa-icon [icon]="['fas', 'plus']"></fa-icon> Add Check</button>
+          <button type="button" class="btn-secondary" (click)="addHeading()"><fa-icon [icon]="['fas', 'plus']"></fa-icon> Add Section</button>
+          <button type="button" class="btn-secondary danger-btn" (click)="deleteType()">Delete type</button>
+        </div>
+      </div>
+
+      <p class="list-empty" *ngIf="!checklistSource.length">This checklist has no rows yet. Use Add Check to start it.</p>
+
+      <div class="table-list" [hidden]="!checklistSource.length">
+        <table mat-table [dataSource]="checklistSource" class="mat-elevation-z8 config-table edit-table">
+          <ng-container *ngFor="let column of columnNames" [matColumnDef]="column.id">
+            <th mat-header-cell *matHeaderCellDef>{{ column.value }}</th>
+            <td mat-cell *matCellDef="let element; let i = index" [ngSwitch]="column.id">
+              <mat-form-field *ngSwitchCase="'description'" class="table-field wide-field" floatLabel="never">
+                <input matInput name="description-{{ i }}" [placeholder]="isHeading(element) ? 'Section heading' : 'Description'" aria-label="Description"
+                  [class.heading-input]="isHeading(element)" [(ngModel)]="element.description" (ngModelChange)="markDirty()">
+              </mat-form-field>
+              <ng-container *ngSwitchCase="'reference'">
+                <mat-form-field class="table-field wide-field" floatLabel="never" *ngIf="!isHeading(element)">
+                  <input matInput name="reference-{{ i }}" placeholder="Reference" aria-label="Reference"
+                    [(ngModel)]="element.reference" (ngModelChange)="markDirty()">
+                </mat-form-field>
+                <span class="cell-muted" *ngIf="isHeading(element)">Section heading</span>
+              </ng-container>
+              <button *ngSwitchCase="'remove'" type="button" class="icon-btn danger" aria-label="Remove row" title="Remove row" (click)="removeChecklist(i)"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even, 'heading-row': isHeading(row)}"></tr>
+        </table>
+      </div>
+
+      <div class="action-bar">
+        <span class="action-status">
+          <span class="dirty" *ngIf="dirty">Unsaved changes</span>
+          <span *ngIf="!dirty">All changes saved</span>
+        </span>
+        <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+        <button type="button" class="btn-primary" [disabled]="saving || !dirty" (click)="saveChanges()">{{ saving ? 'Saving…' : 'Save' }}</button>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!ConfigService.isAdmin && ConfigService.showError">
+  <config-restricted-access></config-restricted-access>
+</ng-container>

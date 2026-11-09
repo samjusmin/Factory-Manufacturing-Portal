@@ -1,0 +1,132 @@
+.training {
+    padding-bottom: 80px;
+}
+
+.intro {
+    margin: 0 0 1.25em;
+}
+
+.tiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    padding: 0.9em 1.25em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D;
+    border-left: 4px solid #C9C9CE;
+}
+
+.tile-value {
+    font: normal normal 600 28px/34px Source Sans Pro;
+    color: #1F1F23;
+}
+
+.tile-label {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.tile.good { border-left-color: #009E47; }
+.tile.soon { border-left-color: #E0A100; }
+.tile.bad { border-left-color: #C62828; }
+.tile.bad .tile-value { color: #C62828; }
+.tile.bad.zero { border-left-color: #C9C9CE; }
+.tile.bad.zero .tile-value { color: #1F1F23; }
+.tile.quiet { border-left-color: #C9C9CE; }
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25em;
+}
+
+.location-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7em;
+    padding: 1.1em 1.25em 1.2em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border-top: 3px solid transparent;
+    box-shadow: 0px 3px 6px #0000000D;
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.location-card.has-red {
+    border-top-color: #C62828;
+}
+
+.location-card:hover {
+    box-shadow: 0px 6px 16px #00000026;
+    transform: translateY(-1px);
+}
+
+.location-card:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.card-title {
+    flex: 1;
+    min-width: 0;
+    font: normal normal 600 18px/24px Source Sans Pro;
+    color: #00458F;
+    overflow-wrap: anywhere;
+}
+
+.go {
+    color: #005EB8;
+    opacity: 0.6;
+}
+
+.location-card:hover .go {
+    opacity: 1;
+}
+
+.people {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 14px;
+    color: #4A4A4F;
+}
+
+.bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    background: #E7E7E9;
+    overflow: hidden;
+}
+
+.seg.valid { background: #009E47; }
+.seg.soon { background: #E0A100; }
+.seg.red { background: #C62828; }
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 1em;
+    font-size: 13px;
+}
+
+.valid-text { color: #0A6B2E; }
+.soon-text { color: #8A5A00; }
+.red-text { color: #C62828; font-weight: 600; }
+.quiet-text { color: #5F6368; }

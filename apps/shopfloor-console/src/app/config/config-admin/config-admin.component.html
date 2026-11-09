@@ -1,0 +1,53 @@
+<ng-container *ngIf="ConfigService.isAdmin">
+    <div class="page-header">
+        <h1 class="fatHead">Config</h1>
+    </div>
+
+    <div class="config-page" *ngIf="ConfigService.locationsLoaded || ConfigService.loadError">
+        <p class="subtitle intro">
+            Choose a location to see the hardware it configures, or manage the lists every location draws from.
+        </p>
+
+        <div class="toolbar">
+            <mat-form-field class="search">
+                <input matInput aria-label="Search locations" placeholder="Search locations" [value]="term" (input)="setTerm($event.target.value)">
+            </mat-form-field>
+
+            <div class="toolbar-actions">
+                <button type="button" class="btn-secondary" [matMenuTriggerFor]="manage" aria-label="Manage lists">
+                    Manage <fa-icon [icon]="['fas', 'chevron-down']"></fa-icon>
+                </button>
+                <mat-menu #manage="matMenu" xPosition="before" class="actionMenu">
+                    <a mat-menu-item [routerLink]="['/config-edit-cat']"><fa-icon [icon]="['fas', 'clipboard-list']"></fa-icon>Item Checklists</a>
+                    <a mat-menu-item [routerLink]="['/config-hardware-list']"><fa-icon [icon]="['fas', 'desktop']"></fa-icon>Hardware List</a>
+                    <a mat-menu-item [routerLink]="['/config-image-list']"><fa-icon [icon]="['fas', 'cubes']"></fa-icon>Image List</a>
+                </mat-menu>
+                <a class="btn-primary" [routerLink]="['/config-locations']">Edit Locations</a>
+            </div>
+        </div>
+
+        <div class="list-empty" *ngIf="ConfigService.loadError">
+            The locations could not be loaded.
+            <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+        </div>
+        <p class="list-empty" *ngIf="!ConfigService.loadError && !locations.length">
+            There are no locations yet. Use Edit Locations to add the first one.
+        </p>
+        <p class="list-empty" *ngIf="locations.length && !tiles.length">No locations match the search.</p>
+
+        <div class="config-tiles" *ngIf="tiles.length">
+            <a class="config-tile" *ngFor="let tile of tiles; trackBy: trackByName" [routerLink]="['/config-categories', tile.name]">
+                <span class="tile-icon" aria-hidden="true"><fa-icon [icon]="['fas', 'warehouse']"></fa-icon></span>
+                <span class="tile-body">
+                    <span class="tile-title">{{ tile.name }}</span>
+                    <span class="tile-meta">{{ tile.meta }}</span>
+                </span>
+                <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+            </a>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!ConfigService.isAdmin && ConfigService.showError">
+    <config-restricted-access></config-restricted-access>
+</ng-container>

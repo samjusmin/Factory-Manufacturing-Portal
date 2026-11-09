@@ -1,0 +1,29 @@
+<div class="toolbar">
+    <ng-content select="[listSearch]"></ng-content>
+
+    <button type="button" class="btn-secondary filters-toggle" [class.on]="filtersOpen" (click)="toggle()"
+        [attr.aria-expanded]="filtersOpen" [attr.aria-controls]="storageKey">
+        <fa-icon [icon]="['fas', 'filter']"></fa-icon>
+        Filters
+        <span class="filters-badge" *ngIf="tags.length" [attr.aria-label]="tags.length + ' filters on'">{{ tags.length }}</span>
+        <fa-icon class="toggle-caret" [icon]="['fas', filtersOpen ? 'chevron-up' : 'chevron-down']"></fa-icon>
+    </button>
+
+    <ng-content select="[listActions]"></ng-content>
+</div>
+
+<!-- The row of filters: hidden until asked for. Each one has its own search box for a long list of choices. -->
+<div class="filter-panel" [id]="storageKey" role="group" aria-label="Filters" *ngIf="filtersOpen">
+    <webproject-filter-picker *ngFor="let group of groups; trackBy: trackGroup"
+        [label]="group.title" [options]="group.options" [selected]="selection[group.key] || []"
+        (selectedChange)="choose(group.key, $event)"></webproject-filter-picker>
+    <button type="button" class="link-btn small-link" *ngIf="tags.length" (click)="clear()">Clear filters</button>
+</div>
+
+<div class="active-filters" *ngIf="tags.length" aria-label="Active filters">
+    <span class="filter-tag" *ngFor="let tag of tags; trackBy: trackTag">
+        <span class="tag-group">{{ tag.group }}:</span> {{ tag.label }}
+        <button type="button" class="tag-remove" (click)="remove(tag)" [attr.aria-label]="'Remove ' + tag.group + ' filter ' + tag.label">&times;</button>
+    </span>
+    <button type="button" class="link-btn small-link" (click)="clear()">Clear filters</button>
+</div>

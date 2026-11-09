@@ -1,0 +1,23 @@
+.textBound {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 200px;
+}
+
+.item_field ::ng-deep .mat-form-field-infix {
+    width: 30em;
+}
+.desc_field ::ng-deep .mat-form-field-infix {
+    width: 20em;
+}
+.qty_field ::ng-deep .mat-form-field-infix {
+    width: 5em;
+}
+.note_field ::ng-deep .mat-form-field-infix {
+    width: 20em;
+}
+
+fa-icon {
+    cursor: pointer;
+    color: red;
+}

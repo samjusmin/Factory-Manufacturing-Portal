@@ -1,0 +1,2160 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+/* @import '~@angular/cdk/overlay-prebuilt.css'; */
+
+* {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.mat-typography, .mat-dialog-title {
+    font-family: 'Source Sans Pro', sans-serif !important;
+}
+
+body {
+    margin: 0;
+    background: #F5F5F5 0% 0% no-repeat padding-box;
+    opacity: 1;
+}
+
+table {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000000D;
+    border-radius: 2px;
+    opacity: 1;
+    width: 100%;
+}
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    height: auto;
+}
+
+/* Every page scrolls inside the content area and ends with breathing room, so the last rows of a
+   table or the last form field are never flush against (or hidden below) the window edge. */
+mat-sidenav-content {
+    overflow-y: auto;
+    padding-bottom: 5rem !important;
+}
+
+.table-list {
+    padding-bottom: 5em;
+}
+ 
+.mat-table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    display: table;
+    border-collapse: collapse;
+    margin: 0px;
+}
+ 
+.mat-row, .mat-header-row {
+    display: table-row;
+    min-height: 30px;
+}
+ 
+.mat-cell, .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 5px;
+    line-break: unset;
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+    border-bottom: none !important;
+}
+
+mat-row, mat-header-row, mat-footer-row {
+    border-bottom: none !important;
+}
+
+/* Expanded table styling start*/
+tr.detail-row {
+    height: 0 !important;
+}
+
+/* tr.element-row:not(.expanded-row):hover {
+  background: #777;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+} */
+
+.element-row td {
+    border-bottom-width: 0 !important;
+}
+
+.gray { 
+    background-color: #f5f5f5 
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+}
+  
+.inner-table {
+    width: 100%;
+}
+  
+.inner-table .mat-header-cell {
+    text-align: left;
+    font: normal normal bold 12px/15px Source Sans Pro;
+    letter-spacing: 1px;
+    color: #000000;
+    text-transform: uppercase;
+    opacity: 1;
+}
+  
+.inner-table .mat-cell {
+    text-align: left;
+    font: normal normal normal 14px/18px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 0.9;
+}
+/* Expanded table styling end */
+
+h1 {
+    text-align: left;
+    font: normal normal normal 32px/40px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+}
+
+.sub {
+    display: inline-block;
+}
+
+.mat-form-field {
+    font: normal normal normal 16px/20px Source Sans Pro;
+}
+
+.mat-form-field.search {
+    box-sizing: border-box;
+    height: 44px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    box-shadow: 0px 2px 2px #0000000D;
+    border: 1px solid #EDEDEF;
+    border-radius: 2px;
+    padding: 0em 0.5em;
+    margin-top:1.5em;
+    margin-bottom: 2em;
+}
+
+/* The 44px box holds just the input and its underline, centred; Material's hint space is removed so the box
+   lines up with buttons next to it. */
+.mat-form-field.search .mat-form-field-wrapper {
+    padding-bottom: 0;
+    height: 100%;
+}
+
+.mat-form-field.search .mat-form-field-flex {
+    align-items: center;
+    height: 100%;
+}
+
+.mat-form-field.search .mat-form-field-infix {
+    border-top: 0;
+    padding: 0 0 10px;
+    width: auto;
+}
+
+/* The search hint is Material's label. It stays in the box as a placeholder until the field is focused or has
+   text, then disappears (no floating label to collide with the typed text). */
+.mat-form-field.search .mat-form-field-label-wrapper {
+    top: 0;
+    padding-top: 0;
+}
+
+.mat-form-field.search .mat-form-field-label {
+    top: 0;
+    margin-top: 0;
+    line-height: 20px;
+    color: #5F6368;
+}
+
+.mat-form-field.search.mat-form-field-should-float .mat-form-field-label-wrapper {
+    display: none;
+}
+
+.mat-form-field.search .mat-form-field-underline {
+    bottom: 5px;
+}
+
+.mat-form-field.addProject .mat-form-field-infix {
+    border-top: 0em;
+    margin-top: -1em;
+    
+}
+
+.mat-form-field.input {
+    width: 47%;
+    margin-top: 1%;
+    padding-bottom: 0%;
+}
+
+.mat-form-field.left {
+    margin-right: 1%;
+}
+
+.mat-form-field.inputOptions {
+    width: 95%;
+    margin-top: 1%;
+    padding-bottom: 0%;
+}
+
+.no-padding .mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+
+.mat-header-cell {
+    text-align: left;
+    font: normal normal bold 12px/15px Source Sans Pro;
+    letter-spacing: 1.2px;
+    color: #000000;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+.mat-cell {
+    text-align: left;
+    font: normal normal normal 14px/18px Source Sans Pro;
+    letter-spacing: 0.72px;
+    color: #000000;
+    opacity: 1;
+}
+
+a {
+    text-align: left;
+    font: normal normal 600 16px/20px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #005EB8;
+    opacity: 1;
+    text-decoration: none;
+}
+
+a.addPhase {
+    background: #005EB8 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000000D;
+    border: none;
+    border-radius: 2px;
+    opacity: 1;
+    float: right;
+    font: normal normal normal 16px/20px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    padding: 0.7em 1.2em;
+    margin-bottom: 1em;
+    cursor: pointer;
+}
+
+button {
+    background: #005EB8 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #0000000D;
+    border: none;
+    border-radius: 2px;
+    opacity: 1;
+    text-align: left;
+    font: normal normal normal 16px/20px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    padding: 0.7em 1.2em;
+    margin: 0em 0.7em 2em 0em;
+    cursor: pointer;
+}
+
+button.edit {
+    background: none;
+    box-shadow: none;
+    color:#005EB8;
+    padding: 0em 0em;
+    margin: 0em 0em;
+    font-weight: 600;
+    text-align: right;
+}
+
+button.remove {
+    background:none;
+    color: #005eb8;
+    box-shadow: none;
+    /* padding-left: 95%;; */
+    padding:0%;
+    margin-left:93%;
+    font-size: 1.5em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+button.back {
+    padding: 0;
+    background-color: #fafafa;
+    box-shadow: none;
+    color: #005eb8;
+    font-size: 2em;
+    margin-bottom: 1em;
+    margin-right: 0.4em;
+}
+
+button.report > fa-icon, button.save > fa-icon, button.fill > fa-icon {
+    padding-right: 0.7em;
+}
+
+button:disabled {
+    background-color: #00000080;
+}
+
+button.saveChanges {
+    margin-top: 1em;
+    margin-bottom: 1em ;
+    float: right;
+}
+
+button.delete {
+    background: none;
+    box-shadow: none;
+    margin: 0em -3.3em 2em 0em;
+}
+
+.alert {
+    margin-left: 1em;
+    font: normal normal 600 16px/20px Source Sans Pro;
+    letter-spacing: 1px;
+    display: inline-block;
+    color: #D23131;
+}
+
+h1.fatHead {
+    display: inline-flex;
+    font: normal normal normal 40px Source Sans Pro;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    position: fixed;
+    width: 80%;
+}
+
+button.fat {
+    display: inline-flex;
+    font-size: 3em;
+    padding: 0;
+    background-color: #fafafa;
+    box-shadow: none;
+    color: #005eb8;
+    margin-bottom: 0;
+    margin-right: 0.4em;
+    margin-top: 0.5em;
+}
+
+mat-dialog-content, mat-dialog-actions {
+    z-index: 1000;
+}
+
+/*.mat-drawer {
+    background-color: #005EB8;
+} 
+
+table > td {
+    text-align: center;
+}
+
+a {
+    color: #009dd1;
+    cursor: pointer;
+}
+
+h1 {
+    margin-left: 18px;
+}
+
+button {
+    margin-left: 18px;
+}
+
+.alert {
+    margin-left:20px;
+    display: inline-block;
+    color: red;
+} */
+
+/* ---------- Brand blue ----------
+   The Material prebuilt theme is purple/amber; use the app's standard blue for primary controls. */
+.mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+    background-color: #005EB8;
+    color: #FFFFFF;
+}
+
+.mat-button.mat-primary,
+.mat-icon-button.mat-primary,
+.mat-stroked-button.mat-primary {
+    color: #005EB8;
+}
+
+/* Disabled buttons stay blue (dimmed) rather than turning grey and blending into the page. */
+.mat-raised-button.mat-primary.mat-button-disabled,
+.mat-raised-button.mat-primary[disabled],
+button.mat-button[type="submit"].mat-button-disabled,
+button.mat-button[type="submit"][disabled] {
+    background-color: #005EB8;
+    color: #FFFFFF;
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Primary form actions that are plain mat-buttons (Create, Add, Export, Move, ...). */
+button.mat-button[type="submit"] {
+    height: 44px;
+    padding: 0 24px;
+    background-color: #005EB8;
+    color: #FFFFFF;
+    font-weight: normal;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+/* Checkboxes, focused fields and selected options follow the same blue. */
+.mat-checkbox-checked.mat-accent .mat-checkbox-background,
+.mat-checkbox-checked.mat-primary .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
+.mat-pseudo-checkbox-checked,
+.mat-pseudo-checkbox-indeterminate {
+    background-color: #005EB8;
+}
+
+.mat-form-field.mat-focused .mat-form-field-label,
+.mat-form-field.mat-focused .mat-select-arrow,
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #005EB8;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: #005EB8;
+}
+
+.mat-input-element {
+    caret-color: #005EB8;
+}
+
+.mat-option.mat-selected:not(.mat-option-multiple):not(.mat-option-disabled) {
+    color: #005EB8;
+}
+
+
+/* ---------- Page action bars ----------
+   Every list page puts its header actions (Add Project, Export, Move Units, ...) in a .table-header.
+   Lay them out as one right-aligned row with identical sizing instead of per-page fixed offsets. */
+article.table-header,
+div.table-header {
+    position: fixed;
+    z-index: 100;
+    top: calc(10em + 10px) !important;
+    right: 3.5em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.table-header > a,
+.table-header > button {
+    position: static !important;
+    float: none !important;
+    top: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 44px;
+    min-width: 0;
+    padding: 0 18px !important;
+    line-height: 1;
+    font-size: 14px;
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+    background: #005EB8;
+    box-shadow: 0px 3px 6px #0000000D;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.table-header > .hide {
+    display: none !important;
+}
+
+/* Plain "Save" buttons on checklist pages. */
+button.mat-button.saveChanges,
+button.mat-button.saveComment {
+    height: 44px;
+    padding: 0 24px;
+    background-color: #005EB8;
+    color: #FFFFFF;
+    font-weight: normal;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+/* The action bar is out of the normal flow, so give the search field below the title its own spacing. */
+article.table-header + mat-form-field.search,
+div.table-header + mat-form-field.search {
+    margin-top: 6em;
+}
+
+/* ---------- Back buttons ----------
+   The back arrow sits in the 3em gutter to the left of the page content and takes no space in the
+   layout, so titles, search fields and tables start at the same left edge on every page. */
+button.fat,
+button.back {
+    position: relative !important;
+    left: -2.6rem;
+    box-sizing: border-box;
+    width: 2.2rem !important;
+    min-width: 2.2rem !important;
+    height: 2.2rem !important;
+    margin-right: -2.2rem !important;
+    justify-content: center;
+    align-items: center;
+    flex: none;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 2.2rem !important;
+    line-height: 1;
+    z-index: 101;
+}
+
+/* FAT/Config titles are fixed-position, so pin the arrow to the top of its own line rather than the
+   search field's (taller) line. */
+button.fat {
+    vertical-align: top;
+    margin-top: 2rem !important;
+}
+
+/* ---------- Page header row ----------
+   Back arrow + title, with an optional right-aligned primary action (FAT export pages).
+   Sticky so the action stays in reach while a long page scrolls. */
+.page-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    min-height: 5em;
+    margin: 0 -48px;
+    padding: 0 48px;
+    background: #FAFAFA;
+}
+
+.page-header button.fat {
+    margin-top: 0 !important;
+    cursor: pointer;
+}
+
+.page-header h1.fatHead {
+    position: static;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+    margin: 0;
+}
+
+.page-header .page-action {
+    flex: none;
+    margin-left: 1.5em;
+}
+
+button.fat:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+
+/* ---------- Purchase order status chip and progress bar (Orders, Receiving, order detail) ---------- */
+.po-chip {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font: normal normal 600 12px/18px Source Sans Pro;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.po-chip.state-open { background: #EDEDEF; color: #4A4A4F; }
+.po-chip.state-on-order { background: #E6F0FA; color: #003D7A; }
+.po-chip.state-partially-received { background: #FFF4DB; color: #8A5A00; }
+.po-chip.state-received { background: #E3F5EA; color: #0A6B2E; }
+
+.po-progress {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    min-width: 130px;
+}
+
+.po-bar {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #E7E7E9;
+    overflow: hidden;
+}
+
+.po-fill {
+    display: block;
+    height: 100%;
+    background: #009E47;
+}
+
+.po-pct {
+    min-width: 3em;
+    font-size: 13px;
+    text-align: right;
+}
+
+
+/* ---------- Search + filter toolbar (Orders, Receiving, Production) ----------
+   The search box and the filter buttons sit on one row, vertically centred on each other, with clear space
+   above the table. */
+.subtitle {
+    margin: -0.5em 0 0;
+    font: normal normal normal 16px/22px Source Sans Pro;
+    color: #5F6368;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+    gap: 0.75em 1.25em;
+    margin: 1.5em 0 2em;
+}
+
+.toolbar .mat-form-field.search {
+    margin: 0;
+}
+
+/* Page actions share the search and filter row, pushed to its right-hand end. */
+.toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75em;
+    margin-left: auto;
+}
+
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    margin: 0;
+}
+
+.filter-chip {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 18px;
+    background: #FFFFFF;
+    color: #003D7A;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.filter-chip:hover {
+    background: #F0F6FD;
+    border-color: #005EB8;
+}
+
+.filter-chip.on {
+    background: #005EB8;
+    border-color: #005EB8;
+    color: #FFFFFF;
+}
+
+.filter-chip:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.filter-chip .count {
+    min-width: 1.6em;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: #E6F0FA;
+    color: #003D7A;
+    font-size: 12px;
+    text-align: center;
+}
+
+.filter-chip.on .count {
+    background: #FFFFFF33;
+    color: #FFFFFF;
+}
+
+.filter-chip.overdue-toggle {
+    margin-left: 0.75em;
+    color: #C62828;
+    border-color: #E8B4B4;
+}
+
+.filter-chip.overdue-toggle.on {
+    background: #C62828;
+    border-color: #C62828;
+    color: #FFFFFF;
+}
+
+.list-empty {
+    margin: 2em 0;
+    padding: 2.5em 1em;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+    text-align: center;
+    color: #5F6368;
+}
+
+/* Overdue rows get a red accent and a "Nd late" badge next to the due date. */
+tr.overdue-row td:first-child {
+    box-shadow: inset 3px 0 0 #C62828;
+}
+
+.due-badge {
+    display: inline-block;
+    margin-left: 0.6em;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font: normal normal 600 12px/18px Source Sans Pro;
+    letter-spacing: 0.4px;
+}
+
+.due-badge.late { background: #FDE7E7; color: #C62828; }
+.due-badge.soon { background: #FFF4DB; color: #8A5A00; }
+
+/* The +/x expand icon in the first column keeps a clear gap from the value beside it. */
+td.mat-cell fa-icon.expand-icon {
+    margin-right: 0.85em;
+}
+
+.po-chip.state-not-started { background: #EDEDEF; color: #4A4A4F; }
+.po-chip.state-in-progress { background: #FFF4DB; color: #8A5A00; }
+.po-chip.state-completed,
+.po-chip.state-complete { background: #E3F5EA; color: #0A6B2E; }
+
+/* The FAT lists are not wide, so their title row and toolbar sit a little closer to the table than the wide lists. */
+.fat-list .toolbar {
+    margin-top: 1em;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary,
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    box-sizing: border-box;
+    height: 44px;
+    margin: 0;
+    padding: 0 20px;
+    border-radius: 4px;
+    font: normal normal normal 14px/1 Source Sans Pro;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    border: none;
+    background: #005EB8;
+    color: #FFFFFF;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #004C97;
+}
+
+.btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* A disabled outlined button stays white with its blue outline, dimmed (the plain `button:disabled` rule would grey it). */
+.btn-secondary:disabled {
+    background: #FFFFFF;
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Secondary actions and links that go to another page: outlined, with an arrow, so they read as clickable. */
+.btn-secondary {
+    border: 1px solid #005EB8;
+    background: #FFFFFF;
+    color: #005EB8;
+}
+
+.btn-secondary:hover {
+    background: #F0F6FD;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.btn-primary fa-icon,
+.btn-secondary fa-icon {
+    margin: 0 !important;
+}
+
+/* ---------- Tables with expandable rows ----------
+   A shorter header with no tint or divider line. The header of the
+   table inside an expanded row gets a light grey band, so the nested table reads as its own block. */
+table.expandable tr.mat-header-row {
+    height: 38px;
+    min-height: 0;
+}
+
+table.expandable th.mat-header-cell {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 1px;
+}
+
+table.expandable .inner-table tr.mat-header-row {
+    height: 32px;
+    min-height: 0;
+}
+
+table.expandable .inner-table th.mat-header-cell {
+    background: #E1E1E5;
+    border-bottom: 1px solid #C9C9CE !important;
+    color: #000000;
+}
+
+/* ---------- FAT admin forms (Add Phase, Add Unit, Add Checklist, Move Units) ---------- */
+.admin-form {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-bottom: 2em;
+}
+
+.form-card {
+    margin: 0 0 1.25em;
+    padding: 1.25em 1.5em 1em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.form-card > h2 {
+    margin: 0 0 0.75em;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00458F;
+}
+
+/* Fields flow into as many columns as fit, so the form works from a phone to a wide screen. */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0 1.25em;
+}
+
+.form-grid .mat-form-field {
+    width: 100%;
+}
+
+.form-grid .wide {
+    grid-column: 1 / -1;
+}
+
+.form-hint {
+    margin: 0 0 1em;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+/* Cancel and submit, kept in view while a long form is scrolled. */
+.action-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75em 1em;
+    margin: 1.5em -48px 0;
+    padding: 12px 48px;
+    background: #FFFFFF;
+    border-top: 1px solid #E0E0E4;
+    box-shadow: 0px -3px 6px #0000000D;
+}
+
+.action-bar .action-status {
+    margin-right: auto;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.action-bar .action-status .dirty { color: #8A5A00; font-weight: 600; }
+.action-bar .action-status .bad { color: #C62828; font-weight: 600; }
+
+.form-error {
+    margin: 0 0 1em;
+    padding: 0.75em 1em;
+    border-left: 4px solid #C62828;
+    border-radius: 4px;
+    background: #FDECEC;
+    color: #8E1B1B;
+    font-size: 14px;
+}
+
+.notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75em;
+    margin: 0 0 1.25em;
+    padding: 0.75em 1em;
+    border-left: 4px solid #8A5A00;
+    border-radius: 4px;
+    background: #FFF4DB;
+    color: #5C3B00;
+    font-size: 14px;
+}
+
+/* A check that has been looked at and failed (shown beside the other status chips). */
+.po-chip.state-failed { background: #FDE7E7; color: #9B1C1C; }
+
+/* ---------- Account menu (header) ---------- */
+.mat-menu-panel.userMenu {
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000001A, 0px 12px 32px #00000026;
+}
+
+.userMenu .menu-user {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #ECECEF;
+    cursor: default;
+}
+
+.userMenu .menu-name {
+    font: normal normal 600 16px/20px Source Sans Pro;
+    color: #1F2A37;
+}
+
+.userMenu .menu-role {
+    font-size: 13px;
+    color: #5F6368;
+}
+
+.userMenu .menu-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 48px;
+    margin: 0;
+    padding: 0 16px;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: #C62828;
+    font: normal normal 600 15px/1 Source Sans Pro;
+}
+
+.userMenu .menu-logout:hover {
+    background: #FDECEC;
+}
+
+.userMenu .menu-logout fa-icon {
+    margin: 0;
+}
+
+/* ---------- FAT checklist: someone else saved first (note and per-check choice) ---------- */
+.merge-notice {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1em;
+    margin: 0 0 1.25em;
+    padding: 12px 16px;
+    border-left: 4px solid #005EB8;
+    border-radius: 4px;
+    background: #E6F0FA;
+    color: #003D7A;
+    font-size: 14px;
+}
+
+.conflict {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-top: 4px;
+    padding: 10px 12px;
+    border-left: 4px solid #E0A100;
+    border-radius: 4px;
+    background: #FFF4DB;
+    color: #5C3B00;
+    font-size: 14px;
+}
+
+.conflict-actions {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.conflict-actions .btn-secondary {
+    height: 36px;
+    padding: 0 14px;
+}
+
+/* ---------- Action menus (the "More" button on the FAT lists) ---------- */
+.mat-menu-panel.actionMenu {
+    min-width: 240px;
+    margin-top: 6px;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000001A, 0px 12px 32px #00000026;
+}
+
+.actionMenu .mat-menu-content:not(:empty) {
+    padding: 6px 0;
+}
+
+.actionMenu .mat-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 48px;
+    padding: 0 18px;
+    font: normal normal 600 15px/1 Source Sans Pro;
+    letter-spacing: 0;
+    color: #1F2A37;
+    text-decoration: none;
+}
+
+.actionMenu .mat-menu-item fa-icon {
+    width: 18px;
+    margin: 0;
+    text-align: center;
+    color: #005EB8;
+}
+
+.actionMenu .mat-menu-item:hover:not([disabled]),
+.actionMenu .mat-menu-item.cdk-program-focused:not([disabled]),
+.actionMenu .mat-menu-item.cdk-keyboard-focused:not([disabled]) {
+    background: #F0F6FD;
+}
+
+.actionMenu .mat-menu-item.cdk-keyboard-focused {
+    box-shadow: inset 3px 0 0 #005EB8;
+}
+
+.actionMenu .mat-menu-item + .mat-menu-item {
+    border-top: 1px solid #F0F0F3;
+}
+
+/* ---------- Page controls (paginator): just arrows, blue when they can be used, light grey when they cannot ---------- */
+.mat-paginator .mat-paginator-navigation-first,
+.mat-paginator .mat-paginator-navigation-previous,
+.mat-paginator .mat-paginator-navigation-next,
+.mat-paginator .mat-paginator-navigation-last {
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    cursor: pointer;
+}
+
+.mat-paginator .mat-paginator-navigation-first:hover:not([disabled]),
+.mat-paginator .mat-paginator-navigation-previous:hover:not([disabled]),
+.mat-paginator .mat-paginator-navigation-next:hover:not([disabled]),
+.mat-paginator .mat-paginator-navigation-last:hover:not([disabled]) {
+    color: #003D7A;
+}
+
+.mat-paginator .mat-paginator-navigation-first[disabled],
+.mat-paginator .mat-paginator-navigation-previous[disabled],
+.mat-paginator .mat-paginator-navigation-next[disabled],
+.mat-paginator .mat-paginator-navigation-last[disabled] {
+    background: none;
+    color: #C4C9D0;
+    cursor: not-allowed;
+}
+
+.mat-paginator .mat-paginator-navigation-first:focus-visible,
+.mat-paginator .mat-paginator-navigation-previous:focus-visible,
+.mat-paginator .mat-paginator-navigation-next:focus-visible,
+.mat-paginator .mat-paginator-navigation-last:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: -2px;
+}
+
+/* No round click ripple or focus disc behind the arrows. */
+.mat-paginator .mat-paginator-navigation-first .mat-button-ripple,
+.mat-paginator .mat-paginator-navigation-previous .mat-button-ripple,
+.mat-paginator .mat-paginator-navigation-next .mat-button-ripple,
+.mat-paginator .mat-paginator-navigation-last .mat-button-ripple,
+.mat-paginator .mat-button-focus-overlay {
+    display: none;
+}
+
+.mat-paginator .mat-paginator-icon {
+    fill: currentColor;
+}
+
+/* A compact pager: the page-size dropdown no longer reserves room for hint text and a floating label, which made the
+   bar nearly 80px tall. */
+.mat-paginator .mat-paginator-container {
+    min-height: 48px;
+    padding: 0 8px;
+}
+
+.mat-paginator .mat-paginator-page-size {
+    align-items: center;
+}
+
+.mat-paginator .mat-paginator-page-size-select {
+    margin: 0 4px;
+}
+
+.mat-paginator .mat-paginator-page-size-select .mat-form-field-wrapper {
+    padding-bottom: 0;
+}
+
+.mat-paginator .mat-paginator-page-size-select .mat-form-field-infix {
+    padding: 6px 0;
+    border-top: 0;
+}
+
+.mat-paginator .mat-paginator-page-size-select .mat-form-field-underline {
+    bottom: 0;
+}
+
+/* ---------- Training register ----------
+   Red means out of date or never done (expired / not done), amber means it renews within 60 days, green is in date. */
+.po-chip.tr-valid,
+.po-chip.tr-current { background: #E3F5EA; color: #0A6B2E; }
+.po-chip.tr-due-soon { background: #FFF4DB; color: #8A5A00; }
+.po-chip.tr-expired,
+.po-chip.tr-missing,
+.po-chip.tr-attention { background: #FDE7E7; color: #9B1C1C; }
+.po-chip.tr-none { background: #EDEDEF; color: #4A4A4F; }
+
+.role-chip {
+    display: inline-block;
+    margin: 0 6px 0 0;
+    padding: 2px 10px;
+    border: 1px solid #B7D2EE;
+    border-radius: 12px;
+    background: #E6F0FA;
+    color: #003D7A;
+    font: normal normal 600 12px/18px Source Sans Pro;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.btn-primary.small,
+.btn-secondary.small {
+    height: 32px;
+    padding: 0 14px;
+}
+
+.tr-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 32px;
+    height: 32px;
+    margin: 0 0 0 6px;
+    padding: 0;
+    box-shadow: none;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: #C62828;
+    cursor: pointer;
+}
+
+.tr-icon-spacer { display: inline-block; width: 38px; }
+.tr-icon-btn:hover:not(:disabled) { background: #FDE7E7; }
+.tr-icon-btn:focus-visible { outline: 2px solid #005EB8; outline-offset: 2px; }
+.tr-icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* A role's modules: a plain table inside a card, red-tinted rows for what needs doing. */
+.module-scroll {
+    overflow-x: auto;
+}
+
+.module-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.module-table th {
+    padding: 8px 12px;
+    border-bottom: 1px solid #D5D5D9;
+    text-align: left;
+    font: normal normal 600 13px/18px Source Sans Pro;
+    letter-spacing: 0.3px;
+    color: #5F6368;
+    white-space: nowrap;
+}
+
+.module-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #ECECEF;
+    vertical-align: middle;
+    font-size: 15px;
+}
+
+.module-table tr:last-child td { border-bottom: 0; }
+.module-table .actions-cell { text-align: right; white-space: nowrap; }
+
+.module-name { display: block; font-weight: 600; }
+.module-cat { display: block; font-size: 13px; font-weight: 400; color: #5F6368; }
+
+.module-table tr.row-expired td,
+.module-table tr.row-missing td { background: #FDF1F1; }
+.module-table tr.row-due-soon td { background: #FFFAEB; }
+.module-table tr.row-expired td:first-child,
+.module-table tr.row-missing td:first-child { box-shadow: inset 4px 0 0 #C62828; }
+.module-table tr.row-due-soon td:first-child { box-shadow: inset 4px 0 0 #E0A100; }
+.module-table tr.row-expired td:nth-child(3) .module-cat,
+.module-table tr.row-missing td:nth-child(3) .module-cat { color: #9B1C1C; font-weight: 600; }
+
+.module-table .record-cell { white-space: nowrap; }
+.record-label { margin-right: 0.6em; font-size: 14px; color: #4A4A4F; }
+.date-input {
+    height: 34px;
+    padding: 0 8px;
+    border: 1px solid #8A8A90;
+    border-radius: 4px;
+    font: normal normal normal 15px/1 Source Sans Pro;
+}
+.date-input:focus { outline: 2px solid #005EB8; outline-offset: 1px; }
+
+/* On a tablet or phone the module table becomes a stack of cards: the module name as a title, then label and value rows. */
+@media (max-width: 820px) {
+    .module-table thead { display: none; }
+    .module-table tr { display: block; padding: 6px 0; border-bottom: 1px solid #ECECEF; }
+    .module-table td { display: block; position: relative; min-height: 22px; padding: 4px 12px 4px 112px; border-bottom: 0; text-align: left; }
+    .module-table td[data-label]::before { content: attr(data-label); position: absolute; left: 12px; top: 6px; font-size: 13px; color: #5F6368; }
+    .module-table td:first-child { padding-left: 12px; }
+    .module-table td:first-child::before { content: none; }
+    .module-table .actions-cell,
+    .module-table .record-cell { padding-left: 12px; white-space: normal; }
+    .module-table tr.row-expired td:first-child,
+    .module-table tr.row-missing td:first-child,
+    .module-table tr.row-due-soon td:first-child { box-shadow: none; }
+    .module-table tr.row-expired,
+    .module-table tr.row-missing { border-left: 4px solid #C62828; }
+    .module-table tr.row-due-soon { border-left: 4px solid #E0A100; }
+    .module-table tr.row-expired td,
+    .module-table tr.row-missing td { background: #FDF1F1; }
+    .module-table tr.row-due-soon td { background: #FFFAEB; }
+}
+
+/* A "Try again" button goes on its own line under the message that says something could not be loaded. */
+.list-empty button.retry,
+.form-error button.retry {
+    display: flex;
+    width: fit-content;
+    margin: 1em 0 0;
+}
+
+.list-empty button.retry {
+    margin: 1em auto 0;
+}
+
+/* ---------- Config pages ----------
+   Locations, categories and types are tiles; units, images, hardware and locations are tables; a unit's checklist is a
+   form card above a table. Headers, toolbars, chips, buttons and empty states are the shared ones above. */
+.config-page {
+    padding-bottom: 80px;
+}
+
+.config-page > .subtitle {
+    margin: 0.25em 0 1.5em;
+}
+
+/* The toolbar below a subtitle brings its own top margin, so the gap is not doubled. */
+.config-page > .subtitle + .toolbar {
+    margin-top: 0;
+}
+
+.config-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25em;
+}
+
+a.config-tile {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 1.1em 1.25em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D;
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+}
+
+a.config-tile:hover {
+    box-shadow: 0px 6px 16px #00000026;
+    transform: translateY(-1px);
+}
+
+a.config-tile:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.config-tile .tile-icon {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #E6F0FA;
+    color: #005EB8;
+    font-size: 18px;
+}
+
+.config-tile .tile-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.config-tile .tile-title {
+    font: normal normal 600 18px/24px Source Sans Pro;
+    color: #00458F;
+    overflow-wrap: anywhere;
+}
+
+.config-tile .tile-meta {
+    font: normal normal normal 14px/18px Source Sans Pro;
+    color: #5F6368;
+}
+
+.config-tile .go {
+    flex: none;
+    color: #005EB8;
+    opacity: 0.6;
+}
+
+.config-tile:hover .go {
+    opacity: 1;
+}
+
+/* Tables on the Config pages: the first column is the link, an edit column shrinks to its icons. */
+.config-table th.mat-header-cell.cdk-column-isEdit,
+.config-table td.mat-cell.cdk-column-isEdit {
+    width: 1%;
+    padding-right: 12px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.config-table .mat-row {
+    height: 52px;
+}
+
+.config-table .mat-cell,
+.config-table .mat-header-cell {
+    padding: 0 12px;
+}
+
+.config-table .mat-cell:first-child,
+.config-table .mat-header-cell:first-child {
+    padding-left: 20px;
+}
+
+.config-table .mat-cell:last-child,
+.config-table .mat-header-cell:last-child {
+    padding-right: 20px;
+}
+
+/* A table with many columns scrolls sideways inside the page rather than pushing the page wider. */
+.config-page .table-list {
+    overflow-x: auto;
+    padding-bottom: 1em;
+}
+
+.cell-link {
+    font-weight: 600;
+}
+
+.cell-muted {
+    color: #5F6368;
+}
+
+/* A button that reads as a link (opens a dialog rather than going to another page). */
+button.link-btn {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+    font: normal normal 600 16px/20px Source Sans Pro;
+    color: #005EB8;
+    text-align: left;
+    cursor: pointer;
+}
+
+button.link-btn:hover {
+    text-decoration: underline;
+}
+
+button.link-btn:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Edit and save/discard icons in a table row: a comfortable hit area around a 14px icon. */
+button.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    box-shadow: none;
+    font-size: 14px;
+    line-height: 1;
+    color: #005EB8;
+    cursor: pointer;
+}
+
+button.icon-btn:hover:not(:disabled) {
+    background: #E6F0FA;
+    color: #003D7A;
+}
+
+button.icon-btn.danger:hover:not(:disabled) {
+    background: #FDE7E7;
+    color: #C62828;
+}
+
+button.icon-btn:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.edit-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* A field inside a table row while the row is being edited. */
+.mat-form-field.table-field {
+    width: 100%;
+    max-width: 320px;
+    font-size: 14px;
+}
+
+.mat-form-field.table-field .mat-form-field-wrapper {
+    margin: 0;
+    padding-bottom: 0;
+}
+
+.mat-form-field.table-field .mat-form-field-infix {
+    padding: 0.4em 0;
+    border-top: 0;
+}
+
+.mat-form-field.table-field .mat-form-field-underline {
+    bottom: 0;
+}
+
+/* Page notices and the restricted-access panel. */
+.restricted {
+    max-width: 520px;
+    margin: 4em auto;
+    padding: 2.5em 2em;
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px #0000000D;
+    text-align: center;
+}
+
+.restricted h2 {
+    margin: 0 0 0.5em;
+    font: normal normal 600 24px/32px Source Sans Pro;
+}
+
+.restricted p {
+    margin: 0 0 0.5em;
+    color: #5F6368;
+}
+
+.restricted .btn-primary {
+    margin-top: 1.5em;
+}
+
+/* A unit's checklist page: details card, then the checklist with the status of each row down its left edge. */
+.unit-form .card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em 1em;
+    margin-bottom: 0.75em;
+}
+
+.unit-form .card-head h2 {
+    margin: 0;
+}
+
+.checklist-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25em 1.25em;
+    margin: 0 0 1em;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.checklist-table .mat-cell {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    white-space: normal;
+}
+
+.checklist-table .description {
+    display: block;
+    min-width: 240px;
+    font-weight: 600;
+}
+
+.checklist-table .mat-cell:nth-child(2) {
+    min-width: 140px;
+}
+
+.checklist-table .status-field {
+    width: 150px;
+}
+
+.checklist-table .comment-field {
+    min-width: 240px;
+}
+
+.checklist-table tr.row-complete td:first-child { box-shadow: inset 3px 0 0 #009E47; }
+.checklist-table tr.row-incomplete td:first-child { box-shadow: inset 3px 0 0 #E0A100; }
+.checklist-table tr.row-na td:first-child { box-shadow: inset 3px 0 0 #C9C9CE; }
+
+/* The Edit Locations dialog: tabs and tree toggles in the app's blue. */
+.mat-tab-group .mat-ink-bar {
+    background-color: #005EB8;
+}
+
+.mat-tab-group .mat-tab-label.mat-tab-label-active {
+    color: #005EB8;
+    opacity: 1;
+}
+
+.mat-tree-node button.mat-icon-button {
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+}
+
+/* A heading over a group of tiles (Item Checklists, by hardware category). */
+.config-group {
+    margin: 0 0 2em;
+}
+
+.group-title {
+    margin: 1.5em 0 0.75em;
+    font: normal normal 600 12px/16px Source Sans Pro;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #5F6368;
+}
+
+.config-table .mat-form-field.wide-field {
+    max-width: none;
+}
+
+.edit-table .mat-cell:last-child {
+    width: 1%;
+}
+
+/* Small secondary line under a value in a table cell or tile. */
+.config-sub {
+    display: block;
+    font-size: 13px;
+    color: #5F6368;
+}
+
+@media (max-width: 820px) {
+    .config-tiles {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Checklist pages (the FAT unit checklist and the Config unit page) ----------
+   One card per check with segmented answer buttons, a progress strip, a bulk "mark complete" bar and a save bar that
+   stays in view. Scoped to .checklist-page so the class names do not reach any other page. */
+/* How far through the checklist the user is, kept in view under the title. */
+.checklist-page .progress-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em 2em;
+    margin: 0.5em 0 1.25em;
+    padding: 12px 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.checklist-page .progress-strip .po-progress {
+    flex: 1;
+    min-width: 220px;
+    max-width: 420px;
+}
+
+/* The save action stays at the bottom of the screen however far the list is scrolled. */
+.checklist-page .save-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5em;
+    margin: 1.5em -48px 0;
+    padding: 12px 48px;
+    background: #FFFFFF;
+    border-top: 1px solid #E0E0E4;
+    box-shadow: 0px -3px 6px #0000000D;
+}
+
+.checklist-page .save-status {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.checklist-page .save-status .dirty { color: #8A5A00; font-weight: 600;
+}
+
+.checklist-page .save-status .ok { color: #0A6B2E; font-weight: 600;
+}
+
+.checklist-page .save-status .bad { color: #C62828; font-weight: 600;
+}
+
+/* Long unit and category names wrap instead of being cut off. */
+.checklist-page .page-header h1.fatHead {
+    white-space: normal;
+    font-size: 30px;
+    line-height: 36px;
+    padding: 0.4em 0;
+}
+
+/* Bulk action: only offered while something is unanswered. */
+.checklist-page .bulk-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em 1.5em;
+    margin: 0 0 1.25em;
+    padding: 10px 20px;
+    background: #FFF9E8;
+    border: 1px solid #EBD7A5;
+    border-radius: 4px;
+    color: #5C4300;
+    font-size: 14px;
+}
+
+.checklist-page .checks {
+    padding-bottom: 1em;
+}
+
+.checklist-page .section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    margin: 1.5em 0 0.5em;
+}
+
+.checklist-page .section-head h2 {
+    margin: 0;
+    font: normal normal 600 18px/24px Source Sans Pro;
+    color: #1F2A37;
+}
+
+.checklist-page .btn-link {
+    margin: 0;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.checklist-page .btn-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.checklist-page .check-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* One card per check: what to check, the answer, and the notes, wrapping naturally on narrow screens. */
+.checklist-page .check-card {
+    display: grid;
+    grid-template-columns: minmax(140px, 1fr) auto minmax(0, 1.4fr);
+    grid-template-areas:
+        "main status fields"
+        "meta meta   meta";
+    align-items: center;
+    gap: 8px 24px;
+    margin-bottom: 8px;
+    padding: 12px 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.checklist-page .check-card.row-changed {
+    box-shadow: inset 3px 0 0 #E0A100, 0px 3px 6px #0000000D;
+}
+
+.checklist-page .check-main { grid-area: main; display: flex; flex-direction: column; gap: 2px;
+}
+
+.checklist-page .status-group { grid-area: status;
+}
+
+.checklist-page .check-fields { grid-area: fields;
+}
+
+.checklist-page .check-meta { grid-area: meta;
+}
+
+.checklist-page .check-desc {
+    font: normal normal 600 16px/22px Source Sans Pro;
+    white-space: pre-line;
+}
+
+.checklist-page .check-ref {
+    font-size: 13px;
+    line-height: 18px;
+    color: #5F6368;
+    white-space: pre-line;
+}
+
+/* Segmented answer buttons: one tap, 44px high, with an icon as well as colour. */
+.checklist-page .status-group {
+    display: inline-flex;
+    border: 1px solid #C9D3DD;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.checklist-page .status-opt {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 92px;
+    height: 44px;
+    padding: 0 14px;
+    background: #FFFFFF;
+    color: #3C4043;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checklist-page .status-opt + .status-opt {
+    border-left: 1px solid #C9D3DD;
+}
+
+.checklist-page .status-opt:hover {
+    background: #F0F6FD;
+}
+
+/* The radio itself is hidden but stays in the tab order, so arrow keys move between the three answers. */
+.checklist-page .status-opt input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checklist-page .status-opt:focus-within {
+    outline: 2px solid #005EB8;
+    outline-offset: -2px;
+}
+
+.checklist-page .status-opt.on.complete { background: #1E9E4A; color: #FFFFFF; }
+
+.checklist-page .status-opt.on.incomplete { background: #C62828; color: #FFFFFF; }
+
+.checklist-page .status-opt.on.na { background: #5F6368; color: #FFFFFF; }
+
+.checklist-page .check-fields {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+}
+
+.checklist-page .field-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    font: normal normal normal 15px/20px Source Sans Pro;
+}
+
+.checklist-page .field-input::placeholder {
+    color: #6B7280;
+}
+
+.checklist-page .field-input:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.checklist-page .check-meta {
+    font-size: 12px;
+    color: #5F6368;
+}
+
+/* Tablet and narrower: the answer buttons go full width under the description, the fields stack. */
+@media (max-width: 1100px) {
+    .checklist-page .check-card {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "main"
+            "status"
+            "fields"
+            "meta";
+        align-items: stretch;
+    }
+
+    .checklist-page .status-group {
+        display: flex;
+    }
+
+    .checklist-page .status-opt {
+        flex: 1;
+    }
+}
+
+@media (max-width: 640px) {
+    .checklist-page .check-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Config: unit page, catalogue and project pieces ---------- */
+.checklist-page .check-fields.one-field {
+    grid-template-columns: 1fr;
+}
+
+.unit-form .unit-sub {
+    margin: 0.25em 0 1.25em;
+}
+
+.unit-form .form-grid {
+    row-gap: 0.75em;
+}
+
+.unit-form .card-sub {
+    margin: 1.25em 0 0.75em;
+    font: normal normal 600 14px/20px Source Sans Pro;
+    color: #5F6368;
+}
+
+.unit-form .form-hint.no-model {
+    margin-top: 0;
+}
+
+.toolbar.project-bar {
+    margin-top: -1em;
+}
+
+.filter-label {
+    font: normal normal 600 13px/1 Source Sans Pro;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #5F6368;
+}
+
+.group-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25em;
+    margin: 1.5em 0 0.75em;
+}
+
+.group-head .group-title {
+    margin: 0;
+    margin-right: auto;
+}
+
+button.link-btn.small-link {
+    font-size: 14px;
+}
+
+.group-empty {
+    margin: 0 0 1em;
+    color: #5F6368;
+    font-size: 14px;
+}
+
+.btn-secondary.danger-btn {
+    border-color: #C62828;
+    color: #C62828;
+}
+
+.btn-secondary.danger-btn:hover:not(:disabled) {
+    background: #FDE7E7;
+}
+
+.edit-table tr.heading-row td {
+    background: #E6F0FA;
+}
+
+.edit-table .heading-input {
+    font-weight: 600;
+}
+
+/* The dialog that adds a hardware type or changes a category. */
+.box-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    font: normal normal 600 24px/32px Source Sans Pro;
+}
+
+.box-sub {
+    font: normal normal normal 14px/20px Source Sans Pro;
+    color: #5F6368;
+}
+
+.box-hint {
+    margin: 0 0 1em;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.catalogue-box {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.catalogue-box .mat-form-field {
+    width: 100%;
+}
+
+.catalogue-check {
+    margin: 0 0 1.25em;
+}
+
+.box-actions {
+    gap: 0.75em;
+    padding: 12px 24px 16px;
+}
+
+.box-actions .spacer {
+    flex: 1;
+}
+
+/* ---------- Collapsible filters (Deep Search, Image List, Hardware List) ---------- */
+webproject-list-filters {
+    display: block;
+}
+
+/* The Filters button: shows how many filters are on, and whether the row is open. */
+.filters-toggle {
+    gap: 8px;
+}
+
+.filters-toggle.on {
+    background: #E6F0FA;
+}
+
+.filters-badge {
+    min-width: 20px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    background: #005EB8;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+}
+
+.toggle-caret {
+    font-size: 11px;
+}
+
+/* The row of filters, between the search box and the results. */
+.filter-panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+/* The filters that are switched on, each removable. */
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 4px 4px 12px;
+    border-radius: 16px;
+    background: #E6F0FA;
+    color: #003D7A;
+    font-size: 13px;
+}
+
+.tag-group {
+    color: #5F6368;
+}
+
+.tag-remove {
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    box-shadow: none;
+    color: #003D7A;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.tag-remove:hover {
+    background: #C9DDF2;
+}
+
+.tag-remove:focus-visible {
+    outline: 2px solid #005EB8;
+}
+
+/* A serial number the server refused on a checklist. */
+.checklist-page .field-input.field-bad {
+    border-color: #C62828;
+}
+
+.checklist-page .check-error {
+    grid-column: 1 / -1;
+    color: #C62828;
+    font-size: 13px;
+    font-weight: 600;
+}

@@ -1,0 +1,33 @@
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="pc-image-tree">
+
+  <!-- Parent node: PC Type -->
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <div class="tree-node parent-node">
+      <button mat-icon-button matTreeNodeToggle>
+        <fa-icon
+          [icon]="treeControl.isExpanded(node) ? faChevronDown : faChevronRight">
+        </fa-icon>
+      </button>
+
+      <span class="parent-label">{{ node.name }}</span>
+    </div>
+
+    <div class="children-node" [class.hidden]="!treeControl.isExpanded(node)">
+      <ng-container matTreeNodeOutlet></ng-container>
+    </div>
+  </mat-nested-tree-node>
+
+  <!-- Leaf node: Image -->
+  <mat-tree-node *matTreeNodeDef="let node">
+    <div class="tree-node leaf-node">
+      <span class="tree-spacer"></span>
+
+      <mat-checkbox
+        [checked]="checklistSelection.isSelected(node)"
+        (change)="toggleLeafNode(node)">
+        {{ node.name }}
+      </mat-checkbox>
+    </div>
+  </mat-tree-node>
+
+</mat-tree>

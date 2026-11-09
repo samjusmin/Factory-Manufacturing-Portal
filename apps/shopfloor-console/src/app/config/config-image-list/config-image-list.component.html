@@ -1,0 +1,64 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Image List</h1>
+</div>
+
+<div class="config-page" *ngIf="ConfigService.imagesLoaded || ConfigService.loadError">
+    <p class="subtitle intro">The PC images a location can choose from when it adds a PC.</p>
+
+    <webproject-list-filters storageKey="config-image-list-filters-open" [groups]="filterGroups" [selection]="selection" (selectionChange)="setSelection($event)">
+        <mat-form-field listSearch class="search">
+            <input matInput aria-label="Search images" (input)="applyFilter($event.target.value)" [placeholder]="hasFilters ? 'Search within filters' : 'Search images'">
+        </mat-form-field>
+        <div listActions class="toolbar-actions" *ngIf="ConfigService.isAdmin">
+            <button type="button" class="btn-primary" (click)="addImage()">Add Image</button>
+        </div>
+    </webproject-list-filters>
+
+    <div class="list-empty" *ngIf="ConfigService.loadError">
+        The images could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!ConfigService.loadError && !ConfigService.imageList.data.length">There are no images yet.<ng-container *ngIf="ConfigService.isAdmin"> Use Add Image to create the first one.</ng-container></p>
+    <p class="list-empty" *ngIf="ConfigService.imageList.data.length && !ConfigService.imageList.filteredData.length">No images match<ng-container *ngIf="hasFilters"> these filters</ng-container><ng-container *ngIf="!hasFilters"> the search</ng-container>.
+        <button type="button" class="link-btn small-link" *ngIf="hasFilters" (click)="clearFilters()">Clear filters</button>
+    </p>
+
+    <div class="table-list" [hidden]="!ConfigService.imageList.filteredData.length">
+        <table mat-table matSort class="mat-elevation-z8 config-table" [dataSource]="ConfigService.imageList">
+            <ng-container [matColumnDef]="column.id" *ngFor="let column of columnNames">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="column.id === 'isEdit'">{{ column.value }}</th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngIf="!element.isEdit" [ngSwitch]="column.id">
+                        <span *ngSwitchCase="'name'" class="cell-link">{{ element.name }}</span>
+                        <span *ngSwitchCase="'pc_type'" class="po-chip state-open">{{ element.pc_type }}</span>
+                        <ng-container *ngSwitchCase="'date_created'">{{ element.date_created ? (element.date_created | date: 'd MMM y') : '–' }}</ng-container>
+                        <button *ngSwitchCase="'isEdit'" type="button" class="icon-btn" aria-label="Edit image" title="Edit" [hidden]="!ConfigService.isAdmin" (click)="editRow(element)"><fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon></button>
+                        <ng-container *ngSwitchDefault>{{ element[column.id] || '–' }}</ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="element.isEdit" [ngSwitch]="column.id">
+                        <div *ngSwitchCase="'isEdit'" class="edit-actions">
+                            <button type="button" class="icon-btn" aria-label="Save image" title="Save" (click)="saveChanges(element)"><fa-icon [icon]="['fas', 'check']"></fa-icon></button>
+                            <button type="button" class="icon-btn danger" aria-label="Discard changes" title="Discard" (click)="cancelEntry(element)"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
+                        </div>
+                        <mat-form-field *ngSwitchCase="'pc_type'" class="table-field" floatLabel="never">
+                            <mat-select placeholder="PC type" aria-label="PC type" required [(ngModel)]="element.pc_type">
+                                <mat-option *ngFor="let type of pcTypes" [value]="type">{{ type }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngSwitchCase="'date_created'" class="table-field" floatLabel="never">
+                            <input matInput type="date" aria-label="Date created" required [(ngModel)]="element.date_created_edit">
+                        </mat-form-field>
+                        <mat-form-field *ngSwitchDefault class="table-field" floatLabel="never">
+                            <input matInput [type]="column.type" [placeholder]="column.value" [attr.aria-label]="column.value" required [(ngModel)]="element[column.id]">
+                        </mat-form-field>
+                    </ng-container>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+        </table>
+    </div>
+</div>

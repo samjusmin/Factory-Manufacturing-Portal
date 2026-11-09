@@ -1,0 +1,29 @@
+<div class="page-header">
+    <button class="fat" type="button" *ngIf="ConfigService.isAdmin" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Config | {{ location }}</h1>
+</div>
+
+<div class="config-page" *ngIf="ConfigService.locationsLoaded || ConfigService.loadError">
+    <p class="subtitle intro">Choose the kind of hardware to configure.</p>
+
+    <div class="list-empty" *ngIf="ConfigService.loadError">
+        The categories could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!ConfigService.loadError && !tiles.length">
+        No hardware has been set up for this location yet.
+        <ng-container *ngIf="ConfigService.isAdmin">Use Edit Locations to give it access to some.</ng-container>
+        <ng-container *ngIf="!ConfigService.isAdmin">Ask an administrator to set it up.</ng-container>
+    </p>
+
+    <div class="config-tiles" *ngIf="tiles.length">
+        <a class="config-tile" *ngFor="let tile of tiles; trackBy: trackByName" [routerLink]="['/config-type', location, tile.name]">
+            <span class="tile-icon" aria-hidden="true"><fa-icon [icon]="['fas', tile.icon]"></fa-icon></span>
+            <span class="tile-body">
+                <span class="tile-title">{{ tile.name }}</span>
+                <span class="tile-meta">{{ tile.meta }}</span>
+            </span>
+            <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+        </a>
+    </div>
+</div>

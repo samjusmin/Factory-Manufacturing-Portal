@@ -1,0 +1,101 @@
+<div class="page-header">
+    <h1 class="fatHead">FAT Project List</h1>
+</div>
+
+<div class="fat-list" *ngIf="FATProjectService.isLoaded">
+    <div class="toolbar">
+        <mat-form-field class="search">
+            <input matInput aria-label="Search projects" (input)="FATProjectService.applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+
+        <div class="filter-bar" role="group" aria-label="Filter by progress">
+            <button type="button" class="filter-chip" *ngFor="let s of stateFilters"
+                [class.on]="FATProjectService.statusFilter === s"
+                [attr.aria-pressed]="FATProjectService.statusFilter === s"
+                (click)="FATProjectService.setStatusFilter(s)">
+                {{ s }} <span class="count">{{ FATProjectService.countByState(FATProjectService.datasource.data, s) }}</span>
+            </button>
+        </div>
+
+        <!-- Three admin actions would not fit beside the filters, so the secondary ones live in a menu. -->
+        <div class="toolbar-actions" *ngIf="FATProjectService.isAdmin">
+            <button type="button" class="btn-secondary" [matMenuTriggerFor]="moreActions" aria-label="More actions">
+                More <fa-icon [icon]="['fas', 'chevron-down']"></fa-icon>
+            </button>
+            <mat-menu #moreActions="matMenu" xPosition="before" class="actionMenu">
+                <a mat-menu-item [routerLink]="['/FAT-edit-cat']"><fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon>Edit Checklist</a>
+                <a mat-menu-item [routerLink]="['/FAT-serial-lookup']"><fa-icon [icon]="['fas', 'search']"></fa-icon>Deep Search</a>
+            </mat-menu>
+            <button type="button" class="btn-primary" (click)="addProject()">Add Project</button>
+        </div>
+    </div>
+
+    <div class="list-empty" *ngIf="FATProjectService.loadError">
+        The projects could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="reload()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!FATProjectService.loadError && !FATProjectService.datasource.data.length">
+        There are no projects yet.<ng-container *ngIf="FATProjectService.isAdmin"> Use Add Project to create the first one.</ng-container>
+    </p>
+    <p class="list-empty" *ngIf="FATProjectService.datasource.data.length && !FATProjectService.datasource.filteredData.length">
+        No projects match the current filters.
+    </p>
+
+    <!-- Table of Projects HERE -->
+    <div class='table-list' [hidden]="!FATProjectService.datasource.filteredData.length">
+        <table mat-table matSort class="mat-elevation-z8" [dataSource]="FATProjectService.datasource">
+            <ng-container matColumnDef="{{ column.name }}" *ngFor="let column of columnNames">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="column.name === 'isEdit'">
+                    {{ column.value }}
+                </th>
+
+              <td mat-cell *matCellDef="let element;">
+                <div *ngIf="element.isEdit">
+                    <div *ngIf="column.name === 'isEdit'" class="edit-actions">
+                      <button type="button" class="icon-btn" aria-label="Save project" title="Save" (click)="confirmEntry(element)"><fa-icon [icon]="['fas', 'check']"></fa-icon></button>
+                      <button type="button" class="icon-btn danger" aria-label="Discard project" title="Discard" (click)="cancelEntry(element)"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
+                    </div>
+                    <div *ngIf="column.name === 'project'">
+                        <mat-form-field [ngClass]="'addProject'" floatLabel="never">
+                          <input
+                            [type]="column.type"
+                            matInput
+                            [(ngModel)]="element[column.name]"
+                            [placeholder]="column.value"
+                            required
+                          />
+                        </mat-form-field>
+                    </div>
+                    <div *ngIf="column.name === 'description'">
+                        <mat-form-field [ngClass]="'addProject'" floatLabel="never">
+                          <input
+                            [type]="column.type"
+                            matInput
+                            [(ngModel)]="element[column.name]"
+                            [placeholder]="column.value"
+                            required
+                          />
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div *ngIf="!element.isEdit">
+                    <div [ngSwitch]="column.name">
+                        <span *ngSwitchCase="'project'" class="project-cell">
+                            <a [routerLink]="['/FAT-project-phase', element['project']]" (click)="FATProjectService.getProjectPhases(element['project'])">{{ element[column.name] }}</a>
+                        </span>
+                        <span *ngSwitchCase="'description'">{{ element[column.name] }}</span>
+                        <span *ngSwitchCase="'state'" class="po-chip" [ngClass]="stateClass(element.progress)">{{ stateOf(element.progress) }}</span>
+                        <span *ngSwitchCase="'progress'" class="po-progress" [attr.aria-label]="(element.progress || 0) + ' percent complete'">
+                            <span class="po-bar"><span class="po-fill" [style.width.%]="element.progress || 0"></span></span>
+                            <span class="po-pct">{{ element.progress || 0 }}%</span>
+                        </span>
+                    </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+        </table>
+    </div>
+</div>

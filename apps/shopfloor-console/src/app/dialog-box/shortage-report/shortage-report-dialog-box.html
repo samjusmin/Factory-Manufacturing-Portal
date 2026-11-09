@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Report Issue with PO</h2>
+
+<div>
+    <table mat-table [dataSource]="reps">
+
+        <!-- description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let reps"> {{reps.description}} </td>
+        </ng-container>
+      
+        <!-- quantity Column -->
+        <ng-container matColumnDef="qty_issue">
+          <th mat-header-cell *matHeaderCellDef> Quantity </th>
+          <td mat-cell *matCellDef="let reps"> {{reps.qty_issue}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="reportColumns"></tr>
+        <tr mat-row *matRowDef="let row; let even = even; columns: reportColumns" [ngClass]="{gray: even}"></tr>
+    </table>
+</div>
+
+<mat-dialog-content *ngIf="form" class="mat-typography" [formGroup]="form">
+    <button class="button-add-row" mat-button (click)="addRow(i)">Add Row</button>
+   
+    <div formArrayName="faultyList" *ngFor="let faulty of form.get('faultyList').controls; let i = index;">
+        <div [formGroupName]="i">
+            <mat-form-field appearance="legacy" class="item_field">
+                <mat-label>Faulty Items</mat-label>
+                <mat-select formControlName="item_no" id="item_no-{{i}}" name="item_no-{{i}}" (selectionChange)="showDescription($event, i)">
+                    <mat-option value="null" disabled>Select Item</mat-option>
+                    <mat-option *ngFor="let it of items; let j = index;" value="{{j}}">{{it.item_no}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            
+            <mat-form-field appearance="legacy" class="qty_field">
+                <input matInput formControlName="qty_issue" id="qtyissue-{{i}}" name="qtyissue-{{i}}" autocomplete="off">
+            </mat-form-field>
+            <mat-form-field appearance="legacy" class="desc_field">
+                <input formControlName="desc" matInput id="desc-{{i}}" name="desc-{{i}}">
+            </mat-form-field>
+        </div>
+    </div>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" cdkFocusInitial>Send</button>
+</mat-dialog-actions>

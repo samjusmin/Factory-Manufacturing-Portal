@@ -1,0 +1,80 @@
+<ng-container *ngIf="prodTableService.isLoaded">
+<form #outputForm="ngForm">
+<div class="fixed">
+<button class="back" (click)="prodTableService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button> <h3 class="sub">{{ prodTableService.childSource.data[0].doc_no }} - {{ prodTableService.childSource.data[0].doc_description }} Sub Assemblies</h3>
+<br/>
+<button mat-raised-button class="report" type="submit" (click)="prodTableService.openShortageDialog()"><fa-icon [icon]="['fas', 'envelope']"></fa-icon>Report Issue/Completion</button>
+
+<button mat-raised-button color ="primary" class="save" type ="submit" (click)="prodTableService.onQtyOutput()" [disabled]="outputForm.invalid"><fa-icon [icon]="['fas', 'save']"></fa-icon>Complete</button>
+
+<ng-container *ngIf="outputForm.invalid">
+    <div class="alert">
+      Qty amount must be a number and cannot exceed qty remaining.
+    </div>
+</ng-container>
+</div>
+
+<div class="table-responsive">
+<table mat-table matSort [dataSource]="prodTableService.childSource">
+    <ng-container
+    matColumnDef="{{ column.id }}"
+    *ngFor="let column of assemblyColumns"
+    >
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ column.value }}</mat-header-cell
+    >
+    <mat-cell *matCellDef="let element; let i = index">
+        <ng-container *ngIf="column.id === 'parent_ref' || column.id === 'total'">
+        {{ element[column.id] }}
+        </ng-container>
+
+        <ng-container *ngIf="column.id === 'result'">
+            <div *ngIf="element['result']?.length > 0">
+              <div *ngFor="let res of element['result']; let j = index">
+                <div *ngIf="res.doc_no.startsWith('PO')">
+                    <a [routerLink]="['/receiving/', element['result'][j].doc_no]">
+                        {{ element['result'][j].doc_no }}
+                    </a>
+                </div>
+                <div *ngIf="res.doc_no.startsWith('MRP')">
+                    <a [routerLink]="['/prod-order/', element['result'][j].doc_no]">
+                        {{ element['result'][j].doc_no }}
+                    </a>
+                </div>
+              </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="column.id !== 'parent_ref' && column.id !== 'total' && column.id !== 'result'">
+            <ng-container *ngIf="column.id !== 'item_no'">
+                <ng-container *ngIf="column.id === 'qty_to_receive' && element['result'] == ''">
+                    <mat-form-field class="qty_input" color="primary" appearance="legacy">
+                        <input matInput id="qtycomplete-{{i}}" name="qtycomplete{{i}}" [(ngModel)]="prodTableService.qtycomplete[i]" maxAmount="{{element['items']['qty_remaining']}}" (keydown)="prodTableService.moveCell($event)" autocomplete="off">
+                    </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="column.id !== 'qty_to_receive'">
+                    {{ element['items'][column.id] }}
+                </ng-container>
+            </ng-container>
+            
+            <ng-container *ngIf="column.id === 'item_no'">
+                <ng-container *ngIf="prodTableService.findComps(element['parents'], element['items']['line_no']) > -1">
+                    <a [routerLink]="['/prod-order', element['doc_no'], element['items']['line_no']]" (click)="prodTableService.getComponents(element['doc_no'], element['items']['line_no'])">
+                    {{ element['items'][column.id] }}
+                    </a>
+                </ng-container>
+                <ng-container *ngIf="prodTableService.findComps(element['parents'], element['items']['line_no']) == -1">
+                    {{ element['items'][column.id] }}
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="subColumns; sticky: true"></mat-header-row>
+    <mat-row
+    *matRowDef="let row; let even = even; columns: subColumns;" [ngClass]="{gray: even}">
+    </mat-row>
+</table>
+</div>
+</form>
+</ng-container>

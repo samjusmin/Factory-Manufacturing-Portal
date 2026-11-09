@@ -1,0 +1,176 @@
+/* Card that holds the selectable unit list. Same white surface, soft shadow and blue accent as the tables elsewhere in the app. */
+.select-card {
+    margin-bottom: 2em;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+    overflow: hidden;
+}
+
+.card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5em;
+    padding: 1.5em 1.5em 1.2em;
+}
+
+.card-head h2 {
+    margin: 0 0 0.25em;
+    font: normal normal 600 20px/1.2 'Source Sans Pro', sans-serif;
+    color: #000000;
+}
+
+.hint {
+    margin: 0;
+    font: normal normal normal 14px/1.4 'Source Sans Pro', sans-serif;
+    color: #5F6368;
+}
+
+.select-all {
+    flex: none;
+    font-size: 14px;
+}
+
+/* One shared grid so the column headings line up with every row. */
+.unit-grid {
+    display: grid;
+    grid-template-columns: minmax(10em, 1.4fr) 1fr 1.2fr 1fr 6em;
+    align-items: center;
+    gap: 1em;
+    padding: 0 1.5em;
+}
+
+.unit-head {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    border-top: 1px solid #EDEDEF;
+    border-bottom: 1px solid #EDEDEF;
+    background: #FAFAFA;
+    font: normal normal bold 12px/15px 'Source Sans Pro', sans-serif;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+.unit-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.unit-row {
+    position: relative;
+    border-bottom: 1px solid #EDEDEF;
+    font: normal normal normal 14px/18px 'Source Sans Pro', sans-serif;
+    letter-spacing: 0.72px;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.unit-row:hover {
+    background: #F2F7FC;
+}
+
+.unit-row.selected {
+    background: #E6F0FA;
+}
+
+.unit-row.selected::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: #005EB8;
+}
+
+.unit-row .unit-grid {
+    min-height: 3.4em;
+}
+
+.unit-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #005EB8;
+}
+
+.type {
+    text-transform: uppercase;
+}
+
+.num {
+    text-align: right;
+}
+
+.complete,
+.incomplete {
+    font-weight: bold;
+}
+
+.complete {
+    color: #0A8A2E;
+}
+
+.incomplete {
+    color: #C62828;
+}
+
+/* Stretch the checkbox label over the whole row so the entire row is one large click target. */
+.unit-check ::ng-deep .mat-checkbox-layout::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.empty {
+    margin: 0;
+    padding: 2.5em 1.5em;
+    text-align: center;
+    color: #5F6368;
+    font-size: 14px;
+    border-top: 1px solid #EDEDEF;
+}
+
+.card-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5em;
+    padding: 1em 1.5em;
+    background: #FAFAFA;
+}
+
+.count {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.count strong {
+    color: #000000;
+}
+
+.foot-actions {
+    display: flex;
+    gap: 0.75em;
+}
+
+.export-error {
+    margin: 0;
+    border-radius: 0;
+}
+
+/* Disabled, Export CSV looks the same as Preview Report (the app-wide disabled button), so the pair reads as one set. */
+.foot-actions .btn-secondary:disabled {
+    border: none;
+    background: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+    box-shadow: 0px 3px 6px #0000000D;
+    opacity: 0.45;
+    cursor: not-allowed;
+}

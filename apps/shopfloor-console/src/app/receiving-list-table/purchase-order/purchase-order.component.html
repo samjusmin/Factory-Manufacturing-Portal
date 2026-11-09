@@ -1,0 +1,53 @@
+<ng-container *ngIf="receivingTableService.isLoaded">
+    <h1>{{ receivingTableService.dataSource.data[0].location }} Receiving List</h1>
+    <mat-form-field class="search">
+      <input matInput (keyup)="receivingTableService.applyFilter($event.target.value)" placeholder="Search">
+    </mat-form-field>
+    <div class="table-list">
+    <table mat-table matSort class="mat-elevation-z8" [dataSource]="receivingTableService.dataSource" multiTemplateDataRows>
+      <ng-container
+        matColumnDef="{{ column.id }}"
+        *ngFor="let column of columnNames"
+      >
+        <th mat-header-cell *matHeaderCellDef [resizeColumn]="false" mat-sort-header>
+          <span>{{ column.value }}</span></th
+        >
+        <td mat-cell *matCellDef="let element; let j = index">
+          <ng-container *ngIf="column.id === 'doc_no'">
+            <fa-icon [icon]="['fas', 'plus']" [transform]="expandedElement ? 'rotate-45' : 'rotate-0'"></fa-icon>
+            <a [routerLink]="['/receiving', element['doc_no']]" (click)="receivingTableService.getReceivingOrder(element['doc_no'])">
+              {{ element[column.id] }}
+            </a>
+          </ng-container>
+          <ng-container *ngIf="column.id !== 'doc_no'">
+            {{ element[column.id] }}
+          </ng-container>
+        </td>
+      </ng-container>
+  
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element; let i = dataIndex" [attr.colspan]="columnNames.length">
+          <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                  <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
+            <table #innerTables mat-table [dataSource]="receivingTableService.dataSource.data[j].items">
+              <ng-container matColumnDef="{{innerColumn.id}}" *ngFor="let innerColumn of summaryColumns">
+                <th mat-header-cell *matHeaderCellDef> {{ innerColumn.value }} </th>
+                <td mat-cell *matCellDef="let elem"> {{ elem[innerColumn.id] }} </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="expandedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: expandedColumns;"></tr>
+            </table>
+                  </div>
+              </div>
+          </td>
+      </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; let index = dataIndex; columns: displayedColumns;" [ngClass]="{gray: index % 2 == 0 }" [class.element-row]="element.items?.length"
+       [class.expanded-row]="expandedElement === element" (click)="toggleRow(element)">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+  </table>
+  </div>
+  </ng-container>

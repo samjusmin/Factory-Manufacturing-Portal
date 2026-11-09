@@ -1,0 +1,74 @@
+[
+  {
+    "description": "Confirm device is recognised by the host system",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Install and verify latest driver/firmware version",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Run functional self-test",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Calibrate sensor / scanner",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm cable connections are secure",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Verify device appears correctly in configuration UI",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Test read/scan accuracy against sample media",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Record device serial number",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm mounting is secure and aligned",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  }
+]

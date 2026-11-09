@@ -1,0 +1,79 @@
+<ng-container *ngIf="FATProjectService.isLoaded && !FATProjectService.notCompany">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">FAT | {{getProject()}} - {{FATProjectService.phaseName}} | {{getUnit()}}</h1>
+        <button *ngIf="FATProjectService.isAdmin" type="button" class="btn-secondary page-action" (click)="toggleEditable()">
+            {{ editable ? 'Done' : 'Manage categories' }}
+        </button>
+    </div>
+
+    <p class="subtitle">Pick a checklist category to work through. Progress is saved per category.</p>
+
+    <section class="overview" aria-label="Unit progress">
+        <div class="overview-text">
+            <strong>{{ completeCount }} of {{ FATProjectService.categorysource.length }}</strong> categories complete
+        </div>
+        <span class="po-progress overview-bar" [attr.aria-label]="overallProgress + ' percent complete overall'">
+            <span class="po-bar"><span class="po-fill" [style.width.%]="overallProgress"></span></span>
+            <span class="po-pct">{{ overallProgress }}%</span>
+        </span>
+    </section>
+
+    <section class="todo-card" *ngIf="summary && summary.outstanding" aria-labelledby="todo-heading">
+        <h2 id="todo-heading">Still to do</h2>
+        <p class="todo-counts">
+            <strong class="failed-text" *ngIf="summary.failed">{{ summary.failed }} failed</strong><ng-container *ngIf="summary.failed && summary.unanswered"> and </ng-container>
+            <strong *ngIf="summary.unanswered">{{ summary.unanswered }} not answered yet</strong>
+            of {{ summary.total }} checks.
+        </p>
+        <ul class="todo-list">
+            <li *ngFor="let item of shownItems">
+                <a [routerLink]="['/FAT-unit-checklist', getProject(), getPhase(), getUnit(), item.category]">
+                    <span class="po-chip" [ngClass]="item.status ? 'state-failed' : 'state-not-started'">{{ item.status ? 'Failed' : 'Not answered' }}</span>
+                    <span class="todo-desc">{{ item.description }}<span class="todo-note" *ngIf="item.comment"> - {{ item.comment }}</span></span>
+                    <span class="todo-cat">{{ item.category }}</span>
+                </a>
+            </li>
+        </ul>
+        <button type="button" class="btn-link" *ngIf="summary.items.length > itemLimit" (click)="showAllItems = !showAllItems">
+            {{ showAllItems ? 'Show fewer' : 'Show all ' + summary.items.length }}
+        </button>
+    </section>
+    <p class="todo-done" *ngIf="summary && summary.total && !summary.outstanding">Every check on this unit is complete or not applicable.</p>
+
+    <section class="notes-card" aria-labelledby="notes-heading">
+        <label id="notes-heading" for="unit-notes">{{getUnit()}} notes</label>
+        <textarea id="unit-notes" rows="3" placeholder="Anything the next person should know about this unit..." [(ngModel)]="FATProjectService.commentSource"></textarea>
+        <div class="notes-actions">
+            <span class="note-status" role="status" aria-live="polite">
+                <ng-container [ngSwitch]="noteStatus">
+                    <span *ngSwitchCase="'saving'">Saving...</span>
+                    <span *ngSwitchCase="'saved'" class="ok">Notes saved</span>
+                    <span *ngSwitchCase="'failed'" class="bad">Could not save the notes. Try again.</span>
+                </ng-container>
+            </span>
+            <button type="button" class="btn-primary" [disabled]="noteStatus === 'saving'" (click)="saveChanges()">Save notes</button>
+        </div>
+    </section>
+
+    <ul class="cat-list">
+        <li *ngFor="let cat of FATProjectService.categorysource" class="cat-item">
+            <a class="cat-row" [routerLink]="['/FAT-unit-checklist', getProject(), getPhase(), getUnit(), cat.name]">
+                <span class="cat-name">{{cat.name}}</span>
+                <span class="po-chip" [ngClass]="stateClass(cat.progress)">{{ stateOf(cat.progress) }}</span>
+                <span class="po-progress" [attr.aria-label]="(cat.progress || 0) + ' percent complete'">
+                    <span class="po-bar"><span class="po-fill" [style.width.%]="cat.progress || 0"></span></span>
+                    <span class="po-pct">{{ cat.progress || 0 }}%</span>
+                </span>
+                <fa-icon class="cat-go" [icon]="['fas', 'chevron-right']"></fa-icon>
+            </a>
+            <button *ngIf="editable" type="button" class="cat-delete" [attr.aria-label]="'Delete ' + cat.name" (click)="removeCategory(cat.name)">
+                <fa-icon [icon]="['fas', 'trash']"></fa-icon> Delete
+            </button>
+        </li>
+    </ul>
+</ng-container>
+
+<ng-container *ngIf="FATProjectService.notCompany">
+    <fat-restricted-access></fat-restricted-access>
+</ng-container>

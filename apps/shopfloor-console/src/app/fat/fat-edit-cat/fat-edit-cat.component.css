@@ -1,0 +1,82 @@
+div.master {
+    top: 7em;
+    margin-bottom: 7em;
+    text-align: center; 
+    width: 80%; 
+    position:relative; 
+    left: 10%; 
+    border-radius: 25px; 
+    padding-bottom: 8%;
+}
+
+div.component {
+    text-align:center;
+    background-color: #005EB8;
+    height: 3em;
+    border-radius: 5px;
+    vertical-align: middle;
+}
+
+div.catButtonFalse {
+    text-align:center;
+    background-color: #005EB8;
+    height: 3em;
+    border-radius: 5px;
+    vertical-align: middle;
+    position:relative;
+}
+
+div.catButtonTrue {
+    width: 90%;
+    display:inline-block;
+    margin-right: -10%;
+}
+
+div.delete {
+    width: 10%;
+    position: right;
+    display:inline-block;
+}
+
+a.categories {
+    display:inline-block;
+    width: 100%;
+    height: 100%;
+    color: white;
+    text-align: center;
+    line-height: 2.5em;
+    font-size: large;
+    word-break: break-all;
+    overflow: hidden;
+/*     
+    margin-right:-10%; */
+    /* margin-top: 10%; */
+    /* position: relative;
+    top: 25%; */
+}
+
+a.categoriesEdit {
+    display:inline-block;
+    width: 80%;
+    height: 100%;
+    color: white;
+    text-align: center;
+    line-height: 2.5em;
+    font-size: large;
+    word-break: break-all;
+    overflow: hidden;
+    display: inline;
+    /* margin-top: 10%; */
+    /* position: relative;
+    top: 25%; */
+}
+
+div.header {
+    background-color: #FAFAFA;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    padding:0;
+    margin: 0;
+    height: 6em;
+}

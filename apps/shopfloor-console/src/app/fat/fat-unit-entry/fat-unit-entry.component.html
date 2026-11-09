@@ -1,0 +1,75 @@
+<section class="form-card" [formGroup]="group" [attr.aria-label]="'Entry ' + (index + 1)">
+    <div class="card-head">
+        <h2>Entry {{ index + 1 }}</h2>
+        <button type="button" class="icon-btn" *ngIf="removable" (click)="remove.emit()"
+            [attr.aria-label]="'Remove entry ' + (index + 1)" title="Remove entry">
+            <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+        </button>
+    </div>
+
+    <div class="form-grid">
+        <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <input matInput formControlName="FATlocation" type="text" required>
+            <mat-error>Enter where the units will be checked</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Quality Checker</mat-label>
+            <mat-select formControlName="FATchecker" required>
+                <mat-option *ngFor="let c of checkers" [value]="c.value">{{ c.name }}</mat-option>
+            </mat-select>
+            <mat-error>Choose who checks these units</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Type of Machine</mat-label>
+            <mat-select formControlName="UnitType" required>
+                <mat-option *ngFor="let t of unitTypes" [value]="t.value">{{ t.name }}</mat-option>
+            </mat-select>
+            <mat-error>Choose a machine type</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Unit Prefix</mat-label>
+            <input matInput formControlName="FATprefix" type="text" required>
+            <mat-hint>The letters each unit number starts with</mat-hint>
+            <mat-error>Enter a prefix</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Starting Number</mat-label>
+            <input matInput formControlName="FATstart" type="number" min="0" step="1" required>
+            <mat-hint>The first number in the run</mat-hint>
+            <mat-error>Enter a whole number, 0 or more</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>No. of Machines</mat-label>
+            <input matInput formControlName="FATamount" type="number" min="1" [max]="maxUnits" step="1" required>
+            <mat-hint>1 to {{ maxUnits }}</mat-hint>
+            <mat-error>Enter a whole number from 1 to {{ maxUnits }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>No. of Printers</mat-label>
+            <input matInput formControlName="FATprinters" type="number" min="0" step="1">
+            <mat-error>Enter a whole number, 0 or more</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Honeywell Scanners</mat-label>
+            <input matInput formControlName="FAThoneywell" type="number" min="0" step="1">
+            <mat-error>Enter a whole number, 0 or more</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="wide">
+            <mat-label>Options</mat-label>
+            <mat-select formControlName="FAToptions" multiple>
+                <mat-option *ngFor="let o of unitOptions" [value]="o.value">{{ o.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <p class="entry-preview" *ngIf="preview" role="status">{{ preview }}</p>
+</section>

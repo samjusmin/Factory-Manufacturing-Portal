@@ -1,0 +1,38 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="cancel()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">{{ getProject() }} | New Phase</h1>
+    </div>
+
+    <form class="admin-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <section class="form-card">
+            <h2>Phase</h2>
+            <p class="form-hint">Name the phase, then add one entry for each run of identical machines it will contain.</p>
+            <mat-form-field appearance="outline" class="phase-name">
+                <mat-label>Phase Name</mat-label>
+                <input matInput formControlName="FATphase" type="text" required>
+                <mat-error>Enter a phase name</mat-error>
+            </mat-form-field>
+        </section>
+
+        <webproject-fat-unit-entry *ngFor="let entry of entryList.controls; let i = index"
+            [group]="entry" [index]="i" [removable]="entryList.length > 1" (remove)="removeEntry(i)">
+        </webproject-fat-unit-entry>
+
+        <button type="button" class="btn-secondary" (click)="addEntry()">Add Entry</button>
+
+        <div class="form-error" role="alert" *ngIf="saveError">{{ saveError }}</div>
+
+        <div class="action-bar">
+            <span class="action-status" role="status" aria-live="polite">
+                <ng-container *ngIf="unitCount">{{ unitCount }} {{ unitCount === 1 ? 'unit' : 'units' }} in {{ entryList.length }} {{ entryList.length === 1 ? 'entry' : 'entries' }}</ng-container>
+            </span>
+            <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Creating...' : 'Create Phase' }}</button>
+        </div>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

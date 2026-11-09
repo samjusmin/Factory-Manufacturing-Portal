@@ -1,0 +1,77 @@
+/* Layout, search and the empty / retry states are shared (styles.css). */
+
+.result-count {
+    align-self: center;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.empty-hint {
+    display: block;
+    margin-top: 0.4em;
+    font-size: 14px;
+}
+
+/* One card per unit with a note. */
+.comment-list {
+    max-width: 960px;
+    margin: 0;
+    padding: 0 0 3em;
+    list-style: none;
+}
+
+.comment-card {
+    margin: 0 0 12px;
+    padding: 14px 20px 16px;
+    background: #FFFFFF;
+    border-left: 4px solid #005EB8;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.comment-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.comment-unit {
+    font: normal normal 600 17px/22px 'Source Sans Pro', sans-serif;
+    color: #005EB8;
+}
+
+.comment-serial {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.comment-open {
+    margin-left: auto;
+    font: normal normal 600 14px/20px 'Source Sans Pro', sans-serif;
+    color: #005EB8;
+    text-decoration: underline;
+}
+
+.comment-unit:focus-visible,
+.comment-open:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+/* Notes keep the line breaks the user typed, and long words wrap instead of running off the card. */
+.comment-body {
+    margin: 0;
+    font: normal normal normal 16px/24px 'Source Sans Pro', sans-serif;
+    color: #1F2A37;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+/* A long project and phase name wraps onto a second line instead of being cut off. */
+:host ::ng-deep .page-header h1.fatHead {
+    white-space: normal;
+    padding: 0.4em 0;
+    font-size: 32px;
+    line-height: 1.2;
+}

@@ -1,0 +1,100 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">Deep Search</h1>
+    </div>
+
+    <div class="fat-list">
+        <div class="toolbar">
+            <mat-form-field class="search">
+                <input matInput aria-label="Search serial numbers and units" autocomplete="off"
+                    [placeholder]="hasFilters ? 'Search within filters' : 'Search'"
+                    [ngModel]="query.q" (ngModelChange)="onSearchInput($event)">
+            </mat-form-field>
+
+            <button type="button" class="btn-secondary filters-toggle" [class.on]="filtersOpen" (click)="toggleFilters()"
+                [attr.aria-expanded]="filtersOpen" aria-controls="deep-search-filters">
+                <fa-icon [icon]="['fas', 'filter']"></fa-icon>
+                Filters
+                <span class="filters-badge" *ngIf="activeCount" [attr.aria-label]="activeCount + ' filters on'">{{ activeCount }}</span>
+                <fa-icon class="toggle-caret" [icon]="['fas', filtersOpen ? 'chevron-up' : 'chevron-down']"></fa-icon>
+            </button>
+        </div>
+
+        <!-- The row of filters: hidden until asked for. Each one has its own search box for a long list of choices. -->
+        <div class="filter-panel" id="deep-search-filters" role="group" aria-label="Filters" *ngIf="filtersOpen">
+            <webproject-filter-picker *ngFor="let group of filterGroups"
+                [label]="group.title" [options]="optionLists[group.key]" [selected]="query[group.key]"
+                (selectedChange)="onFilterChange(group.key, $event)"></webproject-filter-picker>
+            <button type="button" class="btn-link" *ngIf="hasFilters" (click)="clearFilters()">Clear filters</button>
+        </div>
+
+        <p class="form-error" role="alert" *ngIf="filtersFailed">
+            The filter lists could not be loaded.
+            <button type="button" class="btn-link retry" (click)="loadFilters()">Try again</button>
+        </p>
+
+        <div class="active-filters" *ngIf="activeFilters.length" aria-label="Active filters">
+            <span class="filter-tag" *ngFor="let f of activeFilters; trackBy: trackTag">
+                <span class="tag-group">{{ f.group }}:</span> {{ f.label }}
+                <button type="button" class="tag-remove" (click)="removeFilter(f)" [attr.aria-label]="'Remove ' + f.group + ' filter ' + f.label">&times;</button>
+            </span>
+            <button type="button" class="btn-link" (click)="clearFilters()">Clear filters</button>
+        </div>
+
+        <p class="result-count" role="status" aria-live="polite">
+            <ng-container *ngIf="loading && !result">Loading...</ng-container>
+            <ng-container *ngIf="result && !loadError">{{ rangeText || 'No results' }}<ng-container *ngIf="loading"> (updating...)</ng-container></ng-container>
+        </p>
+
+        <div class="list-empty" *ngIf="loadError">
+            The search could not be completed.
+            <button type="button" class="btn-secondary retry" (click)="reload()">Try again</button>
+        </div>
+
+        <ng-container *ngIf="result && !loadError">
+            <p class="list-empty" *ngIf="!result.total && !hasFilters && !query.q">
+                There is nothing to search yet. Serial numbers appear here once units have been checked.
+            </p>
+            <p class="list-empty" *ngIf="!result.total && (hasFilters || query.q)">
+                No results match<ng-container *ngIf="query.q"> "{{ query.q }}"</ng-container><ng-container *ngIf="hasFilters"> within these filters</ng-container>.
+                <button type="button" class="btn-link" *ngIf="hasFilters" (click)="clearFilters()">Clear filters</button>
+            </p>
+
+            <!-- One card holds the table and its page controls, so the shadow runs round both, under the pager. -->
+            <div class="table-list results-card" *ngIf="result.total" [class.loading]="loading" [attr.aria-busy]="loading">
+              <div class="table-scroll">
+                <table mat-table [trackBy]="trackRow" matSort [dataSource]="result.rows"
+                    [matSortActive]="query.sort" [matSortDirection]="query.dir" matSortDisableClear (matSortChange)="onSort($event)">
+                    <ng-container *ngFor="let column of columns" [matColumnDef]="column.name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.title }}</th>
+                        <td mat-cell *matCellDef="let row">
+                            <div [ngSwitch]="column.name">
+                                <span *ngSwitchCase="'progress'" class="po-progress" [attr.aria-label]="(row.progress || 0) + ' percent complete'">
+                                    <span class="po-bar"><span class="po-fill" [style.width.%]="row.progress || 0"></span></span>
+                                    <span class="po-pct">{{ row.progress || 0 }}%</span>
+                                </span>
+                                <span *ngSwitchCase="'unit_type'" class="unit-type">{{ typeName(row.unit_type) }}</span>
+                                <span *ngSwitchCase="'location'">{{ row.location }}</span>
+                                <a *ngSwitchCase="'project'" [routerLink]="['/FAT-project-phase', row.project]">{{ row.project }}</a>
+                                <a *ngSwitchCase="'phase_name'" [routerLink]="['/FAT-unit-list', row.project, row.phase]">{{ row.phase_name }}</a>
+                                <a *ngSwitchDefault [routerLink]="['/FAT-unit-cat', row.project, row.phase, row.doc_no]">{{ row[column.name] }}</a>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+                </table>
+              </div>
+
+                <mat-paginator [length]="result.total" [pageIndex]="query.page - 1" [pageSize]="query.pageSize"
+                    [pageSizeOptions]="pageSizes" showFirstLastButtons (page)="onPage($event)"></mat-paginator>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Report Issue with PO</h2>
+<mat-dialog-content *ngIf="form" class="mat-typography" [formGroup]="form">
+  <!--<h3>Develop across all platforms</h3>-->
+  <p>Please describe the issue here.</p>
+
+  <mat-form-field appearance="fill">
+    <!--<mat-label>Leave a comment</mat-label>-->
+    <textarea matInput formControlName="message" rows="5"></textarea>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" cdkFocusInitial>Send</button>
+</mat-dialog-actions>

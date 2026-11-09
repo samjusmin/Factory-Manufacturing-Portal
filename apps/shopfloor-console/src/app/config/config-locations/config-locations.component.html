@@ -1,0 +1,60 @@
+<ng-container *ngIf="ConfigService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">Edit Locations</h1>
+    </div>
+
+    <div class="config-page" *ngIf="ConfigService.locationsLoaded || ConfigService.loadError">
+        <p class="subtitle intro">Open a location to choose the hardware, PC images and models it can use.</p>
+
+        <div class="toolbar">
+            <mat-form-field class="search">
+                <input matInput aria-label="Search locations" (input)="applyFilter($event.target.value)" placeholder="Search locations">
+            </mat-form-field>
+            <div class="toolbar-actions">
+                <button type="button" class="btn-primary" (click)="addLocation()">Add Location</button>
+            </div>
+        </div>
+
+        <div class="list-empty" *ngIf="ConfigService.loadError">
+            The locations could not be loaded.
+            <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+        </div>
+        <p class="list-empty" *ngIf="!ConfigService.loadError && !ConfigService.locationDatasource.data.length">There are no locations yet. Use Add Location to create the first one.</p>
+        <p class="list-empty" *ngIf="ConfigService.locationDatasource.data.length && !ConfigService.locationDatasource.filteredData.length">No locations match the search.</p>
+
+        <div class="table-list" [hidden]="!ConfigService.locationDatasource.filteredData.length">
+            <table mat-table matSort class="mat-elevation-z8 config-table" [dataSource]="ConfigService.locationDatasource">
+                <ng-container *ngFor="let column of columnNames" [matColumnDef]="column.name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="column.name === 'isEdit'">{{ column.value }}</th>
+                    <td mat-cell *matCellDef="let element">
+                        <ng-container *ngIf="element.isEdit" [ngSwitch]="column.name">
+                            <mat-form-field *ngSwitchCase="'location'" class="table-field" floatLabel="never">
+                                <input matInput placeholder="Location name" aria-label="Location name" required [(ngModel)]="element.location" (keydown.enter)="confirmEntry(element)">
+                            </mat-form-field>
+                            <div *ngSwitchCase="'isEdit'" class="edit-actions">
+                                <button type="button" class="icon-btn" aria-label="Save location" title="Save" (click)="confirmEntry(element)"><fa-icon [icon]="['fas', 'check']"></fa-icon></button>
+                                <button type="button" class="icon-btn danger" aria-label="Discard location" title="Discard" (click)="cancelEntry(element)"><fa-icon [icon]="['fas', 'trash']"></fa-icon></button>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="!element.isEdit" [ngSwitch]="column.name">
+                            <button *ngSwitchCase="'location'" type="button" class="link-btn" (click)="openDialogue(element)">{{ element.location }}</button>
+                            <span *ngSwitchCase="'access'" class="cell-muted">{{ locationSummary(element) }}</span>
+                            <span *ngSwitchCase="'images'" class="cell-muted">{{ (element.image_access || []).length }}</span>
+                            <span *ngSwitchCase="'hardware'" class="cell-muted">{{ (element.hardware_access || []).length }}</span>
+                            <button *ngSwitchCase="'isEdit'" type="button" class="btn-secondary small" (click)="openDialogue(element)">Manage access</button>
+                        </ng-container>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+            </table>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!ConfigService.isAdmin && ConfigService.showError">
+    <config-restricted-access></config-restricted-access>
+</ng-container>

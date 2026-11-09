@@ -1,0 +1,98 @@
+[
+  {
+    "description": "Confirm operator has completed training",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm this checklist matches the approved spec sheet",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Load standard software image and verify version",
+    "reference": "Confirm the image label matches the release list",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Update firmware to latest approved release",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Record unit serial number",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Apply asset label to unit",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Set system date, time and locale",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm network configuration (hostname, IP addressing)",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Enable disk encryption",
+    "reference": "Store the recovery key in the secure records folder",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Restrict removable media access per security policy",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Activate operating system license",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Verify peripheral devices are detected and functioning",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  }
+]

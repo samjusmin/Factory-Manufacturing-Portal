@@ -1,0 +1,27 @@
+.box-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    font: normal normal 600 24px/32px Source Sans Pro;
+}
+
+.box-sub {
+    font: normal normal normal 14px/20px Source Sans Pro;
+    color: #5F6368;
+}
+
+.box-content {
+    max-height: 60vh;
+}
+
+.box-hint {
+    margin: 0 0 1em;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.box-actions {
+    gap: 0.75em;
+    padding: 12px 24px 16px;
+}

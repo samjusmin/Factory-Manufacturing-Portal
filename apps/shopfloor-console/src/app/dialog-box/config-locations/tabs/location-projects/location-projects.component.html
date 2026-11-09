@@ -1,0 +1,26 @@
+<p class="intro">
+  Units at this location are allocated to one of these projects, or to {{ stock }} while they are not allocated to any.
+</p>
+
+<ul class="project-list" aria-label="Projects at this location">
+  <li class="project-row">
+    <span class="project-code">{{ stock }}</span>
+    <span class="project-note">Built in: items not allocated to a project</span>
+  </li>
+  <li class="project-row" *ngFor="let code of projects">
+    <span class="project-code">{{ code }}</span>
+    <button type="button" class="remove-btn" [attr.aria-label]="'Remove project ' + code" (click)="remove(code)">Remove</button>
+  </li>
+</ul>
+
+<p class="project-empty" *ngIf="!projects.length">No projects yet. Add the codes this location's units can be allocated to.</p>
+
+<div class="add-row">
+  <mat-form-field appearance="outline" class="add-field">
+    <mat-label>New project code</mat-label>
+    <input matInput [(ngModel)]="newCode" autocomplete="off" (keydown.enter)="add(); $event.preventDefault()">
+  </mat-form-field>
+  <button type="button" class="btn-secondary" [disabled]="!newCode.trim()" (click)="add()">Add project</button>
+</div>
+
+<p class="message" *ngIf="message" role="status">{{ message }}</p>

@@ -1,0 +1,104 @@
+<ng-container *ngIf="FATProjectService.isLoaded && !FATProjectService.notCompany">
+<form #editFATform="ngForm" class="checklist-page">
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">{{getProject()}} - {{FATProjectService.phaseName}} - {{getUnit()}} | {{getCategory()}} Checklist</h1>
+  </div>
+
+  <div class="merge-notice" role="alert" *ngIf="mergeNotice">
+    <span>
+      {{ mergeNotice }}
+      <strong *ngIf="unresolvedCount"> {{ unresolvedCount }} {{ unresolvedCount === 1 ? 'check was' : 'checks were' }} changed by both of you; choose which to keep.</strong>
+    </span>
+    <button type="button" class="btn-link" (click)="dismissNotice()">Dismiss</button>
+  </div>
+
+  <section class="progress-strip" aria-label="Checklist progress">
+    <div><strong>{{ doneCount }} of {{ checkRows.length }}</strong> checks done</div>
+    <span class="po-progress" [attr.aria-label]="donePercent + ' percent done'">
+      <span class="po-bar"><span class="po-fill" [style.width.%]="donePercent"></span></span>
+      <span class="po-pct">{{ donePercent }}%</span>
+    </span>
+  </section>
+
+  <div class="bulk-bar" *ngIf="bulkAllowed && allUnchecked.length">
+    <span>{{ allUnchecked.length }} {{ allUnchecked.length === 1 ? 'check has' : 'checks have' }} not been answered yet.</span>
+    <button type="button" class="btn-secondary" (click)="markComplete(checkRows, getCategory())">Mark unchecked as Complete</button>
+  </div>
+
+  <div class="checks">
+    <ng-container *ngFor="let section of sections; trackBy: trackSection">
+      <div class="section-head" *ngIf="section.heading">
+        <h2>{{ section.heading.description }}</h2>
+        <button type="button" class="btn-link" *ngIf="bulkAllowed && unchecked(section.rows).length"
+          (click)="markComplete(section.rows, 'the section ' + section.heading.description)">
+          Mark section Complete ({{ unchecked(section.rows).length }})
+        </button>
+      </div>
+
+      <ul class="check-list">
+        <li class="check-card" *ngFor="let row of section.rows; let i = index; trackBy: trackRow"
+            [class.row-changed]="isChanged(row)">
+          <div class="check-main">
+            <span class="check-desc">{{ row.description }}</span>
+            <span class="check-ref" *ngIf="row.reference">{{ row.reference }}</span>
+          </div>
+
+          <div class="status-group" role="radiogroup" [attr.aria-label]="'Status of ' + row.description">
+            <label class="status-opt" *ngFor="let opt of statusOptions" [ngClass]="opt.css" [class.on]="row.status === opt.value">
+              <input type="radio" [name]="'status-' + FATProjectService.checklistsource.data.indexOf(row)"
+                [value]="opt.value" [checked]="row.status === opt.value" (click)="chooseStatus(row, opt.value, $event)">
+              <fa-icon *ngIf="opt.icon" [icon]="['fas', opt.icon]"></fa-icon>
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+
+          <div class="check-fields">
+            <input type="text" class="field-input" [class.field-bad]="serialError(row)" [attr.aria-label]="notesLabel + ' for ' + row.description" [placeholder]="notesLabel"
+              [attr.aria-invalid]="serialError(row) ? 'true' : null"
+              [ngModel]="row.comment" (ngModelChange)="row.comment = $event; clearSerialError(row)" [ngModelOptions]="{standalone: true}" autocomplete="off">
+            <input type="text" class="field-input" [attr.aria-label]="'Second checker for ' + row.description" placeholder="Second checker"
+              [(ngModel)]="row.second_checker" [ngModelOptions]="{standalone: true}" autocomplete="off">
+          </div>
+
+          <div class="check-error" role="alert" *ngIf="serialError(row) as message">{{ message }}</div>
+
+          <div class="check-meta" *ngIf="row.status && row.checked_by">
+            Checked by {{ row.checked_by }}<ng-container *ngIf="row.date_checked"> on {{ row.date_checked | date: 'dd/MM/yyyy' }}</ng-container>
+          </div>
+
+          <div class="conflict" *ngIf="conflictFor(row) as c" role="group" [attr.aria-label]="'Conflict on ' + row.description">
+            <span class="conflict-text">
+              Someone else set this to <strong>{{ c.theirs.status || 'unanswered' }}</strong><ng-container *ngIf="c.theirs.comment"> ("{{ c.theirs.comment }}")</ng-container><ng-container *ngIf="c.theirs.checked_by"> ({{ c.theirs.checked_by }})</ng-container>.
+              You had <strong>{{ c.mine.status || 'unanswered' }}</strong><ng-container *ngIf="c.mine.comment"> ("{{ c.mine.comment }}")</ng-container>.
+            </span>
+            <span class="conflict-actions">
+              <button type="button" class="btn-secondary" (click)="useTheirs(c)">Use theirs</button>
+              <button type="button" class="btn-secondary" (click)="keepMine(c)">Keep mine</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+
+<div class="save-bar" role="region" aria-label="Save changes">
+  <span class="save-status" role="status" aria-live="polite">
+    <span *ngIf="saveState === 'saving'">Saving...</span>
+    <span *ngIf="unresolvedCount" class="bad">Choose which version to keep for {{ unresolvedCount }} {{ unresolvedCount === 1 ? 'check' : 'checks' }} before saving.</span>
+    <span *ngIf="saveState !== 'saving' && !unresolvedCount && !serialErrors.size && changedRows.length" class="dirty">{{ changedRows.length }} unsaved {{ changedRows.length === 1 ? 'change' : 'changes' }}</span>
+    <span *ngIf="saveState === 'saved' && !changedRows.length" class="ok">All changes saved</span>
+    <span *ngIf="serialErrors.size" class="bad">Not saved. Correct the {{ serialErrors.size === 1 ? 'value' : 'values' }} marked above, then save.</span>
+    <span *ngIf="saveState === 'failed'" class="bad">Could not save. Your changes are still here, try again.</span>
+  </span>
+  <button type="button" class="btn-primary" [disabled]="!canSave" (click)="saveChanges()">
+    <fa-icon [icon]="['fas', 'save']"></fa-icon>{{ saveState === 'saving' ? 'Saving...' : 'Save' }}
+  </button>
+</div>
+</form>
+<br><br>
+</ng-container>
+
+<ng-container *ngIf="FATProjectService.notCompany">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

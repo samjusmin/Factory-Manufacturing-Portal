@@ -1,0 +1,40 @@
+<ng-container *ngIf="ConfigService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">Item Checklists</h1>
+        <button type="button" class="btn-primary page-action" (click)="addType()">Add hardware type</button>
+    </div>
+
+    <div class="config-page" *ngIf="loaded">
+        <p class="subtitle intro">Choose a hardware type to edit the checklist that new units of that type start from.</p>
+
+        <div class="list-empty" *ngIf="loadError">
+            The checklists could not be loaded.
+            <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+        </div>
+        <p class="list-empty" *ngIf="!loadError && !groups.length">There are no hardware categories yet. Use Add hardware type to create the first.</p>
+
+        <section class="config-group" *ngFor="let group of groups; trackBy: trackByCategory" [attr.aria-label]="group.name">
+            <div class="group-head">
+                <h2 class="group-title">{{ group.name }}</h2>
+                <button type="button" class="link-btn small-link" (click)="editCategory(group)">Edit category</button>
+                <button type="button" class="link-btn small-link" (click)="addType(group)">Add type</button>
+            </div>
+            <p class="group-empty" *ngIf="!group.types.length">No hardware types in this category yet.</p>
+            <div class="config-tiles" *ngIf="group.types.length">
+                <a class="config-tile" *ngFor="let type of group.types" [routerLink]="['/config-edit-checklist', type]">
+                    <span class="tile-icon" aria-hidden="true"><fa-icon [icon]="['fas', group.icon]"></fa-icon></span>
+                    <span class="tile-body">
+                        <span class="tile-title">{{ type }}</span>
+                        <span class="tile-meta">Edit checklist</span>
+                    </span>
+                    <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+                </a>
+            </div>
+        </section>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!ConfigService.isAdmin && ConfigService.showError">
+    <config-restricted-access></config-restricted-access>
+</ng-container>

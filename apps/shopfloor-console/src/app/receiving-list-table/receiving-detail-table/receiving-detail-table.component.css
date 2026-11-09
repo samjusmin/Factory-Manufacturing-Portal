@@ -1,0 +1,55 @@
+
+.hidden{ visibility: hidden; }
+.visible{ visibility: visible; }
+
+/* Status on the left, actions on the right, with room above and below. */
+.po-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em 2em;
+    margin: 0.75em 0 1.5em;
+}
+
+.po-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75em 1.5em;
+    font-size: 14px;
+}
+
+.po-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+    margin-left: auto;
+}
+
+.detail-alert {
+    margin: -0.75em 0 1em;
+}
+
+.po-late {
+    color: #C62828;
+    font-weight: 600;
+}
+
+.po-notice {
+    margin: 1.5em 0;
+    color: #5F6368;
+}
+
+/* A quantity needs only a few digits; a narrow input keeps the whole table on screen without sideways scrolling. */
+.qty_input {
+    width: 90px;
+}
+
+.mat-column-description {
+    width: 130px;
+    max-width: 130px;
+    white-space: normal;
+}

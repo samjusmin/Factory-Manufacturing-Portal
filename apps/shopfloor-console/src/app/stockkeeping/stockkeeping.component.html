@@ -1,0 +1,86 @@
+<h1>Inventory</h1>
+<p class="subtitle">Stock on hand at your locations. Items at or below their reorder point are listed first.</p>
+
+<ng-container *ngIf="isLoaded">
+  <div class="toolbar">
+    <mat-form-field class="search">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+    </mat-form-field>
+
+    <div class="filter-bar" role="group" aria-label="Filter by stock status">
+      <button type="button" class="filter-chip" *ngFor="let s of stateFilters"
+        [class.on]="statusFilter === s"
+        [class.stock-warn]="s === 'Out of stock' || s === 'Low stock'"
+        [attr.aria-pressed]="statusFilter === s"
+        (click)="setStatusFilter(s)">
+        {{ s }} <span class="count">{{ countByState(s) }}</span>
+      </button>
+    </div>
+  </div>
+
+  <p class="list-empty" *ngIf="!dataSource.data.length">There are no stocked items at your locations.</p>
+  <p class="list-empty" *ngIf="dataSource.data.length && !dataSource.filteredData.length">No items match the current filters.</p>
+
+  <div class="table-list" [hidden]="!dataSource.filteredData.length">
+    <table mat-table matSort matSortActive="state" matSortDirection="asc" class="mat-elevation-z8 expandable" [dataSource]="dataSource" multiTemplateDataRows>
+      <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.value }}</th>
+        <td mat-cell *matCellDef="let element">
+          <ng-container [ngSwitch]="column.id">
+
+            <ng-container *ngSwitchCase="'no'">
+              <fa-icon class="expand-icon" [icon]="['fas', 'plus']" [transform]="expandedElement === element ? 'rotate-45' : 'rotate-0'"></fa-icon>
+              <span class="item-no">{{ element.no }}</span>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'state'">
+              <span class="po-chip" [ngClass]="stateClass(element.summary?.state)">{{ element.summary?.state }}</span>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'inventory'">
+              <span class="stock-level" [attr.aria-label]="element.inventory + ' on hand, ' + element.summary?.percent_full + ' percent of full level'">
+                <span class="level-bar">
+                  <span class="level-fill" [ngClass]="stateClass(element.summary?.state)" [style.width.%]="element.summary?.percent_full"></span>
+                  <span class="level-marker" *ngIf="element.summary?.reorder_marker !== null" [style.left.%]="element.summary?.reorder_marker" title="Reorder point"></span>
+                </span>
+                <span class="level-qty">{{ element.inventory }}</span>
+              </span>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'reorder_point'">
+              {{ element.reorder_point === null || element.reorder_point === undefined ? '-' : element.reorder_point }}
+            </ng-container>
+
+            <ng-container *ngSwitchDefault>{{ element[column.id] }}</ng-container>
+
+          </ng-container>
+        </td>
+      </ng-container>
+
+      <!-- Expanded content: how to restock this item -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnNames.length">
+          <div class="element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <dl class="stock-detail" *ngIf="element == expandedElement">
+              <div><dt>Reorder point</dt><dd>{{ element.reorder_point === null || element.reorder_point === undefined ? '-' : element.reorder_point }}</dd></div>
+              <div><dt>Reorder quantity</dt><dd>{{ element.reorder_qty === null || element.reorder_qty === undefined ? '-' : element.reorder_qty }}</dd></div>
+              <div><dt>Replenished by</dt><dd>{{ element.replenishment_system || '-' }}</dd></div>
+              <div *ngIf="element.summary?.shortfall > 0" class="need">
+                <dt>Needed to recover</dt><dd>{{ element.summary.shortfall }} units</dd>
+              </div>
+            </dl>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns; let index = dataIndex;"
+        [ngClass]="{gray: index % 2 == 0}"
+        class="element-row"
+        [class.problem-row]="element.summary?.state !== 'In stock'"
+        [class.expanded-row]="expandedElement === element"
+        (click)="toggleRow(element)"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+    </table>
+  </div>
+</ng-container>

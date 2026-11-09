@@ -1,0 +1,57 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Edit '{{ getCategory() }}' Checklist</h1>
+  </div>
+
+  <div class="admin-form edit-form">
+    <p class="notice" role="note">
+      This is the template for '{{ getCategory() }}'. Units created, or given this checklist, from now on use your changes; units that already have it keep the checklist they have.
+    </p>
+
+    <div class="form-error" role="alert" *ngIf="loadError">
+      The checklist could not be loaded.
+      <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+
+    <ng-container *ngIf="loaded">
+      <div class="toolbar">
+        <span class="row-count">{{ rows.length }} {{ rows.length === 1 ? 'row' : 'rows' }}</span>
+        <div class="toolbar-actions">
+          <button type="button" class="btn-secondary" (click)="addRow()">Add Row</button>
+        </div>
+      </div>
+
+      <p class="list-empty" *ngIf="!rows.length">This checklist has no rows yet. Use Add Row to start it.</p>
+
+      <ol class="edit-list">
+        <li class="edit-row" *ngFor="let row of rows; let i = index; trackBy: trackRow" [class.row-changed]="isChanged(row)">
+          <span class="row-no" aria-hidden="true">{{ i + 1 }}</span>
+          <input type="text" class="field-input" [class.field-blank]="!row.description.trim()" placeholder="Description"
+            [attr.aria-label]="'Description for row ' + (i + 1)" [(ngModel)]="row.description" autocomplete="off">
+          <input type="text" class="field-input" placeholder="Reference (optional)"
+            [attr.aria-label]="'Reference for row ' + (i + 1)" [(ngModel)]="row.reference" autocomplete="off">
+          <button type="button" class="icon-btn" (click)="removeRow(row)"
+            [attr.aria-label]="'Remove row ' + (i + 1)" title="Remove row">
+            <fa-icon [icon]="['fas', 'trash']"></fa-icon>
+          </button>
+        </li>
+      </ol>
+    </ng-container>
+
+    <div class="action-bar" role="region" aria-label="Save changes">
+      <span class="action-status" role="status" aria-live="polite">
+        <span *ngIf="saveState === 'saving'">Saving...</span>
+        <span *ngIf="saveState !== 'saving' && blankRows" class="bad">{{ blankRows }} {{ blankRows === 1 ? 'row needs' : 'rows need' }} a description.</span>
+        <span *ngIf="saveState !== 'saving' && !blankRows && hasUnsavedChanges()" class="dirty">Unsaved changes</span>
+        <span *ngIf="saveState === 'saved' && !hasUnsavedChanges()" class="ok">Checklist saved</span>
+        <span *ngIf="saveState === 'failed'" class="bad">Could not save. Your changes are still here, try again.</span>
+      </span>
+      <button type="button" class="btn-primary" [disabled]="!canSave" (click)="saveChanges()">{{ saveState === 'saving' ? 'Saving...' : 'Save' }}</button>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.isLoaded">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

@@ -1,0 +1,39 @@
+{
+  "implicitDependencies": {
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    ".eslintrc.json": "*"
+  },
+  "affected": {
+    "defaultBase": "master"
+  },
+  "npmScope": "webproject",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "api": {
+      "tags": []
+    },
+    "data": {
+      "tags": []
+    },
+    "shopfloor-console": {
+      "tags": []
+    },
+    "shopfloor-console-e2e": {
+      "tags": [],
+      "implicitDependencies": ["shopfloor-console"]
+    },
+    "ui": {
+      "tags": []
+    }
+  }
+}

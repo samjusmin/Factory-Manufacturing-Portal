@@ -1,0 +1,30 @@
+.example-tree-invisible {
+    display: none !important;
+}
+
+.example-tree {
+    display: block;
+    max-width: 100%;
+}
+
+.mat-tree-node {
+    min-height: 40px;
+    font: normal normal 600 16px/24px Source Sans Pro;
+    color: #00458F;
+}
+
+.leaf-node {
+    padding-left: 44px;
+}
+
+.mat-tree-node.leaf {
+    min-height: 36px;
+    font-weight: 400;
+    font-size: 15px;
+    color: #1F1F23;
+}
+
+.empty {
+    padding: 12px 0;
+    color: #5F6368;
+}

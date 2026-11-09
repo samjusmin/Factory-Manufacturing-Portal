@@ -1,0 +1,8 @@
+/* The toolbar, filter buttons, status chips, due badges and the expand icon are shared with the Production
+   page and live in styles.css. */
+
+/* Lines that still need receiving. */
+.line-open {
+    font-weight: 600;
+    color: #8A5A00;
+}

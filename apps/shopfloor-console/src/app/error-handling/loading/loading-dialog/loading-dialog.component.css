@@ -1,0 +1,16 @@
+.mat-dialog-actions {
+    margin-top: -2rem !important;
+    /*padding-top: 2rem !important;*/
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.0);
+  }
+
+  /* .transparent .mat-dialog-container {
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.0);
+} */
+  
+  .loading-spinner {
+    text-align: center;
+    margin: 1rem auto;
+  }

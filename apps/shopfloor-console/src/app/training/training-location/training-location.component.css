@@ -1,0 +1,60 @@
+.training-location {
+    padding-bottom: 80px;
+}
+
+.toolbar .filter-bar + .filter-bar {
+    padding-left: 1.25em;
+    border-left: 1px solid #D5D5D9;
+}
+
+.person {
+    display: block;
+    font-weight: 600;
+}
+
+.username,
+.detail {
+    display: block;
+    font-size: 13px;
+    color: #5F6368;
+}
+
+.detail span + span::before {
+    content: '·';
+    margin: 0 0.4em;
+    color: #8A8A90;
+    font-weight: 400;
+}
+
+.no-role {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.red-text { color: #C62828; font-weight: 600; }
+.soon-text { color: #8A5A00; }
+
+.people-table .po-fill.fill-soon { background: #E0A100; }
+.people-table .po-fill.fill-red { background: #C62828; }
+
+tr.person-row {
+    cursor: pointer;
+}
+
+tr.person-row:hover td {
+    background: #F2F6FB;
+}
+
+tr.person-row:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: -2px;
+}
+
+tr.person-row.red-row td:first-child {
+    box-shadow: inset 3px 0 0 #C62828;
+}
+
+td.mat-cell {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

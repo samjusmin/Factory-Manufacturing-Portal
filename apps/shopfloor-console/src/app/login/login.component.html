@@ -1,0 +1,44 @@
+<div class="auth">
+    <div class="auth-card">
+        <h1>Sign in</h1>
+        <p class="lead">Welcome back. Sign in to the Manufacturing Portal.</p>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            <div class="field">
+                <label for="username">Username</label>
+                <input id="username" type="text" formControlName="username" class="field-input"
+                    [class.invalid]="submitted && f.username.errors" autocomplete="username" autofocus required />
+                <p class="field-error" *ngIf="submitted && f.username.errors">Enter your username</p>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <div class="password-wrap">
+                    <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" class="field-input"
+                        [class.invalid]="submitted && f.password.errors" autocomplete="current-password" required />
+                    <button type="button" class="toggle" (click)="showPassword = !showPassword"
+                        [attr.aria-pressed]="showPassword" aria-label="Show password">{{ showPassword ? 'Hide' : 'Show' }}</button>
+                </div>
+                <p class="field-error" *ngIf="submitted && f.password.errors">Enter your password</p>
+            </div>
+
+            <p class="form-error" role="alert" *ngIf="form.errors && form.errors['loginError']">
+                That username and password do not match. Check them and try again.
+            </p>
+
+            <button type="submit" class="btn-primary submit" [disabled]="loading">{{ loading ? 'Signing in...' : 'Login' }}</button>
+        </form>
+
+        <p class="reset-row"><a routerLink="/reset-password" class="reset-link">Forgot your password? Reset it</a></p>
+
+        <div class="demo" aria-label="Demo accounts">
+            <p class="demo-title">Demo accounts</p>
+            <ul>
+                <li><button type="button" class="demo-fill" (click)="fillDemo('admin')">admin</button><span>full access</span></li>
+                <li><button type="button" class="demo-fill" (click)="fillDemo('operator')">operator</button><span>staff</span></li>
+                <li><button type="button" class="demo-fill" (click)="fillDemo('partner')">partner</button><span>external partner</span></li>
+            </ul>
+            <p class="demo-hint">Choose one to fill in its sign-in details.</p>
+        </div>
+    </div>
+</div>

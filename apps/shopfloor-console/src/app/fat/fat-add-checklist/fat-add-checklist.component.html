@@ -1,0 +1,95 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">{{ getProject() }} | Add Checklist to Phase: {{ FATProjectService.phaseName }}</h1>
+    </div>
+
+    <form class="admin-form" [formGroup]="baseform" (ngSubmit)="onSubmit()">
+        <section class="form-card">
+            <h2>Unit type</h2>
+            <p class="form-hint">New checklists are added to every unit of the type you choose in this phase.</p>
+            <mat-form-field appearance="outline" class="type-select">
+                <mat-label>Select unit type</mat-label>
+                <mat-select formControlName="type" (selectionChange)="onTypeChange()">
+                    <mat-option *ngFor="let type of FATProjectService.typesource" [value]="type">{{ typeLabel(type) }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <p class="form-hint" *ngIf="FATProjectService.isLoaded && !FATProjectService.typesource.length">This phase has no units yet, so there is nothing to add checklists to.</p>
+        </section>
+
+        <ng-container *ngIf="typeSelected()">
+            <div class="two-up">
+                <section class="form-card">
+                    <h2>{{ typeLabel(selectedType) }} units in {{ FATProjectService.phaseName }} ({{ unitCount }})</h2>
+                    <ul class="plain-list">
+                        <li *ngFor="let unit of FATProjectService.typeunitsource">{{ unit.doc_no }}<ng-container *ngIf="unit.unit_no"> | {{ unit.unit_no }}</ng-container></li>
+                    </ul>
+                </section>
+
+                <section class="form-card">
+                    <h2>Existing checklist categories</h2>
+                    <div class="category-groups">
+                        <div>
+                            <h3>General</h3>
+                            <ul class="plain-list"><ng-container *ngFor="let c of FATProjectService.categorysource"><li *ngIf="isThisIn(c.name, generalList)">{{ c.name }}</li></ng-container></ul>
+                        </div>
+                        <div>
+                            <h3>Printers</h3>
+                            <ul class="plain-list"><ng-container *ngFor="let c of FATProjectService.categorysource"><li *ngIf="isPrinter(c.name)">{{ c.name }}</li></ng-container></ul>
+                            <h3>Honeywell</h3>
+                            <ul class="plain-list"><ng-container *ngFor="let c of FATProjectService.categorysource"><li *ngIf="isHoneywell(c.name)">{{ c.name }}</li></ng-container></ul>
+                        </div>
+                        <div>
+                            <h3>Options</h3>
+                            <ul class="plain-list"><ng-container *ngFor="let c of FATProjectService.categorysource"><li *ngIf="!isThisIn(c.name, generalList) && !isThisIn(c.name, hardwareList) && !isPrinter(c.name) && !isHoneywell(c.name)">{{ c.name }}</li></ng-container></ul>
+                        </div>
+                        <div>
+                            <h3>Hardware</h3>
+                            <ul class="plain-list"><ng-container *ngFor="let c of FATProjectService.categorysource"><li *ngIf="isThisIn(c.name, hardwareList)">{{ c.name }}</li></ng-container></ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <section class="form-card" [formGroup]="addform">
+                <h2>Add new checklists</h2>
+                <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>No. of Printers</mat-label>
+                        <input matInput formControlName="FATprinters" type="number" min="0" step="1">
+                        <mat-error>Enter a whole number, 0 or more</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Honeywell Scanners</mat-label>
+                        <input matInput formControlName="FAThoneywell" type="number" min="0" step="1">
+                        <mat-error>Enter a whole number, 0 or more</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="wide" *ngIf="FATProjectService.excludedOptions.length">
+                        <mat-label>Options</mat-label>
+                        <mat-select formControlName="FAToptions" multiple>
+                            <mat-option *ngFor="let option of FATProjectService.excludedOptions" [value]="option.value">{{ option.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <p class="form-hint" *ngIf="!FATProjectService.excludedOptions.length">All available options have already been added to these units.</p>
+            </section>
+        </ng-container>
+
+        <div class="form-error" role="alert" *ngIf="saveError">{{ saveError }}</div>
+
+        <div class="action-bar">
+            <span class="action-status" role="status" aria-live="polite">
+                <ng-container *ngIf="typeSelected() && isFormEmpty()">Choose printers, scanners or options to add.</ng-container>
+                <ng-container *ngIf="canAdd">Adds to {{ unitCount }} {{ unitCount === 1 ? 'unit' : 'units' }}.</ng-container>
+            </span>
+            <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!canAdd">{{ saving ? 'Adding...' : 'Add' }}</button>
+        </div>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

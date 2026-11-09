@@ -1,0 +1,86 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">FAT | {{getProject()}} Phases</h1>
+</div>
+
+<div class="fat-list" *ngIf="FATProjectService.isLoaded">
+    <div class="toolbar">
+        <mat-form-field class="search">
+            <input matInput aria-label="Search phases" (input)="FATProjectService.applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+
+        <div class="filter-bar" role="group" aria-label="Filter by progress">
+            <button type="button" class="filter-chip" *ngFor="let s of stateFilters"
+                [class.on]="FATProjectService.statusFilter === s"
+                [attr.aria-pressed]="FATProjectService.statusFilter === s"
+                (click)="FATProjectService.setStatusFilter(s)">
+                {{ s }} <span class="count">{{ FATProjectService.countByState(FATProjectService.phasesource.data, s) }}</span>
+            </button>
+        </div>
+
+        <div class="toolbar-actions" *ngIf="FATProjectService.isAdmin">
+            <a class="btn-secondary" [routerLink]="['/FAT-move-units', getProject()]">Move Units</a>
+            <a class="btn-primary" [routerLink]="['/FAT-add-phase', getProject()]">Add Phase</a>
+        </div>
+    </div>
+
+    <div class="list-empty" *ngIf="FATProjectService.loadError">
+        The phases could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="reload()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!FATProjectService.loadError && !FATProjectService.phasesource.data.length">
+        This project has no phases yet.<ng-container *ngIf="FATProjectService.isAdmin"> Use Add Phase to create one.</ng-container>
+    </p>
+    <p class="list-empty" *ngIf="FATProjectService.phasesource.data.length && !FATProjectService.phasesource.filteredData.length">
+        No phases match the current filters.
+    </p>
+
+    <!-- Table of Phases HERE -->
+    <div class='table-list' [hidden]="!FATProjectService.phasesource.filteredData.length">
+        <table mat-table matSort class="mat-elevation-z8" [dataSource]="FATProjectService.phasesource">
+            <ng-container [matColumnDef]="column.id" *ngFor="let column of columnNames">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="column.id === 'isEdit'">
+                    {{ column.value }}
+                </th>
+                <td mat-cell *matCellDef="let element;">
+                  <div [ngSwitch]="column.id" *ngIf="!element.isEdit">
+                    <div *ngSwitchCase="'isEdit'">
+                      <button *ngIf="FATProjectService.isAdmin" type="button" class="edit" mat-button aria-label="Rename phase" title="Rename phase" (click)="element.isEdit = !element.isEdit"> <fa-icon [icon]="['fas', 'pencil-alt']"></fa-icon></button>
+                    </div>
+                    <span *ngSwitchCase="'name'" class="phase-cell">
+                      <a [routerLink]="['/FAT-unit-list', getProject(), element['id']]">{{ element[column.id] }}</a>
+                    </span>
+                    <span *ngSwitchCase="'state'" class="po-chip" [ngClass]="stateClass(element.progress)">{{ stateOf(element.progress) }}</span>
+                    <span *ngSwitchCase="'progress'" class="po-progress" [attr.aria-label]="(element.progress || 0) + ' percent complete'">
+                        <span class="po-bar"><span class="po-fill" [style.width.%]="element.progress || 0"></span></span>
+                        <span class="po-pct">{{ element.progress || 0 }}%</span>
+                    </span>
+                  </div>
+                  <div *ngIf="element.isEdit">
+                    <div *ngIf="column.id === 'isEdit'">
+                      <button type="button" class="edit" mat-button aria-label="Save name" title="Save name" (click)="editRow(element)"><fa-icon [icon]="['fas', 'check']"></fa-icon></button>
+                    </div>
+                    <div *ngIf="column.id === 'name'">
+                        <mat-form-field floatLabel="never">
+                          <input
+                            [type]="column.type"
+                            matInput
+                            [(ngModel)]="element[column.id]"
+                            [placeholder]="column.value"
+                            [required]="column.required"
+                            (keydown.enter)="editRow(element)"
+                          />
+                      </mat-form-field>
+                    </div>
+                    <div *ngIf="column.id === 'progress'">
+                      {{ element[column.id] }}%
+                    </div>
+                  </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+        </table>
+    </div>
+</div>

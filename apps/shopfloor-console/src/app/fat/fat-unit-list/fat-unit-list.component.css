@@ -1,0 +1,53 @@
+/* Layout, filter buttons, status chips, progress bars and the action row are shared (styles.css). */
+
+.unit-cell a {
+    font-weight: 600;
+}
+
+.unit-type {
+    text-transform: uppercase;
+}
+
+.phase-todo {
+    margin: 0 0 1em;
+    font-size: 14px;
+    color: #4A4A4F;
+}
+
+.failed-text {
+    color: #C62828;
+}
+
+.open-checks {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    white-space: nowrap;
+}
+
+.open-n {
+    font-size: 14px;
+    color: #4A4A4F;
+}
+
+.open-none {
+    font-size: 14px;
+    color: #0A6B2E;
+}
+
+.btn-link {
+    margin: 0 0 0 0.5em;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}

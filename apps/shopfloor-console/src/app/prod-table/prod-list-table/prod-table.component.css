@@ -1,0 +1,33 @@
+.red {
+    color: red;
+}
+
+.black {
+    color: black;
+}
+
+/* Leave room between columns so neighbouring values (project, location, PO) don't run together. */
+td.mat-cell,
+th.mat-header-cell {
+    padding-right: 12px;
+}
+
+td.mat-cell[colspan] {
+    padding-right: 0;
+}
+
+/* The list has ten columns, so keep the wide ones compact: long descriptions wrap and the bar stays short. */
+th.mat-column-description,
+td.mat-column-description {
+    width: 150px;
+    max-width: 150px;
+    white-space: normal;
+}
+
+.po-progress {
+    min-width: 100px;
+}
+
+.po-progress .po-bar {
+    flex: 0 0 56px;
+}

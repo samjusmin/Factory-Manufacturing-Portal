@@ -1,0 +1,149 @@
+/* Fill exactly the space below the header (3em height + 1.5em padding + 2px border) so the
+   scrollable content area isn't taller than the window and its bottom isn't cut off. */
+mat-sidenav-container {
+    position: fixed;
+    top: calc(4.5em + 2px);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    min-width: 100%;
+}
+
+.mat-drawer {
+    padding-left: 1.5em;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border: 1px solid #E7E7E9;
+    opacity: 1;
+  }
+
+  h3 {
+    text-align: left;
+    margin-right: 1.5em;
+    padding: 1.2em 1.5em 1.2em 0em;
+    font: normal normal 600 10px/13px Source Sans Pro;
+    letter-spacing: 1.2px;
+    color: #000000;
+    text-transform: uppercase;
+    opacity: 0.4;
+    border-bottom: 1px solid #15192A1A;
+  }
+
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .nav-item {
+    margin: 0.1em 0.5em 0em 0em;
+    text-align: left;
+    font: normal normal normal 16px/20px Source Sans Pro;
+    letter-spacing: 0px;
+    color: #000000;
+    opacity: 1;
+    border-bottom: 1px solid #15192A1A;
+    background-size: cover;
+  }
+
+  .nav-item:not(.nav-group):hover {
+    background-color: rgb(234, 244, 253);
+  }
+
+  /* The whole row is the click target. */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 1em 1.5em 1.2em 0.5em;
+  }
+
+  .nav-link fa-icon {
+    margin-right: 1em;
+    color: #000000;
+  }
+
+  .nav-item.active {
+    background-color: rgb(234, 244, 253);
+    box-shadow: inset 3px 0 0 #005EB8;
+  }
+
+  .nav-link:focus-visible,
+  .nav-group-toggle:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: -2px;
+  }
+
+  /* Warehouse parent: a button, so reset the global blue button style. */
+  .nav-group {
+    border-bottom: none;
+  }
+
+  .nav-group-toggle {
+    width: 100%;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    cursor: pointer;
+    text-align: left;
+    color: #005EB8;
+    font: normal normal 600 16px/20px Source Sans Pro;
+    white-space: nowrap;
+    padding-right: 1em;
+  }
+
+  /* The arrow sits at the right edge of the row, with a guaranteed gap from the label. */
+  .nav-group-toggle .chevron {
+    flex: none;
+    margin: 0 0 0 auto;
+    padding-left: 0.9em;
+    font-size: 12px;
+    color: #000000;
+  }
+
+  .nav-group.group-active > .nav-group-toggle {
+    box-shadow: inset 3px 0 0 #005EB8;
+  }
+
+  .nav-group > .nav-group-toggle:hover {
+    background-color: rgb(234, 244, 253);
+  }
+
+  .sub-nav {
+    margin: 0;
+  }
+
+  .sub-item {
+    margin-right: 0;
+    border-bottom: none;
+  }
+
+  .sub-item .nav-link {
+    padding: 0.8em 1.5em 0.9em 2.2em;
+    font-size: 15px;
+  }
+
+  /* Selected and hovered pages inside the Warehouse group use a lighter blue than top-level items. */
+  .nav-item.sub-item.active,
+  .nav-item.sub-item:hover {
+    background-color: #F0F6FD;
+  }
+
+  a {
+    text-decoration: none;
+    object-fit: cover;
+  }
+
+  /* a:hover {
+    color: #005EB8;
+  } */
+
+  a:active {
+    color: #c6d9f5;
+  }
+
+  mat-sidenav-content {
+    padding: 0em 3em;
+  }

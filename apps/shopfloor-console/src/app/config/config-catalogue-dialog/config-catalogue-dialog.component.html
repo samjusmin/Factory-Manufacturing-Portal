@@ -1,0 +1,56 @@
+<h2 mat-dialog-title class="box-title">
+  {{ isType ? 'Add hardware type' : 'Edit category' }}
+  <span class="box-sub" *ngIf="!isType">{{ data.category.name }}</span>
+</h2>
+
+<mat-dialog-content class="catalogue-box" [formGroup]="form">
+  <p class="box-hint" *ngIf="isType">
+    A hardware type has its own checklist, which new units of that type start from. Add the checklist after creating it.
+  </p>
+
+  <ng-container *ngIf="isType">
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="category">
+        <mat-option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</mat-option>
+        <mat-option [value]="newCategory">New category...</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Hardware type name</mat-label>
+      <input matInput formControlName="name" autocomplete="off" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" *ngIf="form.value.category === newCategory">
+      <mat-label>New category name</mat-label>
+      <input matInput formControlName="newName" autocomplete="off" required>
+    </mat-form-field>
+  </ng-container>
+
+  <ng-container *ngIf="showsCategoryFields">
+    <mat-form-field appearance="outline">
+      <mat-label>Icon</mat-label>
+      <mat-select formControlName="icon">
+        <mat-option *ngFor="let icon of icons" [value]="icon"><fa-icon [icon]="['fas', icon]"></fa-icon> {{ icon }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox formControlName="uses_image" class="catalogue-check">Units have a PC image</mat-checkbox>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Parts (one per line)</mat-label>
+      <textarea matInput formControlName="parts" rows="3" placeholder="For example: Unit W1-1"></textarea>
+      <mat-hint>Each part of a unit has its own serial no. Leave empty if units have no parts.</mat-hint>
+    </mat-form-field>
+  </ng-container>
+
+  <p class="form-error" *ngIf="error" role="alert">{{ error }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="box-actions">
+  <button type="button" class="btn-secondary danger-btn" *ngIf="canDeleteCategory" [disabled]="saving" (click)="deleteCategory()">Delete category</button>
+  <span class="spacer"></span>
+  <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+  <button type="button" class="btn-primary" [disabled]="saving" (click)="save()">{{ saving ? 'Saving…' : 'Save' }}</button>
+</mat-dialog-actions>

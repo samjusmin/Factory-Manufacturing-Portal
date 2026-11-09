@@ -1,0 +1,70 @@
+<mat-sidenav-container>
+    <!-- Nobody is signed in on the login pages, so there is no menu to show. -->
+    <mat-sidenav *ngIf="username" opened mode="side">
+      <h3>Main Menu</h3>
+
+      <ul class="nav navbar-nav">
+        <ng-container *ngIf="username">
+        <li class="nav-item" [class.active]="isHome()">
+          <a class="nav-link" routerLink="/" [attr.aria-current]="isHome() ? 'page' : null">
+            <fa-icon [icon]="['fas', 'home']"></fa-icon>Home
+          </a>
+        </li>
+
+        <ng-container *ngIf="canViewWarehouse">
+          <li class="nav-item nav-group" [class.group-active]="warehouseActive">
+            <button type="button" class="nav-link nav-group-toggle" (click)="toggleWarehouse()"
+              [attr.aria-expanded]="warehouseOpen" aria-controls="warehouse-menu">
+              <fa-icon [icon]="['fas', 'warehouse']"></fa-icon>Warehouse
+              <fa-icon class="chevron" [icon]="['fas', warehouseOpen ? 'chevron-down' : 'chevron-right']"></fa-icon>
+            </button>
+            <ul id="warehouse-menu" class="sub-nav" *ngIf="warehouseOpen">
+              <li class="nav-item sub-item" [class.active]="isActive('/prod-order')">
+                <a class="nav-link" routerLink="/prod-order" [attr.aria-current]="isActive('/prod-order') ? 'page' : null">
+                  <fa-icon [icon]="['fas', 'tools']"></fa-icon>Production
+                </a>
+              </li>
+              <li class="nav-item sub-item" [class.active]="isActive('/orders')">
+                <a class="nav-link" routerLink="/orders" [attr.aria-current]="isActive('/orders') ? 'page' : null">
+                  <fa-icon [icon]="['fas', 'file-invoice']"></fa-icon>Orders
+                </a>
+              </li>
+              <li class="nav-item sub-item" [class.active]="isActive('/receiving')">
+                <a class="nav-link" routerLink="/receiving" [attr.aria-current]="isActive('/receiving') ? 'page' : null">
+                  <fa-icon [icon]="['fas', 'box-open']"></fa-icon>Receiving
+                </a>
+              </li>
+              <li class="nav-item sub-item" [class.active]="isActive('/stockkeeping')">
+                <a class="nav-link" routerLink="/stockkeeping" [attr.aria-current]="isActive('/stockkeeping') ? 'page' : null">
+                  <fa-icon [icon]="['fas', 'cubes']"></fa-icon>Inventory
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- Admins open the Config dashboard; other Config users go straight to their own location. -->
+        <li class="nav-item" *ngIf="configRoute" [class.active]="configActive">
+          <a class="nav-link" [routerLink]="configRoute" [attr.aria-current]="configActive ? 'page' : null">
+            <fa-icon [icon]="['fas', 'desktop']"></fa-icon>Config
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="canViewFat" [class.active]="fatActive">
+          <a class="nav-link" routerLink="/FAT-project-list" [attr.aria-current]="fatActive ? 'page' : null">
+            <fa-icon [icon]="['fas', 'cogs']"></fa-icon>FAT
+          </a>
+        </li>
+
+        <li class="nav-item" *ngIf="canViewTraining" [class.active]="isActive('/train-reg')">
+          <a class="nav-link" routerLink="/train-reg" [attr.aria-current]="isActive('/train-reg') ? 'page' : null">
+            <fa-icon [icon]="['fas', 'dumbbell']"></fa-icon>Training
+          </a>
+        </li>
+      </ng-container>
+      </ul>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>

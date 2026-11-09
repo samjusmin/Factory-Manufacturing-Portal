@@ -1,0 +1,34 @@
+.type-select {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* The unit list and the existing categories sit side by side when there is room. */
+.two-up {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 0 1.25em;
+}
+
+.category-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1em;
+}
+
+.category-groups h3 {
+    margin: 0 0 0.35em;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #5F6368;
+}
+
+.plain-list {
+    margin: 0 0 0.75em;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.6;
+}

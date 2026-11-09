@@ -1,0 +1,77 @@
+<ng-container *ngIf="receivingTableService.isLoaded">
+<ng-container *ngIf="receivingTableService.itemSource[0]; else notFound">
+  <form #receivingForm="ngForm">
+  <div class="detail-head">
+    <button class="back" type="button" aria-label="Back" (click)="receivingTableService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button> <h1 class="sub">{{ receivingTableService.itemSource[0].doc_no }} - {{ receivingTableService.itemSource[0].vendor }} {{ readOnly ? 'Order' : 'Receiving' }}</h1>
+
+    <div class="po-row">
+      <div class="po-status" *ngIf="receivingTableService.itemSource[0].summary as s">
+        <span class="po-chip" [ngClass]="stateClass(s.state)">{{ s.state }}</span>
+        <span class="po-progress" [attr.aria-label]="s.percent_received + ' percent received'">
+          <span class="po-bar"><span class="po-fill" [style.width.%]="s.percent_received"></span></span>
+          <span class="po-pct">{{ s.percent_received }}% received</span>
+        </span>
+        <span class="po-due">Due {{ receivingTableService.itemSource[0].expected_due_date }}<span class="po-late" *ngIf="s.overdue"> · {{ s.days_late }} days late</span></span>
+      </div>
+
+      <div class="po-actions">
+        <a class="btn-secondary" *ngIf="readOnly && receivingTableService.itemSource[0].summary?.state !== 'Open' && receivingTableService.itemSource[0].summary?.open_lines > 0" [routerLink]="['/receiving', receivingTableService.itemSource[0].doc_no]">Go to Receiving <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon></a>
+        <a class="btn-secondary" *ngIf="!readOnly" [routerLink]="['/orders', receivingTableService.itemSource[0].doc_no]">View order <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon></a>
+        <button type="button" class="btn-primary" (click)="receivingTableService.openShortageDialog()"><fa-icon [icon]="['fas', 'envelope']"></fa-icon>Report Issue/Request Update</button>
+        <button *ngIf="!readOnly" type="submit" class="btn-primary" (click)="receivingTableService.openConfirmationDialog()" [disabled]="receivingForm.invalid"><fa-icon [icon]="['fas', 'save']"></fa-icon>Receive</button>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!readOnly && receivingForm.invalid">
+      <div class="alert detail-alert">
+        Qty amount must be a number and cannot exceed qty remaining.
+      </div>
+    </ng-container>
+
+  </div>
+
+  <p class="po-notice" *ngIf="!receivingTableService.itemSource[0].items.length">
+    No lines on this order are at your locations.
+    <a [routerLink]="['/orders', receivingTableService.itemSource[0].doc_no]" *ngIf="!readOnly">View the full order</a>
+  </p>
+
+  <div class="table-responsive">
+    <table mat-table matSort [dataSource]="itemsDataSource">
+        <ng-container matColumnDef="{{ icolumn.id }}"
+          *ngFor="let icolumn of itemColumns">
+
+            <mat-header-cell *matHeaderCellDef mat-sort-header>
+              {{ icolumn.value }}</mat-header-cell>
+
+            <mat-cell *matCellDef="let elem; let i = index">
+
+              <ng-container *ngIf="icolumn.id === 'qty_to_receive' && elem['prod_order'] == ' '">
+                <mat-form-field class="qty_input" color="primary" appearance="legacy">
+                  <input matInput id="qtyreceiving-{{i}}" name="qtyreceiving{{origIndex(elem)}}" [(ngModel)]="receivingTableService.qtyreceiving[origIndex(elem)]" maxAmount="{{elem['qty_remaining']}}" ng-init=0 (keydown)="receivingTableService.moveCell($event)" autocomplete="off">
+                </mat-form-field>
+              </ng-container>
+              <ng-container *ngIf="icolumn.id !== 'qty_to_receive'">
+                <a *ngIf="icolumn.id === 'prod_order'" [routerLink]="['/prod-order', elem.prod_order]">
+                  {{ elem[icolumn.id] }}
+                </a>
+                <ng-container *ngIf="icolumn.id !== 'prod_order'">
+                  {{ elem[icolumn.id] }}
+                </ng-container>
+
+              </ng-container>
+
+            </mat-cell>
+
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="detailColumns;"></mat-header-row>
+        <mat-row *matRowDef="let row; let even = even; columns: detailColumns" [ngClass]="{gray: even}"></mat-row>
+    </table>
+  </div>
+    </form>
+</ng-container>
+
+<ng-template #notFound>
+  <p class="po-notice">This order could not be found, or none of it is at your locations.</p>
+</ng-template>
+</ng-container>

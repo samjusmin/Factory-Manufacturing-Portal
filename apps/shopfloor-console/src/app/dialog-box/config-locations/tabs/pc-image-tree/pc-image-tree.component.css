@@ -1,0 +1,35 @@
+.pc-image-tree {
+  display: block;
+  padding: 4px 0;
+}
+
+.tree-node {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+  font-size: 15px;
+  color: #1F1F23;
+}
+
+.parent-node {
+  min-height: 40px;
+  font: normal normal 600 16px/24px Source Sans Pro;
+  color: #00458F;
+}
+
+.parent-label {
+  margin-left: 4px;
+}
+
+.children-node {
+  margin-left: 4px;
+}
+
+.children-node.hidden {
+  display: none;
+}
+
+.tree-spacer {
+  width: 40px;
+  display: inline-block;
+}

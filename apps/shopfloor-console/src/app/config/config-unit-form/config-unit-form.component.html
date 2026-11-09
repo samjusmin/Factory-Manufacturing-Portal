@@ -1,0 +1,173 @@
+<ng-container *ngIf="loaded && loadMessage">
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Config | {{ type }}</h1>
+  </div>
+  <div class="config-page">
+    <div class="list-empty">
+      {{ loadMessage }}
+      <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+  </div>
+</ng-container>
+
+<form *ngIf="loaded && !loadMessage && form" class="checklist-page unit-form" [formGroup]="form" (keydown.enter)="$event.preventDefault()" novalidate>
+  <div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="ConfigService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">{{ title }}</h1>
+  </div>
+
+  <p class="subtitle unit-sub">{{ type }} at {{ location }}.</p>
+
+  <div class="merge-notice" role="alert" *ngIf="mergeNotice">
+    <span>
+      {{ mergeNotice }}
+      <strong *ngIf="unresolvedCount"> {{ unresolvedCount }} {{ unresolvedCount === 1 ? 'check was' : 'checks were' }} changed by both of you; choose which to keep.</strong>
+    </span>
+    <button type="button" class="btn-link" (click)="dismissNotice()">Dismiss</button>
+  </div>
+
+  <section class="form-card" aria-labelledby="unit-details">
+    <h2 id="unit-details">Unit details</h2>
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Serial no.</mat-label>
+        <input matInput formControlName="serial_no" autocomplete="off" required>
+        <mat-hint>Identifies this unit, so it must be unique.</mat-hint>
+        <mat-error *ngIf="form.get('serial_no').hasError('taken')">{{ form.get('serial_no').getError('taken') }}</mat-error>
+        <mat-error *ngIf="form.get('serial_no').hasError('required')">Enter the serial no.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Device name</mat-label>
+        <input matInput formControlName="device_name" autocomplete="off">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="modelOptions.length > 1">
+        <mat-label>Model</mat-label>
+        <mat-select formControlName="model" required>
+          <mat-option *ngFor="let model of modelOptions" [value]="model">{{ model }}</mat-option>
+        </mat-select>
+        <mat-error>Choose a model.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="modelOptions.length === 1">
+        <mat-label>Model</mat-label>
+        <input matInput formControlName="model" readonly>
+        <mat-hint>The only {{ categoryName }} model at {{ location }}.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="category?.uses_image">
+        <mat-label>PC image</mat-label>
+        <mat-select formControlName="pc_image">
+          <mat-option value="">None</mat-option>
+          <mat-option *ngFor="let image of imageChoices" [value]="image">{{ image }}</mat-option>
+        </mat-select>
+        <mat-hint *ngIf="!images.length">No PC images are set up for {{ type }} at {{ location }}.</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Project</mat-label>
+        <mat-select formControlName="project">
+          <mat-option *ngFor="let project of projectChoices" [value]="project">{{ project === stock ? 'STOCK (not allocated)' : project }}</mat-option>
+        </mat-select>
+        <mat-hint>Allocate it to a project once that is known.</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <p class="form-hint no-model" *ngIf="!modelOptions.length">
+      No {{ categoryName }} models are set up for {{ location }}, so there is no model to choose.
+      An administrator can add them under Hardware List and Edit Locations.
+    </p>
+
+    <ng-container *ngIf="category?.parts?.length">
+      <h3 class="card-sub">Parts</h3>
+      <div class="form-grid">
+        <mat-form-field appearance="outline" *ngFor="let name of category.parts; let i = index">
+          <mat-label>{{ name }} serial no.</mat-label>
+          <input matInput [formControl]="partControls[i]" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </ng-container>
+  </section>
+
+  <section class="progress-strip" aria-label="Checklist progress">
+    <div><strong>{{ doneCount }} of {{ checkList.length }}</strong> checks done</div>
+    <span class="po-progress" [attr.aria-label]="donePercent + ' percent done'">
+      <span class="po-bar"><span class="po-fill" [style.width.%]="donePercent"></span></span>
+      <span class="po-pct">{{ donePercent }}%</span>
+    </span>
+  </section>
+
+  <p class="list-empty" *ngIf="!rows.length">This hardware type has no checklist yet. An administrator can write one under Item Checklists.</p>
+
+  <div class="bulk-bar" *ngIf="allUnchecked.length">
+    <span>{{ allUnchecked.length }} {{ allUnchecked.length === 1 ? 'check has' : 'checks have' }} not been answered yet.</span>
+    <button type="button" class="btn-secondary" (click)="markComplete(checkList, 'this checklist')">Mark unchecked as Complete</button>
+  </div>
+
+  <div class="checks">
+    <ng-container *ngFor="let section of sections; trackBy: trackSection">
+      <div class="section-head" *ngIf="section.heading">
+        <h2>{{ section.heading.description }}</h2>
+        <button type="button" class="btn-link" *ngIf="unchecked(section.rows).length"
+          (click)="markComplete(section.rows, 'the section ' + section.heading.description)">
+          Mark section Complete ({{ unchecked(section.rows).length }})
+        </button>
+      </div>
+
+      <ul class="check-list">
+        <li class="check-card" *ngFor="let row of section.rows; let i = index; trackBy: trackRow"
+            [class.row-changed]="isChanged(row)">
+          <div class="check-main">
+            <span class="check-desc">{{ row.description }}</span>
+            <span class="check-ref" *ngIf="row.reference">{{ row.reference }}</span>
+          </div>
+
+          <div class="status-group" role="radiogroup" [attr.aria-label]="'Status of ' + row.description">
+            <label class="status-opt" *ngFor="let opt of statusOptions" [ngClass]="opt.css" [class.on]="row.status === opt.value">
+              <input type="radio" [name]="'status-' + rows.indexOf(row)"
+                [value]="opt.value" [checked]="row.status === opt.value" (click)="chooseStatus(row, opt.value, $event)">
+              <fa-icon *ngIf="opt.icon" [icon]="['fas', opt.icon]"></fa-icon>
+              <span>{{ opt.label }}</span>
+            </label>
+          </div>
+
+          <div class="check-fields one-field">
+            <input type="text" class="field-input" [attr.aria-label]="'Notes for ' + row.description" placeholder="Notes"
+              [(ngModel)]="row.comment" [ngModelOptions]="{standalone: true}" autocomplete="off">
+          </div>
+
+          <div class="check-meta" *ngIf="row.status && row.checked_by">
+            Checked by {{ row.checked_by }}<ng-container *ngIf="row.date_checked"> on {{ row.date_checked | date: 'dd/MM/yyyy' }}</ng-container>
+          </div>
+
+          <div class="conflict" *ngIf="conflictFor(row) as c" role="group" [attr.aria-label]="'Conflict on ' + row.description">
+            <span class="conflict-text">
+              Someone else set this to <strong>{{ c.theirs.status || 'unanswered' }}</strong><ng-container *ngIf="c.theirs.comment"> ("{{ c.theirs.comment }}")</ng-container><ng-container *ngIf="c.theirs.checked_by"> ({{ c.theirs.checked_by }})</ng-container>.
+              You had <strong>{{ c.mine.status || 'unanswered' }}</strong><ng-container *ngIf="c.mine.comment"> ("{{ c.mine.comment }}")</ng-container>.
+            </span>
+            <span class="conflict-actions">
+              <button type="button" class="btn-secondary" (click)="useTheirs(c)">Use theirs</button>
+              <button type="button" class="btn-secondary" (click)="keepMine(c)">Keep mine</button>
+            </span>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+
+  <div class="save-bar" role="region" aria-label="Save changes">
+    <span class="save-status" role="status" aria-live="polite">
+      <span *ngIf="saveState === 'saving'">Saving...</span>
+      <span *ngIf="unresolvedCount" class="bad">Choose which version to keep for {{ unresolvedCount }} {{ unresolvedCount === 1 ? 'check' : 'checks' }} before saving.</span>
+      <span *ngIf="saveState !== 'saving' && !unresolvedCount && hasUnsavedChanges()" class="dirty">Unsaved changes</span>
+      <span *ngIf="saveState !== 'saving' && !unresolvedCount && !hasUnsavedChanges() && isNew">Not saved yet</span>
+      <span *ngIf="saveState === 'saved' && !hasUnsavedChanges()" class="ok">All changes saved</span>
+      <span *ngIf="saveState === 'failed'" class="bad">Could not save. Your changes are still here, try again.</span>
+    </span>
+    <button type="button" class="btn-primary" [disabled]="!canSave" (click)="saveChanges()">
+      <fa-icon [icon]="['fas', 'save']"></fa-icon>{{ saveState === 'saving' ? 'Saving...' : 'Save' }}
+    </button>
+  </div>
+</form>

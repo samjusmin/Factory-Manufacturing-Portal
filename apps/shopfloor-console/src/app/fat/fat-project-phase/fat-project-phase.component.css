@@ -1,0 +1,19 @@
+/* Layout, filter buttons, status chips and progress bars are shared (styles.css). */
+
+/* The edit pencil shrinks to its content and sits flush against the right edge of the table. */
+th.mat-header-cell.cdk-column-isEdit,
+td.mat-cell.cdk-column-isEdit {
+    width: 1%;
+    text-align: right;
+    padding-right: 8px;
+}
+
+.phase-cell a {
+    font-weight: 600;
+}
+
+button.edit {
+    min-width: 0;
+    padding: 0 8px;
+}
+

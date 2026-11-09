@@ -1,0 +1,82 @@
+[
+  {
+    "description": "Inspect enclosure for cosmetic damage",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm all cable looms are correctly routed and secured",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Torque-check mounting hardware to specification",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm component matches build-of-materials revision",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Test module power-up and self-check LEDs",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Verify grounding / earth bonding continuity",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm ventilation and cooling paths are unobstructed",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Check connector seating and strain relief",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Apply protective covers and seals as required",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Record component serial numbers",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  }
+]

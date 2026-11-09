@@ -1,0 +1,114 @@
+[
+  {
+    "description": "Console Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Main Control Panel Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Depth Camera Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Card Reader Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Scanner Serial No. (1)",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Scanner Serial No. (2)",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Biometric Module Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Monitor Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Handheld Scanner Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Printer Serial No. (1)",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Printer Serial No. (2)",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Receipt Printer Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Document Reader Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Payment Terminal Serial No.",
+    "reference": null,
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  }
+]

@@ -1,0 +1,103 @@
+/* Status chips and filter buttons are shared (styles.css); these are the stock-specific states. */
+.po-chip.state-in-stock { background: #E3F5EA; color: #0A6B2E; }
+.po-chip.state-low-stock { background: #FFF4DB; color: #8A5A00; }
+.po-chip.state-out-of-stock { background: #FDE7E7; color: #C62828; }
+
+/* Warning filters read as warnings while they are not selected. */
+.filter-chip.stock-warn:not(.on) {
+    color: #8A5A00;
+    border-color: #EBD7A5;
+}
+
+tr.element-row {
+    cursor: pointer;
+}
+
+tr.element-row:hover td {
+    background: #F0F6FD;
+}
+
+tr.problem-row td:first-child {
+    box-shadow: inset 3px 0 0 #E0A100;
+}
+
+.item-no {
+    font-weight: 600;
+}
+
+/* Level bar: how full the stock is against its reorder point (tick) and full level. */
+.stock-level {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75em;
+    min-width: 140px;
+}
+
+.level-bar {
+    position: relative;
+    flex: 0 0 84px;
+    height: 8px;
+    border-radius: 4px;
+    background: #E7E7E9;
+}
+
+.level-fill {
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+    background: #1E9E4A;
+    transition: width 0.3s ease;
+}
+
+.level-fill.state-low-stock { background: #E0A100; }
+.level-fill.state-out-of-stock { background: #C62828; }
+
+.level-marker {
+    position: absolute;
+    top: -3px;
+    width: 2px;
+    height: 14px;
+    background: #4A4A4F;
+    border-radius: 1px;
+}
+
+.level-qty {
+    min-width: 2.5em;
+    font-weight: 600;
+}
+
+td.mat-cell,
+th.mat-header-cell {
+    padding-right: 16px;
+}
+
+td.mat-cell[colspan] {
+    padding-right: 0;
+}
+
+.stock-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em 3em;
+    margin: 0;
+    padding: 1em 24px 1.25em 60px;
+    width: 100%;
+    background: #FFFFFF;
+    border-bottom: 1px solid #EDEDEF;
+}
+
+.stock-detail dt {
+    font: normal normal 600 12px/16px Source Sans Pro;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #5F6368;
+}
+
+.stock-detail dd {
+    margin: 2px 0 0;
+    font: normal normal 600 16px/22px Source Sans Pro;
+}
+
+.stock-detail .need dd {
+    color: #C62828;
+}

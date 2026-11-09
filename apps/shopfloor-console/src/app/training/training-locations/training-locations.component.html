@@ -1,0 +1,90 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="goHome()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Training Register</h1>
+</div>
+
+<div class="training" *ngIf="loaded">
+    <p class="subtitle intro">
+        Who is registered at each location, the roles they hold, and whether their training is in date.
+        Each module is renewed every {{ validityYears }} years.
+    </p>
+
+    <div class="list-empty" *ngIf="failed">
+        The training register could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+
+    <ng-container *ngIf="!failed">
+        <div class="tiles" role="list" aria-label="Summary">
+            <div class="tile" role="listitem">
+                <span class="tile-value">{{ totals.people }}</span>
+                <span class="tile-label">People registered</span>
+            </div>
+            <div class="tile good" role="listitem">
+                <span class="tile-value">{{ totals.current }}</span>
+                <span class="tile-label">Up to date</span>
+            </div>
+            <div class="tile soon" role="listitem">
+                <span class="tile-value">{{ totals.dueSoon }}</span>
+                <span class="tile-label">Due soon</span>
+            </div>
+            <div class="tile bad" [class.zero]="!totals.attention" role="listitem">
+                <span class="tile-value">{{ totals.attention }}</span>
+                <span class="tile-label">Need attention</span>
+            </div>
+            <div class="tile quiet" role="listitem" *ngIf="totals.noRole">
+                <span class="tile-value">{{ totals.noRole }}</span>
+                <span class="tile-label">With no role yet</span>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <mat-form-field class="search">
+                <input matInput aria-label="Search locations or people" placeholder="Search locations or people"
+                    [value]="term" (input)="setTerm($event.target.value)">
+            </mat-form-field>
+            <div class="filter-bar" role="group" aria-label="Filter locations">
+                <button type="button" class="filter-chip overdue-toggle" [class.on]="attentionOnly"
+                    [attr.aria-pressed]="attentionOnly" (click)="toggleAttention()">
+                    Needs attention <span class="count">{{ attentionCount }}</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="list-empty" *ngIf="!cards.length">There are no locations yet.</p>
+        <p class="list-empty" *ngIf="cards.length && !visible.length">No locations match the current filters.</p>
+
+        <div class="location-grid" *ngIf="visible.length">
+            <a class="location-card" *ngFor="let card of visible; trackBy: trackByLocation"
+                [routerLink]="['/train-reg', card.location]" [class.has-red]="card.totals.attention">
+                <span class="card-head">
+                    <span class="card-title">{{ card.location }}</span>
+                    <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+                </span>
+                <span class="people">
+                    <fa-icon [icon]="['fas', 'users']"></fa-icon>
+                    {{ card.totals.people }} {{ card.totals.people === 1 ? 'person' : 'people' }}
+                    <span class="po-chip tr-attention" *ngIf="card.totals.attention">{{ card.totals.attention }} need attention</span>
+                    <span class="po-chip tr-due-soon" *ngIf="!card.totals.attention && card.totals.dueSoon">{{ card.totals.dueSoon }} due soon</span>
+                    <span class="po-chip tr-current" *ngIf="card.totals.people && !card.totals.attention && !card.totals.dueSoon && card.totals.current === card.totals.people">All up to date</span>
+                </span>
+
+                <span class="bar" *ngIf="card.counts.required" role="img"
+                    [attr.aria-label]="card.counts.valid + ' in date, ' + card.counts.dueSoon + ' due soon, ' + (card.counts.expired + card.counts.missing) + ' expired or not done'">
+                    <span class="seg valid" [style.width.%]="card.bar.valid"></span>
+                    <span class="seg soon" [style.width.%]="card.bar.dueSoon"></span>
+                    <span class="seg red" [style.width.%]="card.bar.red"></span>
+                </span>
+                <span class="legend" *ngIf="card.counts.required">
+                    <span class="valid-text">{{ card.counts.valid }} in date</span>
+                    <span class="soon-text" *ngIf="card.counts.dueSoon">{{ card.counts.dueSoon }} due soon</span>
+                    <span class="red-text" *ngIf="card.counts.expired">{{ card.counts.expired }} expired</span>
+                    <span class="red-text" *ngIf="card.counts.missing">{{ card.counts.missing }} not done</span>
+                </span>
+                <span class="legend quiet-text" *ngIf="!card.counts.required">
+                    {{ card.totals.people ? 'No one here holds a role yet, so no modules are required.' : 'No one is registered here yet.' }}
+                </span>
+            </a>
+        </div>
+    </ng-container>
+</div>

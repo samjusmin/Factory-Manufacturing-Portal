@@ -1,0 +1,57 @@
+<main class="home">
+  <section class="hero">
+    <div>
+      <h1>{{ greeting }}<ng-container *ngIf="name">, {{ name }}</ng-container></h1>
+      <p class="date">{{ today | date: 'fullDate' }}</p>
+    </div>
+    <span class="badge" *ngIf="roleLabel">{{ roleLabel }}</span>
+  </section>
+
+  <p class="notice" *ngIf="failed" role="alert">
+    <span>
+      Some figures could not be loaded.
+      <button type="button" class="retry" (click)="load()">Try again</button>
+    </span>
+  </p>
+
+  <section *ngIf="warehouseCards.length" aria-labelledby="warehouse-heading">
+    <h2 id="warehouse-heading" class="section-label">Warehouse</h2>
+    <div class="grid">
+      <ng-container *ngFor="let card of warehouseCards; trackBy: trackByTitle">
+        <ng-container *ngTemplateOutlet="cardTpl; context: { $implicit: card }"></ng-container>
+      </ng-container>
+    </div>
+  </section>
+
+  <p class="notice" *ngIf="!warehouseCards.length && !quickCards.length">
+    You have not been given access to any part of the app yet. Ask an administrator to set your roles.
+  </p>
+
+  <section *ngIf="quickCards.length" aria-labelledby="quick-heading">
+    <h2 id="quick-heading" class="section-label">Quick access</h2>
+    <div class="grid quick">
+      <ng-container *ngFor="let card of quickCards; trackBy: trackByTitle">
+        <ng-container *ngTemplateOutlet="cardTpl; context: { $implicit: card }"></ng-container>
+      </ng-container>
+    </div>
+  </section>
+</main>
+
+<ng-template #cardTpl let-card>
+  <a class="card" [routerLink]="card.link">
+    <span class="card-head">
+      <span class="icon"><fa-icon [icon]="['fas', card.icon]"></fa-icon></span>
+      <span class="card-title">{{ card.title }}</span>
+      <fa-icon class="go" [icon]="['fas', 'arrow-right']"></fa-icon>
+    </span>
+    <span class="label desc" *ngIf="card.value === undefined">{{ card.label }}</span>
+    <ng-container *ngIf="card.value !== undefined">
+      <span class="value" [class.skeleton]="card.value === null && !failed">{{ card.value !== null ? card.value : (failed ? '–' : ' ') }}</span>
+      <span class="label">{{ card.label }}</span>
+    </ng-container>
+    <span class="meta" [class.warn]="card.warn" *ngIf="card.meta">{{ card.meta }}</span>
+    <span class="bar" *ngIf="card.progress !== undefined" aria-hidden="true">
+      <span class="fill" [style.width.%]="card.progress"></span>
+    </span>
+  </a>
+</ng-template>

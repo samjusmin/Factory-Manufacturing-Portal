@@ -1,0 +1,7 @@
+.cdk-column-qty, .cdk-column-qty_per, .cdk-column-qty_received, .cdk-column-stock {
+    text-align: center;
+}
+
+button.fill, button.save {
+    float: right;
+}

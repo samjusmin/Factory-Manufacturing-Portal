@@ -1,0 +1,64 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="cancel()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">{{ getProject() }} | Move Units between Phases</h1>
+    </div>
+
+    <form class="admin-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <section class="form-card">
+            <h2>Phases</h2>
+            <div class="form-grid">
+                <mat-form-field appearance="outline">
+                    <mat-label>From Phase</mat-label>
+                    <mat-select formControlName="FromFATphase" (selectionChange)="onFromPhaseChange()" required>
+                        <mat-option *ngFor="let phase of FATProjectService.phasesource.data" [value]="phase.id">{{ phaseLabel(phase) }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>To Phase</mat-label>
+                    <mat-select formControlName="ToFATphase" required>
+                        <mat-option *ngFor="let phase of FATProjectService.phasesource.data" [value]="phase.id"
+                            [disabled]="phase.id === form.value.FromFATphase">{{ phaseLabel(phase) }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </section>
+
+        <section class="form-card" *ngIf="fromSelected">
+            <h2>Units to move</h2>
+
+            <p class="form-hint" *ngIf="!FATProjectService.isLoaded">Loading units...</p>
+            <p class="form-hint" *ngIf="FATProjectService.isLoaded && !units.length">This phase has no units to move.</p>
+
+            <ng-container *ngIf="FATProjectService.isLoaded && units.length">
+                <div class="select-head">
+                    <mat-checkbox [checked]="allSelected" [indeterminate]="someSelected" (change)="toggleAll($event.checked)">Select all</mat-checkbox>
+                    <span class="select-count" role="status" aria-live="polite">{{ selected.size }} of {{ units.length }} selected</span>
+                </div>
+                <ul class="unit-picks">
+                    <li *ngFor="let unit of units">
+                        <mat-checkbox [checked]="isSelected(unit.doc_no)" (change)="toggle(unit.doc_no, $event.checked)">
+                            {{ unit.doc_no }}<span class="unit-no" *ngIf="unit.unit_no"> | {{ unit.unit_no }}</span>
+                            <span class="unit-progress">{{ unit.progress || 0 }}%</span>
+                        </mat-checkbox>
+                    </li>
+                </ul>
+            </ng-container>
+        </section>
+
+        <div class="form-error" role="alert" *ngIf="saveError">{{ saveError }}</div>
+
+        <div class="action-bar">
+            <span class="action-status" role="status" aria-live="polite">
+                <ng-container *ngIf="fromSelected && !selected.size">Tick at least one unit to move.</ng-container>
+            </span>
+            <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="!canMove">{{ saving ? 'Moving...' : 'Move' + (selected.size ? ' ' + selected.size + (selected.size === 1 ? ' Unit' : ' Units') : '') }}</button>
+        </div>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

@@ -1,0 +1,193 @@
+:host {
+    position: relative;
+    display: inline-block;
+    width: 168px;
+}
+
+/* The closed dropdown: a bar showing what it filters and what is chosen. */
+.picker-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    background: #FFFFFF;
+    box-shadow: none;
+    color: #1F2A37;
+    font: normal normal normal 15px/1 'Source Sans Pro', sans-serif;
+    text-align: left;
+    cursor: pointer;
+}
+
+.picker-trigger:hover {
+    border-color: #8FB4DC;
+}
+
+.picker-trigger.open {
+    border-color: #005EB8;
+    box-shadow: 0 0 0 1px #005EB8;
+}
+
+.picker-trigger:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.picker-label {
+    flex: none;
+    color: #5F6368;
+}
+
+.picker-value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
+    color: #5F6368;
+}
+
+/* Something is chosen: the choice stands out. */
+.picker-trigger.has-value {
+    border-color: #005EB8;
+    background: #F0F6FD;
+}
+
+.picker-trigger.has-value .picker-value {
+    font-weight: 600;
+    color: #003D7A;
+}
+
+.picker-caret {
+    flex: none;
+    font-size: 11px;
+    color: #5F6368;
+}
+
+/* The open dropdown: search box, a line of counts and actions, then the list. */
+.picker-panel {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    width: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 6px #0000001A, 0px 12px 32px #00000026;
+}
+
+.picker-search {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    padding: 0 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    font: normal normal normal 15px/20px 'Source Sans Pro', sans-serif;
+    color: #1F2A37;
+}
+
+.picker-search:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.picker-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 32px;
+    padding: 2px 2px 0;
+}
+
+.picker-count {
+    flex: 1;
+    font-size: 13px;
+    color: #5F6368;
+}
+
+.picker-link {
+    margin: 0;
+    padding: 6px 2px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 13px/1 'Source Sans Pro', sans-serif;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.picker-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.picker-list {
+    border-top: 1px solid #ECECEF;
+}
+
+.picker-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+    height: 40px;
+    padding: 0 8px;
+    border-radius: 4px;
+    color: #1F2A37;
+    font: normal normal normal 15px/20px 'Source Sans Pro', sans-serif;
+    cursor: pointer;
+}
+
+.picker-option:hover {
+    background: #F0F6FD;
+}
+
+.picker-option.on {
+    font-weight: 600;
+}
+
+.picker-option input {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    accent-color: #005EB8;
+}
+
+.option-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.option-hint {
+    flex: none;
+    max-width: 40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: normal;
+    color: #5F6368;
+}
+
+.picker-empty {
+    margin: 0;
+    padding: 14px 8px;
+    border-top: 1px solid #ECECEF;
+    font-size: 14px;
+    color: #5F6368;
+}

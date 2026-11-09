@@ -1,0 +1,74 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">FAT | {{getProject()}} - {{FATProjectService.phaseName}} Export</h1>
+    </div>
+
+    <section class="select-card" aria-labelledby="select-heading">
+        <div class="card-head">
+            <div>
+                <h2 id="select-heading">Select units to export</h2>
+                <p class="hint">Choose the units to include in the FAT report, then preview it before exporting.</p>
+            </div>
+            <mat-checkbox class="select-all"
+                [checked]="allSelected"
+                [indeterminate]="someSelected"
+                [disabled]="!units.length"
+                (change)="toggleAll($event.checked)">
+                Select all
+            </mat-checkbox>
+        </div>
+
+        <ng-container *ngIf="units.length; else noUnits">
+            <div class="unit-grid unit-head" aria-hidden="true">
+                <span>Unit</span>
+                <span>Serial No.</span>
+                <span>Location</span>
+                <span>Type</span>
+                <span class="num">Progress</span>
+            </div>
+
+            <ul class="unit-list">
+                <li class="unit-row" *ngFor="let unit of units" [class.selected]="isSelected(unit.doc_no)">
+                    <div class="unit-grid">
+                        <mat-checkbox class="unit-check"
+                            [checked]="isSelected(unit.doc_no)"
+                            (change)="onChange(unit.doc_no, $event.checked)">
+                            <span class="unit-name">{{ unit.doc_no }}</span>
+                        </mat-checkbox>
+                        <span>{{ unit.unit_no || '—' }}</span>
+                        <span>{{ unit.location }}</span>
+                        <span class="type">{{ unit.unit_type }}</span>
+                        <span class="num" [ngClass]="progressColour(unit.progress) ? 'complete' : 'incomplete'">{{ unit.progress }}%</span>
+                    </div>
+                </li>
+            </ul>
+        </ng-container>
+
+        <ng-template #noUnits>
+            <p class="empty">There are no units in this phase yet, so there is nothing to export.</p>
+        </ng-template>
+
+        <div class="card-foot">
+            <span class="count" aria-live="polite">
+                <ng-container *ngIf="emailFormArray.length; else pickSome">
+                    <strong>{{ emailFormArray.length }}</strong> of {{ units.length }} selected
+                </ng-container>
+                <ng-template #pickSome>Select at least one unit to continue.</ng-template>
+            </span>
+            <span class="foot-actions">
+                <button type="button" class="btn-secondary" [disabled]="!emailFormArray.length || exporting" (click)="exportCsv()">
+                    {{ working === 'csv' ? 'Preparing...' : 'Export CSV' }}
+                </button>
+                <button type="submit" class="btn-primary" [disabled]="!emailFormArray.length || exporting" (click)="onSubmit()">
+                    {{ working === 'preview' ? 'Preparing...' : 'Preview Report' }}
+                </button>
+            </span>
+        </div>
+        <p class="form-error export-error" role="alert" *ngIf="error">{{ error }}</p>
+    </section>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

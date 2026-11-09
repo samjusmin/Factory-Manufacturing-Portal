@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Confirm Update</h2>
+<mat-dialog-content *ngIf="shipForm" class="mat-typography" [formGroup]="shipForm">
+  <!--<h3>Develop across all platforms</h3>-->
+  <p>To post receiving, please fill in the shipping reference information below.
+
+      Please ensure all information are correct as this cannot be reversed.
+  </p>
+
+  <mat-form-field appearance="fill" style="width:100%">
+    <mat-label>Shipping Reference No.</mat-label>
+    <input matInput formControlName="shipRef" maxlength="35" required>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-button (click)="save()" [disabled]="shipForm.invalid">OK</button>
+</mat-dialog-actions>

@@ -1,0 +1,92 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back to all locations" title="Back" (click)="goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">Training | {{ location }}</h1>
+</div>
+
+<div class="training-location" *ngIf="loaded">
+    <div class="list-empty" *ngIf="failed">
+        The training register could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="load()">Try again</button>
+    </div>
+
+    <div class="list-empty" *ngIf="!failed && notFound">
+        There is no location called {{ location }}.
+        <button type="button" class="btn-secondary retry" (click)="goBack()">All locations</button>
+    </div>
+
+    <ng-container *ngIf="!failed && !notFound">
+        <div class="toolbar">
+            <mat-form-field class="search">
+                <input matInput aria-label="Search people" placeholder="Search people" [value]="term" (input)="setTerm($event.target.value)">
+            </mat-form-field>
+            <div class="filter-bar" role="group" aria-label="Filter by role">
+                <button type="button" class="filter-chip" *ngFor="let f of roleFilters"
+                    [class.on]="roleFilter === f.value" [attr.aria-pressed]="roleFilter === f.value" (click)="setRole(f.value)">
+                    {{ f.label }} <span class="count">{{ roleCounts[f.value] }}</span>
+                </button>
+            </div>
+            <div class="filter-bar" role="group" aria-label="Filter by status">
+                <button type="button" class="filter-chip" *ngFor="let f of statusFilters"
+                    [class.on]="statusFilter === f.value" [class.overdue-toggle]="f.value === 'attention'"
+                    [attr.aria-pressed]="statusFilter === f.value" (click)="setStatus(f.value)">
+                    {{ f.label }} <span class="count">{{ statusCounts[f.value] }}</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="list-empty" *ngIf="!source.data.length">Nobody is registered at this location yet.</p>
+        <p class="list-empty" *ngIf="source.data.length && !source.filteredData.length">No one matches the current filters.</p>
+
+        <div class="table-list" [hidden]="!source.filteredData.length">
+            <table mat-table [trackBy]="trackByUsername" matSort matSortActive="state" matSortDirection="asc" class="mat-elevation-z8 people-table" [dataSource]="source">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                    <td mat-cell *matCellDef="let user">
+                        <span class="person">{{ user.name }}</span>
+                        <span class="username">{{ roleLabel(user.roles) }}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="areas">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Roles</th>
+                    <td mat-cell *matCellDef="let user">
+                        <span class="role-chip" *ngFor="let area of user.areas">{{ areaLabels[area] }}</span>
+                        <span class="no-role" *ngIf="!user.areas.length">No role</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="progress">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Training in date</th>
+                    <td mat-cell *matCellDef="let user">
+                        <span class="po-progress" *ngIf="user.state !== 'none'">
+                            <span class="po-bar" role="img" [attr.aria-label]="user.percentCurrent + ' percent in date'">
+                                <span class="po-fill" [class.fill-soon]="user.state === 'due-soon'" [class.fill-red]="user.state === 'attention'" [style.width.%]="user.percentCurrent"></span>
+                            </span>
+                            <span class="po-pct">{{ user.percentCurrent }}%</span>
+                        </span>
+                        <span class="detail" *ngIf="user.state !== 'none'">{{ user.counts.valid + user.counts.dueSoon }} of {{ user.counts.required }} modules</span>
+                        <span class="detail" *ngIf="user.state === 'none'">Nothing required</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="state">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                    <td mat-cell *matCellDef="let user">
+                        <span class="po-chip" [ngClass]="'tr-' + user.state">{{ overallLabels[user.state] }}</span>
+                        <span class="detail">
+                            <span class="red-text" *ngIf="user.counts.expired">{{ user.counts.expired }} expired</span>
+                            <span class="red-text" *ngIf="user.counts.missing">{{ user.counts.missing }} not done</span>
+                            <span class="soon-text" *ngIf="user.counts.dueSoon">{{ user.counts.dueSoon }} due soon</span>
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                <tr mat-row *matRowDef="let user; columns: columns" class="person-row"
+                    [class.red-row]="user.state === 'attention'" tabindex="0" role="link"
+                    [attr.aria-label]="'Open ' + user.name"
+                    (click)="open(user)" (keydown.enter)="open(user)"></tr>
+            </table>
+        </div>
+    </ng-container>
+</div>

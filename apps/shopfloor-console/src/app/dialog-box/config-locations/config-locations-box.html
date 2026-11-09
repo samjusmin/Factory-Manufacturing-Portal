@@ -1,0 +1,43 @@
+<h2 mat-dialog-title class="box-title">
+  {{ data['location'] }}
+  <span class="box-sub">Manage location access</span>
+</h2>
+
+<mat-dialog-content class="box-content">
+  <p class="box-hint">Choose what this location can configure, which PC images and hardware models it can pick from, and the projects its units can be allocated to.</p>
+
+  <mat-tab-group animationDuration="0ms">
+
+    <mat-tab label="Config Access">
+      <app-hardware-tree
+        [locationData]="data">
+      </app-hardware-tree>
+    </mat-tab>
+
+    <mat-tab label="PC Image Access">
+      <app-pc-image-tree
+        [locationData]="data">
+      </app-pc-image-tree>
+    </mat-tab>
+
+    <mat-tab label="Hardware Access">
+      <app-hardware-type-list
+        [locationData]="data">
+      </app-hardware-type-list>
+    </mat-tab>
+
+    <mat-tab label="Projects">
+      <app-location-projects
+        [locationData]="data">
+      </app-location-projects>
+    </mat-tab>
+
+  </mat-tab-group>
+</mat-dialog-content>
+
+<p class="box-error form-error" *ngIf="error" role="alert">{{ error }}</p>
+
+<mat-dialog-actions align="end" class="box-actions">
+  <button class="btn-secondary" type="button" (click)="close()">Cancel</button>
+  <button class="btn-primary" type="button" [disabled]="saving" (click)="saveAll()">{{ saving ? 'Saving…' : 'Save' }}</button>
+</mat-dialog-actions>

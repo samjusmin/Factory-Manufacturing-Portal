@@ -1,0 +1,63 @@
+/* Layout, the search box and the empty / retry states are shared (styles.css). */
+
+.result-count {
+    margin: 0 0 8px;
+    min-height: 20px;
+    font-size: 14px;
+    color: #5F6368;
+}
+
+/* Rows stay on screen (dimmed) while the next page is fetched, so the table does not jump. */
+.table-list.loading table {
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+}
+
+.unit-type {
+    white-space: nowrap;
+}
+
+mat-paginator {
+    border-top: 1px solid #ECECEF;
+    border-radius: 0 0 4px 4px;
+    background: #FFFFFF;
+}
+
+.btn-link {
+    margin: 0 0 0 0.5em;
+    padding: 6px 4px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+/* The table and its page controls are one card, so its shadow wraps both and sits just under the pager. The sideways
+   scrolling is inside the card, so it cannot cut the shadow off. */
+.results-card {
+    /* The shared table-list style leaves 80px under a table; here the card ends at the pager, with space after it. */
+    padding: 0;
+    margin-bottom: 3em;
+    overflow: visible;
+    border-radius: 4px;
+    background: #FFFFFF;
+    box-shadow: 0px 5px 5px -3px #0003, 0px 8px 10px 1px #00000024, 0px 3px 14px 2px #0000001F;
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+/* Eight columns need room: on a narrow screen the table scrolls sideways instead of running its columns together. */
+.table-scroll table {
+    min-width: 980px;
+    box-shadow: none;
+}

@@ -1,0 +1,88 @@
+<ng-container *ngIf="prodTableService.isLoaded">
+  <form #consumptionForm="ngForm">
+  <div class="fixed">
+  <button class="back" (click)="prodTableService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button> <h3 class="sub">{{ prodTableService.childSource.data[0].doc_no }} - {{ prodTableService.childSource.data[0].doc_description }} <fa-icon [icon]="['fas', 'angle-right']"></fa-icon> {{ prodTableService.childSource.data[0].source_no }} - {{ prodTableService.childSource.data[0].description }} Components</h3>
+  <br/>
+  <button mat-raised-button class="report" type="submit" (click)="prodTableService.openShortageDialog()"><fa-icon [icon]="['fas', 'envelope']"></fa-icon>Report Issue/Completion</button>
+  <button mat-raised-button class="report" type="submit" (click)="refresh()"><fa-icon [icon]="['fas', 'sync']"></fa-icon>Refresh</button>
+  
+  <button mat-raised-button color ="primary" class="save" type ="submit" (click)="prodTableService.openConfirmationDialog()" [disabled]="consumptionForm.invalid"><fa-icon [icon]="['fas', 'save']"></fa-icon>Consume</button>
+  <button mat-raised-button class="fill" type="submit" (click)="autofill()"><fa-icon [icon]="['fas', 'check-square']"></fa-icon>Consume All</button>
+  <ng-container *ngIf="consumptionForm.invalid">
+      <div class="alert">
+        Qty amount must be a number and cannot exceed qty remaining.
+      </div>
+  </ng-container>
+  </div>
+    
+  <mat-form-field class="search">
+    <input matInput (keyup)="prodTableService.applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field>
+  
+  <div class="table-responsive">
+  <table mat-table matSort [dataSource]="prodTableService.childSource">
+        
+      <ng-container
+      matColumnDef="{{ column.id }}"
+      *ngFor="let column of componentColumns"
+    >
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        {{ column.value }}</mat-header-cell
+      >
+      
+      <mat-cell *matCellDef="let element; let i = index">
+        <ng-container *ngIf="column.id === 'parent_ref'">
+          {{ element[column.id] }}
+        </ng-container>
+  
+        <ng-container *ngIf="column.id === 'result'">
+          <div *ngIf="element['result']?.length > 0">
+            <div *ngFor="let res of element['result']; let j = index">
+              <a [routerLink]="['/receiving/', element['result'][j].doc_no]">
+                {{ element['result'][j].doc_no }}
+              </a>
+            </div>
+          </div>
+        </ng-container>
+  
+        <ng-container *ngIf="column.id === 'vendor'">
+          <div *ngIf="element['result']?.length > 0">
+            <div *ngFor="let res of element['result']; let j = index">
+              <!--<a [routerLink]="['/prod-order', elem.prod_order]">-->
+                {{ element['result'][j].vendor }}
+            </div>
+          </div>
+        </ng-container>
+  
+        <ng-container *ngIf="column.id === 'stock'">
+          <div *ngIf="element['stock']?.length > 0">
+              {{ element['stock'][0].inventory }}
+          </div>
+        </ng-container>
+  
+        <ng-container *ngIf="column.id !== 'parent_ref' && column.id !== 'stock' && column.id !== 'result'">
+          <ng-container *ngIf="column.id === 'qty_to_receive'">
+            <mat-form-field class="qty_input" color="primary" appearance="legacy">
+              
+              <input matInput id="qtycomplete-{{i}}" name="qtycomplete{{i}}" [(ngModel)]="element['items']['qty_to_receive']" maxAmount="{{element['items']['qty_remaining']}}" (keydown)="prodTableService.moveCell($event)" autocomplete="off">
+            
+            </mat-form-field>
+          </ng-container>
+  
+      <ng-container *ngIf="column.id !== 'qty_to_receive'">
+            {{ element['items'][column.id] }}
+          </ng-container>
+        </ng-container>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="compColumns; sticky: true"></mat-header-row>
+      <mat-row
+      *matRowDef="let row; let even = even; columns: compColumns;" [ngClass]="{gray: even}">
+      </mat-row>
+  </table>
+  </div>
+  </form>
+  
+  
+  </ng-container>

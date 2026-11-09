@@ -1,0 +1,30 @@
+<ng-container *ngIf="FATProjectService.isAdmin">
+    <div class="page-header">
+        <button class="fat" type="button" aria-label="Back" title="Back" (click)="cancel()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+        <h1 class="fatHead">Add Units to {{ FATProjectService.phaseName }}</h1>
+    </div>
+
+    <form class="admin-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <p class="form-hint">Add one entry for each run of identical machines. The unit numbers are shown under each entry before you create them.</p>
+
+        <webproject-fat-unit-entry *ngFor="let entry of entryList.controls; let i = index"
+            [group]="entry" [index]="i" [removable]="entryList.length > 1" (remove)="removeEntry(i)">
+        </webproject-fat-unit-entry>
+
+        <button type="button" class="btn-secondary" (click)="addEntry()">Add Entry</button>
+
+        <div class="form-error" role="alert" *ngIf="saveError">{{ saveError }}</div>
+
+        <div class="action-bar">
+            <span class="action-status" role="status" aria-live="polite">
+                <ng-container *ngIf="unitCount">{{ unitCount }} {{ unitCount === 1 ? 'unit' : 'units' }} in {{ entryList.length }} {{ entryList.length === 1 ? 'entry' : 'entries' }}</ng-container>
+            </span>
+            <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="saving">{{ saving ? 'Adding...' : 'Add Units' }}</button>
+        </div>
+    </form>
+</ng-container>
+
+<ng-container *ngIf="!FATProjectService.isAdmin && FATProjectService.showError">
+  <fat-restricted-access></fat-restricted-access>
+</ng-container>

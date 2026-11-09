@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Invalid Field</h1>
+<div mat-dialog-content>
+  <p *ngIf="data.message">
+    <b>The following fields are invalid:</b>
+    <ul class="error-message">
+      <li class="capitalise" *ngFor="let field of data.message">
+        {{ formatLabel(field) }}
+      </li>
+    </ul>
+  <p>Please correct the highlighted fields and try again.</p>
+  <div class="contact-admin">
+    <p class="contact-admin-message">If you think there has been an error, please contact your administrator.</p>
+  </div>
+</div>
+
+<div mat-dialog-actions class="actions">
+  <button mat-button mat-dialog-close class="button-close">Close</button>
+</div>

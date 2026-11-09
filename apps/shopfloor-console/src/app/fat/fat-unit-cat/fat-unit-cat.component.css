@@ -1,0 +1,253 @@
+/* Overall progress for the unit */
+.overview {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75em 2em;
+    margin: 1.25em 0;
+    padding: 14px 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.overview-bar {
+    flex: 1;
+    min-width: 220px;
+    max-width: 420px;
+}
+
+/* Unit notes */
+.notes-card {
+    margin: 0 0 1.5em;
+    padding: 16px 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.notes-card label {
+    display: block;
+    margin-bottom: 8px;
+    font: normal normal 600 14px/18px Source Sans Pro;
+    color: #1F2A37;
+}
+
+.notes-card textarea {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 72px;
+    padding: 10px 12px;
+    border: 1px solid #C9D3DD;
+    border-radius: 4px;
+    font: normal normal normal 16px/22px Source Sans Pro;
+    resize: vertical;
+}
+
+.notes-card textarea:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 1px;
+}
+
+.notes-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1em;
+    margin-top: 12px;
+}
+
+.note-status {
+    font-size: 14px;
+    color: #5F6368;
+}
+
+.note-status .ok { color: #0A6B2E; font-weight: 600; }
+.note-status .bad { color: #C62828; font-weight: 600; }
+
+/* One row per category: the whole row is the link, so the touch target is large. */
+.cat-list {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 4em;
+}
+
+.cat-item {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.cat-row {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(160px, 1fr) auto minmax(180px, 260px) 20px;
+    align-items: center;
+    gap: 20px;
+    min-height: 56px;
+    padding: 0 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    box-shadow: 0px 3px 6px #0000000D;
+    color: #000000;
+    text-decoration: none;
+}
+
+.cat-row:hover {
+    border-color: #005EB8;
+    background: #F0F6FD;
+}
+
+.cat-row:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}
+
+.cat-name {
+    font: normal normal 600 16px/22px Source Sans Pro;
+    color: #005EB8;
+}
+
+.cat-go {
+    color: #5F6368;
+}
+
+.cat-row:hover .cat-go {
+    color: #005EB8;
+}
+
+.cat-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    margin: 0;
+    padding: 0 16px;
+    border: 1px solid #E8B4B4;
+    border-radius: 4px;
+    background: #FFFFFF;
+    box-shadow: none;
+    color: #C62828;
+    font: normal normal normal 14px/1 Source Sans Pro;
+    cursor: pointer;
+}
+
+.cat-delete:hover {
+    background: #FDE7E7;
+}
+
+.cat-delete:focus-visible {
+    outline: 2px solid #C62828;
+    outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+    .cat-row {
+        grid-template-columns: 1fr auto 20px;
+    }
+
+    .cat-row .po-progress {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        padding-bottom: 12px;
+    }
+}
+
+/* Sits just under the sticky title row, not tucked behind it. */
+.subtitle {
+    margin: 0.5em 0 0;
+}
+
+/* The checks still to do on this unit, failed ones first */
+.todo-card {
+    margin: 0 0 1.5em;
+    padding: 16px 20px;
+    background: #FFFFFF;
+    border-radius: 4px;
+    box-shadow: 0px 3px 6px #0000000D;
+}
+
+.todo-card h2 {
+    margin: 0 0 4px;
+    font: normal normal 600 16px/22px Source Sans Pro;
+    color: #1F2A37;
+}
+
+.todo-counts {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #4A4A4F;
+}
+
+.failed-text {
+    color: #C62828;
+}
+
+.todo-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.todo-list a {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 6px 8px;
+    border-top: 1px solid #ECECEF;
+    color: #000000;
+    text-decoration: none;
+}
+
+.todo-list a:hover {
+    background: #F0F6FD;
+}
+
+.todo-list a:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: -2px;
+}
+
+.todo-note,
+.todo-cat {
+    color: #5F6368;
+}
+
+.todo-cat {
+    font-size: 13px;
+}
+
+.todo-done {
+    margin: 0 0 1.5em;
+    font-size: 14px;
+    color: #0A6B2E;
+}
+
+@media (max-width: 760px) {
+    .todo-list a {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+}
+
+.btn-link {
+    margin: 0;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    box-shadow: none;
+    color: #005EB8;
+    font: normal normal 600 14px/1 Source Sans Pro;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.btn-link:focus-visible {
+    outline: 2px solid #005EB8;
+    outline-offset: 2px;
+}

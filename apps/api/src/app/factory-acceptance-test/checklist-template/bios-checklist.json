@@ -1,0 +1,50 @@
+[
+  {
+    "description": "Uncheck 'Enable USB wake support'",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Record last power state setting",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Record BIOS/firmware version number",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Confirm boot order is set to internal drive first",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Disable network (PXE) boot",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  },
+  {
+    "description": "Set supervisor password per site runbook",
+    "reference": "",
+    "status": null,
+    "checked_by": null,
+    "date_checked": null,
+    "comment": null
+  }
+]

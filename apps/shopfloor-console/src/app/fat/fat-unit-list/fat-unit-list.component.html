@@ -1,0 +1,91 @@
+<div class="page-header">
+    <button class="fat" type="button" aria-label="Back" title="Back" (click)="FATProjectService.goBack()"><fa-icon [icon]="['fas', 'chevron-circle-left']"></fa-icon></button>
+    <h1 class="fatHead">FAT | {{getProject()}} - {{FATProjectService.phaseName}} Units</h1>
+</div>
+
+<div class="fat-list" *ngIf="FATProjectService.isLoaded">
+    <div class="toolbar">
+        <mat-form-field class="search">
+            <input matInput aria-label="Search units" (input)="FATProjectService.applyFilter($event.target.value)" placeholder="Search">
+        </mat-form-field>
+
+        <div class="filter-bar" role="group" aria-label="Filter by progress">
+            <button type="button" class="filter-chip" *ngFor="let s of stateFilters"
+                [class.on]="FATProjectService.statusFilter === s"
+                [attr.aria-pressed]="FATProjectService.statusFilter === s"
+                (click)="FATProjectService.setStatusFilter(s)">
+                {{ s }} <span class="count">{{ FATProjectService.countByState(FATProjectService.unitsource.data, s) }}</span>
+            </button>
+        </div>
+
+        <!-- Four admin actions would not fit beside the filters, so the secondary ones live in a menu. -->
+        <div class="toolbar-actions" *ngIf="FATProjectService.isAdmin">
+            <button type="button" class="btn-secondary" [matMenuTriggerFor]="moreActions" aria-label="More actions">
+                More <fa-icon [icon]="['fas', 'chevron-down']"></fa-icon>
+            </button>
+            <mat-menu #moreActions="matMenu" xPosition="before" class="actionMenu">
+                <a mat-menu-item [routerLink]="['/FAT-pdf-select', getProject(), getPhase()]"><fa-icon [icon]="['fas', 'file-export']"></fa-icon>Export FAT Checklists</a>
+                <a mat-menu-item [routerLink]="['/FAT-phase-comments', getProject(), getPhase()]"><fa-icon [icon]="['fas', 'comments']"></fa-icon>View Comments</a>
+                <a mat-menu-item [routerLink]="['/FAT-add-checklist', getProject(), getPhase()]"><fa-icon [icon]="['fas', 'clipboard-list']"></fa-icon>Add Checklist</a>
+            </mat-menu>
+            <a class="btn-primary" [routerLink]="['/FAT-add-unit', getProject(), getPhase()]">Add Units</a>
+        </div>
+    </div>
+
+    <div class="list-empty" *ngIf="FATProjectService.loadError">
+        The units could not be loaded.
+        <button type="button" class="btn-secondary retry" (click)="reload()">Try again</button>
+    </div>
+    <p class="list-empty" *ngIf="!FATProjectService.loadError && !FATProjectService.unitsource.data.length">
+        This phase has no units yet.<ng-container *ngIf="FATProjectService.isAdmin"> Use Add Units to create them.</ng-container>
+    </p>
+    <p class="list-empty" *ngIf="FATProjectService.unitsource.data.length && !FATProjectService.unitsource.filteredData.length">
+        No units match the current filters.
+    </p>
+
+    <p class="phase-todo" role="status" *ngIf="totals.outstanding">
+        <strong>{{ totals.outstanding }}</strong> {{ totals.outstanding === 1 ? 'check is' : 'checks are' }} still to do in this phase<ng-container *ngIf="totals.failed">,
+        <strong class="failed-text">{{ totals.failed }} failed</strong> on {{ totals.unitsWithFailures }} {{ totals.unitsWithFailures === 1 ? 'unit' : 'units' }}</ng-container>.
+        <button type="button" class="btn-link" *ngIf="totals.failed" [attr.aria-pressed]="FATProjectService.attentionOnly"
+            (click)="FATProjectService.setAttentionOnly(!FATProjectService.attentionOnly)">
+            {{ FATProjectService.attentionOnly ? 'Show all units' : 'Show only units with failed checks' }}
+        </button>
+    </p>
+
+    <!-- Table of Units HERE -->
+    <div class='table-list' [hidden]="!FATProjectService.unitsource.filteredData.length">
+        <table mat-table matSort class="mat-elevation-z8" [dataSource]="FATProjectService.unitsource">
+            <ng-container matColumnDef="{{ column.name }}" *ngFor="let column of columnNames">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    {{ column.value }}
+                </th>
+
+              <td mat-cell *matCellDef="let element;">
+                <div [ngSwitch]="column.name">
+                    <span *ngSwitchCase="'doc_no'" class="unit-cell">
+                        <a [routerLink]="['/FAT-unit-cat', getProject(), getPhase(), element[column.name]]">{{ element[column.name] }}</a>
+                    </span>
+                    <span *ngSwitchCase="'unit_type'" class="unit-type">{{ element[column.name] }}</span>
+                    <span *ngSwitchCase="'state'" class="po-chip" [ngClass]="stateClass(element.progress)">{{ stateOf(element.progress) }}</span>
+                    <span *ngSwitchCase="'progress'" class="po-progress" [attr.aria-label]="(element.progress || 0) + ' percent complete'">
+                        <span class="po-bar"><span class="po-fill" [style.width.%]="element.progress || 0"></span></span>
+                        <span class="po-pct">{{ element.progress || 0 }}%</span>
+                    </span>
+                    <span *ngSwitchCase="'open'" class="open-checks">
+                        <ng-container *ngIf="FATProjectService.unitChecks[element.doc_no] as c; else noChecks">
+                            <span class="po-chip state-failed" *ngIf="c.failed">{{ c.failed }} failed</span>
+                            <span class="open-n" *ngIf="c.unanswered">{{ c.unanswered }} to do</span>
+                            <span class="open-none" *ngIf="!c.outstanding">None</span>
+                        </ng-container>
+                        <ng-template #noChecks>-</ng-template>
+                    </span>
+                    <span *ngSwitchDefault>{{ element[column.name] }}</span>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; let even = even; columns: displayedColumns" [ngClass]="{gray: even}"></tr>
+        </table>
+    </div>
+</div>

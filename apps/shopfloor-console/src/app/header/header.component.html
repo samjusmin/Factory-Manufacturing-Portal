@@ -1,0 +1,21 @@
+<header>
+  <div id="brand-panel">
+    <img id="portal" alt="Manufacturing Portal" src="assets/img/manufacturing-portal-logo.png" />
+  </div>
+  <ng-container *ngIf="username">
+    <button id="user" type="button" [matMenuTriggerFor]="menu" aria-label="Account menu">
+      <span class="avatar" aria-hidden="true">{{ initial }}</span>
+      <span class="user-name">{{ username }}</span>
+      <fa-icon class="user-caret" [icon]="['fas', 'chevron-down']"></fa-icon>
+    </button>
+    <mat-menu #menu="matMenu" class="userMenu" xPosition="before">
+      <div class="menu-user" (click)="$event.stopPropagation()">
+        <span class="menu-name">{{ username }}</span>
+        <span class="menu-role" *ngIf="roleLabel">{{ roleLabel }}</span>
+      </div>
+      <button mat-menu-item class="menu-logout" (click)="logout()">
+        <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon> Log out
+      </button>
+    </mat-menu>
+  </ng-container>
+</header>
