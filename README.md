@@ -1,7 +1,7 @@
 # Manufacturing Portal
 
-A portfolio-sanitized version of a manufacturing communications app inspired by my work at Amadeus: an Nx monorepo
-with an Angular frontend ([apps/shopfloor-console](apps/shopfloor-console)) and a NestJS API
+A portfolio-sanitised version of a manufacturing communications app inspired by my work at Amadeus.
+An Nx monorepo with an Angular frontend ([apps/shopfloor-console](apps/shopfloor-console)) and a NestJS API
 ([apps/api](apps/api)).
 
 ## Running the demo
